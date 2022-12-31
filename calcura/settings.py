@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     # 'work.apps.WorkConfig'
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -51,7 +52,7 @@ INSTALLED_APPS = [
 ]
 
 SITE_ID = 1
-
+SOCIALACCOUNTT_LOGIN_ON_GET=True
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -59,9 +60,16 @@ SOCIALACCOUNT_PROVIDERS = {
         # (``socialaccount`` app) containing the required client
         # credentials, or list them here:
         'APP': {
-            'client_id': '123',
-            'secret': '456',
+            'client_id': '894016689644-i7e3dg6d1gb753lvl3cv7v4e0r8re9ue.apps.googleusercontent.com',
+            'secret': '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',
             'key': ''
+        },
+        'SCOPE':{
+            'profile',
+            'email',
+        },
+        'AUTH_PARAMS':{
+            'access_type': 'online',
         }
     }
 }
@@ -112,13 +120,13 @@ DATABASES = {
 }
 
 AUTHENTICATION_BACKENDS = [
-    
+
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
 
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
-    
+
 ]
 
 # Password validation
@@ -160,7 +168,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '/static/'),
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

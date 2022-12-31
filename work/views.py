@@ -10,4 +10,5 @@ def index(request):
     # a = calculator(title="test", price=0.0, description="hi",
     #                tags="hi,hi", images="")
     # a.save()
+    print(request.user)
     return render(request, 'index.html')
