@@ -1,4 +1,5 @@
 {% load socialaccount %}
+{% load i18n %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -7,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Hello, world!</title>
+    <title>Home | Calcura</title>
   </head>
   <body>
     <header>
@@ -23,7 +24,6 @@
           </div>
           <!-- right header section -->
           <div class="flex items-center space-x-4 mr-10">
-            <a href="{% provider_login_url 'google' %}" class=" w-200 h-7 pt-0.5 px-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">Login with Google</a>
 
           <form class="flex items-center">   
               <label for="simple-search" class="sr-only">Search</label>
@@ -39,6 +39,7 @@
                   <span class="sr-only">Search</span>
               </button>
           </form>
+          {% if user.is_authenticated %}
             <a href="#">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -93,6 +94,17 @@
                 />
               </svg>
             </a>
+            <form method="post" action="{% url 'account_logout' %}">
+              {% csrf_token %}
+              {% if redirect_field_value %}
+              <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+              {% endif %}
+              <button type="submit">{% trans 'Sign Out' %}</button>
+            </form>
+            {% else %}
+            <a href="{% provider_login_url 'google' %}" class=" w-200 h-7 pt-0.5 px-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">Login with Google</a>
+            {% endif %}
+          
           </div>
         </nav>
   </header>
