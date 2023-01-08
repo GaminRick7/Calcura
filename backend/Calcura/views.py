@@ -3,6 +3,8 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+from .models import Calculator
+from django.contrib.auth.decorators import login_required
 
 # The view to handle the home page
 def Index(request):
@@ -19,8 +21,37 @@ def Index(request):
 
             #Redirect back to homepage to reload and remove the sign out button
             return HttpResponseRedirect("/")
-        user = str(request.user.get_full_name()).lower().split(" ")
-        messages.error(request, "Welcome " + user[0].capitalize() + " " + user[1].capitalize())
-        print(str("Welcome " + user[0].capitalize() + " " + user[1].capitalize())[:1])
+        # user = str(request.user.get_full_name()).lower().split(" ")
+        # messages.error(request, "Welcome " + user[0].capitalize() + " " + user[1].capitalize())
+        # print(str("Welcome " + user[0].capitalize() + " " + user[1].capitalize())[:1])
 
     return render(request, 'calcura/index.html')
+
+def chatPage(request, *args, **kwargs):
+    if request.user.is_authenticated == False:
+        return HttpResponseRedirect("/")
+    context = {}
+    return render(request, "calcura/chatPage.html", context)
+
+@login_required(login_url='/')
+def vendorPage(request):
+    a=[]
+    for listing in Calculator.objects.all():
+        if listing.email==request.user.email:
+            a.append(listing)
+    return render(request, "calcura/vendorPage.html", {"listing": a})
+
+
+@login_required(login_url='/')
+def createListing(request):
+    if request.method=="POST":
+        title=request.POST['title']
+        price=float(request.POST['price'])
+        description=request.POST['description']
+        tags=request.POST['tags']
+        image=request.POST['image']
+        price = round(float(price),2)
+        listing = Calculator(title=title, price=price,description=description,tags=tags,image=image,email=request.user.email)
+        listing.save()
+
+    return render(request, "calcura/createListing.html")
