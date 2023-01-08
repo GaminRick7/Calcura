@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
-
+from calcura import views as v
 urlpatterns = [
-    path('', TemplateView.as_view(template_name="calcura/index.html")),
+    path('', v.Index),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
 ]
