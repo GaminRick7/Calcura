@@ -43,9 +43,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-     
-    # add django channels
-    'channels' ,
 ]
 
 MIDDLEWARE = [
@@ -97,7 +94,7 @@ DATABASES = {
 
         'USER': 'postgres',
 
-        'PASSWORD': '6Cq9S^29v^&7',
+        'PASSWORD': 'admin',
 
         'HOST': '127.0.0.1',
 
@@ -162,11 +159,5 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {
             'access_type': 'online',
         }
-    }
-}
-
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
 }
