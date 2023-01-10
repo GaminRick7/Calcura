@@ -1,2 +1,2 @@
-# Calcura is a project.
+# Calcura is a officially a project.
 Readme coming soon.
