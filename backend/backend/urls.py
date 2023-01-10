@@ -8,7 +8,7 @@ urlpatterns = [
     path('', v.Index, name="home"),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('createListing/', v.createListing),
+    path('createListing/', v.createListing, name="createListing"),
     path('vendorPage/', v.vendorPage, name="vendorPage"),
     path("chat/", v.chatPage, name="chat"),
 ]
