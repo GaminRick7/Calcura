@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from .models import Calculator
 from django.contrib.auth.decorators import login_required
+from imgurpython import ImgurClient
 
 # The view to handle the home page
 def Index(request):
@@ -20,7 +21,7 @@ def Index(request):
             user.delete()
 
             #Redirect back to homepage to reload and remove the sign out button
-            return HttpResponseRedirect("/")
+            return HttpResponseRedirect("/", {"gmail": True})
         # user = str(request.user.get_full_name()).lower().split(" ")
         # messages.error(request, "Welcome " + user[0].capitalize() + " " + user[1].capitalize())
         # print(str("Welcome " + user[0].capitalize() + " " + user[1].capitalize())[:1])
@@ -49,9 +50,11 @@ def createListing(request):
         price=float(request.POST['price'])
         description=request.POST['description']
         tags=request.POST['tags']
-        image=request.POST['image']
+        for x in request.FILES.getlist('files'):
+            print(x)
         price = round(float(price),2)
-        listing = Calculator(title=title, price=price,description=description,tags=tags,image=image,email=request.user.email)
-        listing.save()
+        # client = ImgurClient("e4d2ee6042064ef", "effc638490e3951b29079d257969bdf93e4bb773")
+        # listing = Calculator(title=title, price=price,description=description,tags=tags,image=image,email=request.user.email)
+        # listing.save()
 
     return render(request, "calcura/createListing.html")
