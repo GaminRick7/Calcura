@@ -12,7 +12,6 @@ def Index(request):
 
     #If the user is logged in
     if request.user.is_authenticated:
-
         #Only keep users which are staff or are ocdsb.ca email addresses. If not delete them. 
         if str(request.user.email).split("@")[1]!="ocdsb.ca" and not request.user.is_staff:
 
@@ -50,8 +49,11 @@ def createListing(request):
         price=float(request.POST['price'])
         description=request.POST['description']
         tags=request.POST['tags']
-        for x in request.FILES.getlist('files'):
-            print(x)
+        images=request.FILES.getlist('files')
+        print("hi",images,title)
+        for image in images:
+            print("ji")
+            print(image)
         price = round(float(price),2)
         # client = ImgurClient("e4d2ee6042064ef", "effc638490e3951b29079d257969bdf93e4bb773")
         # listing = Calculator(title=title, price=price,description=description,tags=tags,image=image,email=request.user.email)
