@@ -13,7 +13,7 @@
   {% block content %}
 
   <h1 style="text-align:center">Create Listing</h1>
-  <form action="" method = "POST">
+  <form action="" method = "POST"enctype="multipart/form-data">
     {% csrf_token %}
     <div class="lg:w-1/2 md:w-2/3 mx-auto">
         <div class="flex flex-wrap -m-2">
@@ -44,8 +44,8 @@
         </div>
         <div class="p-2 w-1/2">
           <div class="relative">
-            <label for="files" class="leading-7 text-sm text-gray-600">Select Images:</label>
-            <input name="files" type="file" id="files" class="form-control-file"  multiple required>
+            <label for="docfile" class="leading-7 text-sm text-gray-600">Select Images:</label>
+            <input name="docfile" type="file" id="id_docfile" class="form-control-file"  multiple required>
           </div>
         </div>
         <div class="p-2 w-full">

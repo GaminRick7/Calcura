@@ -49,14 +49,16 @@ def createListing(request):
         price=float(request.POST['price'])
         description=request.POST['description']
         tags=request.POST['tags']
-        images=request.FILES.getlist('files')
-        print("hi",images,title)
-        for image in images:
-            print("ji")
-            print(image)
+        images=request.FILES.getlist('docfile')
+        print("hi",len(images),title, price)
+        print(images)
+        # for image in images:
+        #     print("ji")
+        #     print(image)
         price = round(float(price),2)
         # client = ImgurClient("e4d2ee6042064ef", "effc638490e3951b29079d257969bdf93e4bb773")
-        # listing = Calculator(title=title, price=price,description=description,tags=tags,image=image,email=request.user.email)
-        # listing.save()
+        # for image in images:
+        #     listing = Calculator(title=title, price=price,description=description,tags=tags,image=image,email=request.user.email)
+        #     listing.save()
 
     return render(request, "calcura/createListing.html")
