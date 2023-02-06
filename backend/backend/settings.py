@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -43,6 +46,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'cloudinary'
 ]
 
 MIDDLEWARE = [
@@ -161,3 +165,10 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+#Cloudinary to upload images to
+cloudinary.config(  
+  cloud_name = "dypjdgg0n", 
+  api_key = "493993287995787", 
+  api_secret = "QAtfbDDzizMzO0sGaa9kqMi8gDc" 
+)
