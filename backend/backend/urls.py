@@ -11,5 +11,6 @@ urlpatterns = [
     path('createListing/', v.createListing, name="createListing"),
     path('vendorPage/', v.vendorPage, name="vendorPage"),
     path("chat/", v.chatPage, name="chat"),
+    path("editListing/<int:id>", v.editListing, name="editListing"),
 ]
 urlpatterns += staticfiles_urlpatterns()
