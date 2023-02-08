@@ -88,6 +88,7 @@ def createListing(request):
         #Creating a new calculator listing, with the images stored as a string. 
         a=Calculator(title=title, description=description,image=imageUrls,price=price,tags=tags,email=request.user.email)
         a.save()
+        return HttpResponseRedirect("/vendorPage")
     return render(request, "calcura/createListing.html")
 
 def editListing(request, id):
@@ -100,32 +101,53 @@ def editListing(request, id):
     except:
         return HttpResponseRedirect("/vendorPage")
     
+    originalImageUrls = listing.image
+    listing.image = listing.image.split(",")
+    listing.image.pop(-1)
+
     #If submitting editListing form
     if  "submit" in request.POST:
         #Get form data
-        title=request.POST['title']
-        price=float(request.POST['price'])
-        description=request.POST['description']
-        tags=request.POST['tags']
-        images=request.FILES.getlist('docfile')
-        
-        #Round the price to two decimal places
-        price = round(float(price),2)
+        if request.POST['title'] != "":
+            title=request.POST['title']
+        else:
+            title= listing.title
 
-        #Looping through the images they pasted, and storing them in TempImage database model. Storing them to upload to cloudinary and to get image link url. Email is needed to link a temporary image to the user
-        for image in images:
-            tempImg = TempImage(image= image, email=request.user.email)
-            tempImg.save()
+        if request.POST['price'] != "":
+            price=float(request.POST['price'])
+            #Round the price to two decimal places
+            price = round(float(price),2)
+        else:
+            price= listing.price
 
-        #Getting the images stored in TempImage, and defining a string to store the urls of images
-        images=TempImage.objects.all()
-        imageUrls=""
+        if request.POST['description'] != "":
+            description=request.POST['description']
+        else:
+            description = listing.description
 
-        #Go through the images, and if the image belongs to the user, add it to the imageUrls string. After that, delete the image from the database for storage purposes
-        for image in images:
-            if image.email==request.user.email:
-                imageUrls += str(image.image.url) + ","
-                image.delete()
+        if request.POST['tags'] != "":
+            tags=request.POST['tags']
+        else:
+            tags = listing.tags
+
+        if len(request.FILES.getlist('docfile')) > 0:
+            images=request.FILES.getlist('docfile')
+            #Looping through the images they pasted, and storing them in TempImage database model. Storing them to upload to cloudinary and to get image link url. Email is needed to link a temporary image to the user
+            for image in images:
+                tempImg = TempImage(image= image, email=request.user.email)
+                tempImg.save()
+
+            #Getting the images stored in TempImage, and defining a string to store the urls of images
+            images=TempImage.objects.all()
+            imageUrls=""
+
+            #Go through the images, and if the image belongs to the user, add it to the imageUrls string. After that, delete the image from the database for storage purposes
+            for image in images:
+                if image.email==request.user.email:
+                    imageUrls += str(image.image.url) + ","
+                    image.delete()
+        else:
+            imageUrls = originalImageUrls
 
         #Updating the calculator object
         Calculator.objects.filter(id=id).update(title=title,price=price,description=description,tags=tags,image=imageUrls)
