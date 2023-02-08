@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from .models import Calculator, TempImage
 from django.contrib.auth.decorators import login_required
-
+from django.db.models.query_utils import DeferredAttribute
 
 # The view to handle the home page
 def Index(request):
@@ -91,28 +91,31 @@ def createListing(request):
     return render(request, "calcura/createListing.html")
 
 def editListing(request, id):
+    #Define listing variable, set it to the Calculator model
     listing=Calculator
-    if id>len(Calculator.objects.all()):
-        return HttpResponseRedirect("/")
-    for c in Calculator.objects.all():
-        if c.id==id:
-            if c.email==request.user.email:
-                listing=c
-            else:
-                return HttpResponseRedirect("/vendorPage")
-    if request.method=="POST":
+
+    #Try to get a calculator with the given id, if it doesn't exist, return to vendorPage
+    try:
+        listing=Calculator.objects.all().get(id=id)
+    except:
+        return HttpResponseRedirect("/vendorPage")
+    
+    #If submitting editListing form
+    if  "submit" in request.POST:
+        #Get form data
         title=request.POST['title']
         price=float(request.POST['price'])
         description=request.POST['description']
         tags=request.POST['tags']
         images=request.FILES.getlist('docfile')
+        
         #Round the price to two decimal places
         price = round(float(price),2)
 
         #Looping through the images they pasted, and storing them in TempImage database model. Storing them to upload to cloudinary and to get image link url. Email is needed to link a temporary image to the user
         for image in images:
-            listing = TempImage(image= image, email=request.user.email)
-            listing.save()
+            tempImg = TempImage(image= image, email=request.user.email)
+            tempImg.save()
 
         #Getting the images stored in TempImage, and defining a string to store the urls of images
         images=TempImage.objects.all()
@@ -123,19 +126,17 @@ def editListing(request, id):
             if image.email==request.user.email:
                 imageUrls += str(image.image.url) + ","
                 image.delete()
-        print(imageUrls)
 
-        listing.title=title
-        listing.price=price
-        listing.description=description
-        listing.tags=tags
-        listing.image=imageUrls
-        print(listing.title)
-        print(listing.price)
-        print(listing.description)
-        print(listing.tags)
-        print(listing.image)
+        #Updating the calculator object
         Calculator.objects.filter(id=id).update(title=title,price=price,description=description,tags=tags,image=imageUrls)
-        
 
+        #Redirecting user to the vendorPage
+        return HttpResponseRedirect("/vendorPage")
+        
+    #If they submit the delete form, delete the listing and send user to vendorPage
+    elif 'delete' in request.POST:
+        listing.delete()
+        return HttpResponseRedirect("/vendorPage")
+    
+    #Return template, with the listing which is being edited
     return render(request, "calcura/editListing.html", {"l": listing})
