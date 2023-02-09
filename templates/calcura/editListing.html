@@ -1,92 +1,153 @@
 {% extends './base.html' %}
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Edit Listing | Calcura</title>
-  </head>
-  <body>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Edit Listing | Calcura</title>
+</head>
+
+<body>
 
   {% block content %}
 
-  <h1 style="text-align:center">Edit Listing</h1>
-  <form action="" method = "POST" enctype="multipart/form-data">
+  <h1 class="text-2xl text-gray-900 text-center font-bold pt-5">Edit Listing</h1>
+  <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <div class="lg:w-1/2 md:w-2/3 mx-auto">
-        <div class="flex flex-wrap -m-2">
-          <div class="p-2 w-1/2">
-            <div class="relative">
-              <label for="title" class="leading-7 text-sm text-gray-600" >Title</label>
-              <input type="text" placeholder="{{l.title}}" id="title" name="title" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+    <div class="flex flex-row mx-5 justify">
+    <div class="flex p-2 w-1/3 border-r-2">
+      <div class="relative">
+        <label for="docfile" class="leading-7 text-sm text-gray-600">Your Images</label>
+        <div class="pr-5 flex flex-row">
+          <div id="imageswrapper" class="flex flex-wrap">
+            {% for i in l.image%}
+            <div class="flex flex-wrap w-1/3">
+              <div class="w-full p-1 md:p-2 my-1">
+                <img src="{{i}}" alt="gallery" id = "id_docfile-preview" class="block object-cover object-center w-full h-full rounded-lg">
+              </div>
             </div>
+            {% endfor %}
           </div>
-          <div class="p-2 w-1/2">
-            <div class="relative">
-              <label for="price" class="leading-7 text-sm text-gray-600">Price</label>
-              <input type="number" placeholder="{{l.price}}"  id="price" step="0.01" name="price" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-            </div>
-          </div>
-          <div class="p-2 w-full">
-            <div class="relative">
-              <label for="description" class="leading-7 text-sm text-gray-600">Description</label>
-              <textarea id="description" placeholder="{{l.description}}" name="description" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
-            </div>
+        </div>
+        <input name="docfile" type="file" id="id_docfile" class="form-control-file mt-5" onchange="showPreview(event);"
+          multiple>
+      </div>
+    </div>
+    <div class="flex py-2 px-5">
+      <div class="flex flex-wrap -m-2">
+        <div class="p-2 w-1/2">
+          <div class="relative">
+            <label for="title" class="leading-7 text-sm text-gray-600">Title</label>
+            <input type="text" placeholder="{{l.title}}" id="title" name="title"
+              class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
           </div>
         </div>
         <div class="p-2 w-1/2">
           <div class="relative">
-            <label for="tags" class="leading-7 text-sm text-gray-600">tags</label>
-            <input type="text"  id="tags" placeholder="{{l.tags}}" name="tags" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+            <label for="price" class="leading-7 text-sm text-gray-600">Price</label>
+            <input type="number" placeholder="{{l.price}}" id="price" step="0.01" name="price"
+              class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
           </div>
         </div>
-        <div class="p-2 w-1/2">
-            <div class="relative">
-              <label for="docfile" class="leading-7 text-sm text-gray-600">Select Images:</label>
-              <input name="docfile" type="file" id="id_docfile" class="form-control-file" onchange="showPreview(event);" multiple >
-            </div>
+        <div class="p-2 w-full">
+          <div class="relative">
+            <label for="description" class="leading-7 text-sm text-gray-600">Description</label>
+            <textarea id="description" placeholder="{{l.description}}" name="description"
+              class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
           </div>
-          <div class="p-2 w-full">
-              <button name = "submit" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Send</button>
-          </div>
-        </form>
-  
-        <section class="overflow-hidden text-gray-700 ">
-          <div class="container px-5 py-2 mx-auto lg:pt-12 lg:px-32">
-            <div id ="imageswrapper" class="flex flex-wrap">
-            </div>
-          </div>
-        </section>
-  
         </div>
-    <script>
-        function showPreview(event){
-          var wrapper = document.getElementById("imageswrapper");
-          var myHTML = '';
-          for (let i = 0; i < event.target.files.length; i++) {
-            myHTML += `<div class="flex flex-wrap w-1/3">
+      <div class="p-2 w-full">
+        <div class="relative">
+          <label for="tags" class="leading-7 text-sm text-gray-600">Tags</label>
+          <input type="text" id="tags" placeholder="{{l.tags}}" name="tags"
+            class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+        </div>
+      </div>
+      <div class="p-2 w-full flex flex-row">
+        <button data-modal-target="popup-modal" data-modal-toggle="popup-modal"
+          class="items-center flex mx-auto block text-white bg-red-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          type="button">
+          <svg class="fill-white w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="black">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+          </svg>
+          Delete Listing
+        </button>
+        <button name="submit"
+          class="grow ml-2 block text-white bg-indigo-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+          Update Listing
+        </button>
+      </div>
+    </div>
+    </div>
+  </div>
+  </form>
+
+  </div>
+  </div>
+</body>
+<script>
+  function showPreview(event) {
+    var wrapper = document.getElementById("imageswrapper");
+    var myHTML = '';
+    for (let i = 0; i < event.target.files.length; i++) {
+      myHTML += `<div class="flex flex-wrap w-1/3">
               <div class="w-full p-1 md:p-2 my-1">
                 <img alt="gallery" id = "id_docfile-preview${i}" class="block object-cover object-center w-full h-full rounded-lg">
               </div>
             </div>`;
-          }
-          wrapper.innerHTML = myHTML
-          if(event.target.files.length > 0){
-            for (let i = 0; i < event.target.files.length + 1; i++){
-              var src = URL.createObjectURL(event.target.files[i]);
-              var preview = document.getElementById(`id_docfile-preview${i}`);
-              preview.src = src;
-            }
-          }
-        }
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js"></script>
-    <form action="" method = "POST" id ="delete">
-      {%csrf_token%}
-        <div coldspan="2"><a href=""></a><input type="submit" name="delete" value="Delete Listing "></div>
-    </form>
-  {% endblock %}
-  </body>
+    }
+    wrapper.innerHTML = myHTML
+    if (event.target.files.length > 0) {
+      for (let i = 0; i < event.target.files.length + 1; i++) {
+        var src = URL.createObjectURL(event.target.files[i]);
+        var preview = document.getElementById(`id_docfile-preview${i}`);
+        preview.src = src;
+      }
+    }
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js"></script>
+<form action="" method="POST" id="delete">
+  <div id="popup-modal" tabindex="-1"
+    class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
+    <div class="relative w-full h-full max-w-md md:h-auto">
+      <div class="relative bg-white rounded-lg shadow">
+        <button type="button"
+          class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+          data-modal-hide="popup-modal">
+          <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+              clip-rule="evenodd"></path>
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+        <div class="p-6 text-center">
+          <svg aria-hidden="true" class="mx-auto mb-4 text-gray-400 w-14 h-14" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <h3 class="mb-5 text-lg font-normal text-gray-500">Are you sure you want to delete this listing?</h3>
+          {%csrf_token%}
+          <button data-modal-hide="popup-modal" type="submit" name="delete" value="Delete Listing "
+            class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+            Yes, I'm sure
+          </button>
+          <button data-modal-hide="popup-modal" type="button"
+            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">No,
+            cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}
+
+</body>
+
 </html>

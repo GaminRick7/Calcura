@@ -11,27 +11,45 @@
   <body>
 
   {% block content %}
-  <h1>Vendor Page</h1>
-    {%for calc in listing%}
-      <div class="mx-3 my-4 inline-flex block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 hover:scale-110 cd">
-        <div style="align-items: center">
-          <h6 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{calc.title}}</h5>
-          <p class="font-normal text-gray-700 dark:text-gray-400"> <p>{{calc.description}} {{calc.price}} {{calc.tags}}</p>
-          {% for i in calc.image%}
-          <img src="{{i}}" alt="">
-          {% endfor %}
-          <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            Contact Seller
-            <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-          </a>
-          <a href="/editListing/{{calc.id}}" class="items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            Edit listing
-          </a>
+  <h1 class="text-4xl text-gray-900 text-center font-bold pt-5">Vendor Hub</h1>
+    <div class="mx-auto max-w-7xl my-4 px-4 sm:py-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold tracking-tight text-gray-900">Your Listings</h2>
+  
+      <div class="mt-6 grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+        {%for calc in listing%}
+        <div class="group relative mb-10">
+          <div class="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200">
+            <img src="{{calc.image.0}}" class="h-full w-full object-cover object-center lg:h-full lg:w-full group-hover:opacity-50">
+            <div class="flex flex-row absolute text-xl text-grey-600 opacity-0 w-full justify-center group-hover:opacity-100 font-bold top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+              </svg>
+              
+              <p>Edit Listing</p>
+            </div>
+          </div>
+          <div class="mt-4 flex justify-between">
+            <div>
+              <h3 class="text-sm text-gray-700 text font-semibold">
+                <a href="/editListing/{{calc.id}}">
+                  <span aria-hidden="true" class="absolute inset-0"></span>
+                  {{calc.title}}
+                </a>
+              </h3>
+              <p class="mt-1 text-sm text-gray-500">{{calc.tags}}</p>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">${{calc.price}}</p>
+            </div>
+          </div>
         </div>
+        {% endfor %}
+  
+        <!-- More products... -->
       </div>
-    {% endfor %}
-    <p></p>
-    <button class="mx-3 text-right bg-purple-600 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded">
+    </div>
+  
+    <button class="m-5 text-right bg-purple-600 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded">
       <a href="{% url 'createListing' %}">Create Listing</a>
     </button>
   {% endblock %}
