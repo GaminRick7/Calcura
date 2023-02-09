@@ -41,6 +41,7 @@ def chatPage(request, *args, **kwargs):
 def vendorPage(request):
     #Variables
     a=[]
+    length=False
 
     #Looping through all Calculator objects
     for listing in Calculator.objects.all():
@@ -52,8 +53,10 @@ def vendorPage(request):
             listing.image=listing.image.split(",")
             a.append(listing)
 
+    if len(a) == 0:
+        length = True
     #Returning the template with listings information
-    return render(request, "calcura/vendorPage.html", {"listing": a})
+    return render(request, "calcura/vendorPage.html", {"listing": a, "length": length})
 
 #Method to create a listing in the calculator model
 @login_required(login_url='/')
