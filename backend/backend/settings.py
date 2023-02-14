@@ -41,13 +41,21 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'Calcura',
+    'Calcura.apps.CalcuraConfig',
+    'chatSystem.apps.ChatsystemConfig',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'cloudinary'
+    'cloudinary',
+    'channels',
 ]
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': "channels.layers.InMemoryChannelLayer"
+        }
+    }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -82,9 +90,9 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-WSGI_APPLICATION = 'backend.wsgi.application'
+# WSGI_APPLICATION = 'backend.wsgi.application'
 
-ASGI_APPLICATION = 'ChatApp.asgi.application'
+ASGI_APPLICATION = "backend.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -98,7 +106,7 @@ DATABASES = {
 
         'USER': 'postgres',
 
-        'PASSWORD': 'admin', #raihaan: admin #normal: 6Cq9S^29v^&7
+        'PASSWORD': '6Cq9S^29v^&7', #raihaan: admin #normal: 6Cq9S^29v^&7
 
         'HOST': '127.0.0.1',
 
