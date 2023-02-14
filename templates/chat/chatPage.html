@@ -1,0 +1,18 @@
+{% extends './../calcura/base.html' %}
+
+<body>
+  {% block content %}
+    <form action="" method="POST"v >
+        {% csrf_token %}
+        <h3>What chat room to enter?</h3>
+        <input type="text" id="roomname" name="roomname">
+        <div class="p-2 w-full flex flex-row">
+          <button
+            class="grow block text-white bg-indigo-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+            Upload Listing
+          </button>
+        </div>
+    </form>
+    {% endblock %}
+</body>
+
