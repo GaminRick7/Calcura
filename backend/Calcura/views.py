@@ -165,3 +165,10 @@ def editListing(request, id):
     
     #Return template, with the listing which is being edited
     return render(request, "calcura/editListing.html", {"l": listing})
+
+@login_required(login_url='/')
+def shop(request):
+    if request.method=="POST":
+        filter = request.POST["search-navbar"]
+        print(filter)
+    return render(request, "calcura/shop.html")

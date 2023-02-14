@@ -13,5 +13,6 @@ urlpatterns = [
     # path("chat/", v.chatPage, name="chat"),
     path("editListing/<int:id>", vCalc.editListing, name="editListing"),
     path("chat/", include("chatSystem.urls"), name="chat"),
+    path("shop/", vCalc.shop, name="shop"),
 ]
 urlpatterns += staticfiles_urlpatterns()
