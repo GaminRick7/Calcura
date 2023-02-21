@@ -199,6 +199,7 @@ def shop(request):
             if filter.lower() in listing.title.lower():
                 listings.append(listing)
     
+    #In the listings, split the image list so it is accessible as a list
     for i in range(len(listings)):
         listings[i].image = listings[i].image.split(",")
 
