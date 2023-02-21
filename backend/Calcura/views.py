@@ -177,9 +177,11 @@ def editListing(request, id):
 def shop(request):
 
     #If form didn't return anything/method wasn't POST, return all available listings, and state no filters were given
-    listings=Calculator.objects.all()
     filter=None
+    listings=Calculator.objects.all()
+    
 
+    
     #If the request was sent through the search bar...
     if request.method=="POST":
 
@@ -197,5 +199,8 @@ def shop(request):
             if filter.lower() in listing.title.lower():
                 listings.append(listing)
     
+    for i in range(len(listings)):
+        listings[i].image = listings[i].image.split(",")
+
     #Return the template
     return render(request, "calcura/shop.html", {"listings":listings, "filter": filter})
