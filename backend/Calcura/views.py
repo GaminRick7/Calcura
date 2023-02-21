@@ -103,14 +103,21 @@ def editListing(request, id):
         listing=Calculator.objects.all().get(id=id)
     except:
         return HttpResponseRedirect("/vendorPage")
-    
+    print(listing)
+
+    #If the listing doesn't belong to the user, then redirect back to index
+    if listing.email!=request.user.email:
+        return HttpResponseRedirect("/")
+
+    #Getting the first image in the image list stored within the listing
     originalImageUrls = listing.image
     listing.image = listing.image.split(",")
     listing.image.pop(-1)
 
     #If submitting editListing form
     if  "submit" in request.POST:
-        #Get form data
+
+        #Get form data, and if its blank leave it as is
         if request.POST['title'] != "":
             title=request.POST['title']
         else:
@@ -168,7 +175,27 @@ def editListing(request, id):
 
 @login_required(login_url='/')
 def shop(request):
+
+    #If form didn't return anything/method wasn't POST, return all available listings, and state no filters were given
+    listings=Calculator.objects.all()
+    filter=None
+
+    #If the request was sent through the search bar...
     if request.method=="POST":
+
+        #Get the filter from the form
         filter = request.POST["search-navbar"]
-        print(filter)
-    return render(request, "calcura/shop.html")
+
+        #Get all listings from Calculator table, and create an empty list to append filtered listings
+        allListings=Calculator.objects.all()
+        listings=[]
+
+        #Loop through all the listings
+        for listing in allListings:
+
+            #If the filter is in a listing title, append the listing to the filtered listings list
+            if filter.lower() in listing.title.lower():
+                listings.append(listing)
+    
+    #Return the template
+    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter})
