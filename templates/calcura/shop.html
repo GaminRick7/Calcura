@@ -42,44 +42,59 @@
         </div>
         {% endfor %}
         {% for calc in listings%}
-          <div id="defaultModal{{calc.id}}" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
-            <div class="relative w-full h-full max-w-2xl md:h-auto">
-                <!-- Modal content -->
-                <div class="max-w-2xl md:h-auto bg-white rounded-lg shadow dark:bg-gray-700">
-                    <img src="{{calc.image.0}}" alt="gallery" id = "id_docfile-preview" class="block object-cover object-center w-20 h-20 rounded-lg inline-flex">
+        <div id="defaultModal{{calc.id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
+          <div class="relative w-full h-full max-w-7xl md:h-auto">
+              <!-- Modal content -->
+              <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <div class="flex flex-row py-4 justify">
+                    <div class="flex p-2 aspect-w-1  border-r-4">
+                      <img src="{{calc.image.0}}" alt="gallery" id = "id_docfile-preview" class="block object-cover object-center w-max h-full rounded-lg  inline-flex">
+                    </div>
                   <div class="flex py-2 px-5">
                       <div class="flex flex-wrap -m-2">
-                        <div class="p-2 w-1/2">
+                        <div class="p-2 w-full">
                           <div class="relative">
-                            <label for="title" class="leading-7 text-sm text-gray-600">Title</label>
-                            <input type="text" placeholder="{{l.title}}" id="title" name="title"
-                              class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                          </div>
-                        </div>
-                        <div class="p-2 w-1/2">
-                          <div class="relative">
-                            <label for="price" class="leading-7 text-sm text-gray-600">Price</label>
-                            <input type="number" placeholder="{{l.price}}" id="price" step="0.01" name="price"
-                              class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                            <h2 class="content-center text-2xl font-bold tracking-tight text-gray-900">{{calc.title}}</h2>
+                            
                           </div>
                         </div>
                         <div class="p-2 w-full">
                           <div class="relative">
-                            <label for="description" class="leading-7 text-sm text-gray-600">Description</label>
-                            <textarea id="description" placeholder="{{l.description}}" name="description"
-                              class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
+                            <p class="text-sm font-medium text-gray-900">${{calc.price}}</p>
+                            
                           </div>
                         </div>
-                      <div class="p-2 w-full">
+                        <div class="p-2 w-full">
+                          <div class="relative">
+                            <p class="font-sans text-sm font-family font-medium text-gray-900"><pre>{{calc.description}}</pre></p>
+
+                              
+                          </div>
+                        </div>
+                      <!-- <div class="p-2 w-full">
                         <div class="relative">
                           <label for="tags" class="leading-7 text-sm text-gray-600">Tags</label>
                           <input type="text" id="tags" placeholder="{{l.tags}}" name="tags"
                             class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                         </div>
-                      </div>
+                      </div> -->
+                      <div class="p-2 w-full">
+                        <div class="relative">
+                          <h6 class="content-center text-2xl font-bold tracking-tight text-gray-900">Contact Seller</h2>
+                          
+                        </div>
+                      </div>                      <a href="/chat">
+                        <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center w-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-6 h-6 text-gray-400"
+                            viewBox="0 0 24 24"
+                            stroke="grey">
+                            <path id="primary" d="M21,4V16a1,1,0,0,1-1,1H13L8,21V17H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H20A1,1,0,0,1,21,4Z" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></svg>
+                            <span class="leading-7 text-sm text-gray-600">&nbsp{{calc.fullname}}</span>
+                        </button>
+                    </a>
                     </div>
-                  </div>
-
+              </div>
                     </div>
                     </div>
                 </div>
