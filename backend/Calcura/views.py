@@ -89,7 +89,7 @@ def createListing(request):
                 image.delete()
 
         #Creating a new calculator listing, with the images stored as a string. 
-        a=Calculator(title=title, description=description,image=imageUrls,price=price,tags=tags,email=request.user.email)
+        a=Calculator(title=title, description=description,image=imageUrls,price=price,tags=tags,email=request.user.email,fullname=request.user.get_full_name())
         a.save()
         return HttpResponseRedirect("/vendorPage")
     return render(request, "calcura/createListing.html")
@@ -179,7 +179,7 @@ def shop(request):
     #If form didn't return anything/method wasn't POST, return all available listings, and state no filters were given
     filter=None
     listings=Calculator.objects.all()
-    
+
 
     
     #If the request was sent through the search bar...
