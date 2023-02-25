@@ -42,7 +42,7 @@ def vendorPage(request):
     #Variables
     a=[]
     length=False
-
+    
     #Looping through all Calculator objects
     for listing in Calculator.objects.all():
 
@@ -51,6 +51,8 @@ def vendorPage(request):
 
             #Split the image string by a comma to store each link in its own list index, then append the listing to the list containing all listings
             listing.image=listing.image.split(",")
+            print(listing.tags)
+            listing.tags = listing.tags.split("  ")[0:-1]
             a.append(listing)
 
     if len(a) == 0:
@@ -202,6 +204,7 @@ def shop(request):
     #In the listings, split the image list so it is accessible as a list
     for i in range(len(listings)):
         listings[i].image = listings[i].image.split(",")
+        listings[i].tags = listings[i].tags.split("  ")[0:-1]
 
     #Return the template
     return render(request, "calcura/shop.html", {"listings":listings, "filter": filter})

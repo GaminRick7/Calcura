@@ -15,10 +15,10 @@
       {% if filter%}
       <h2 class="content-center text-2xl font-bold tracking-tight text-gray-900">Results for "{{filter}}"</h2>
       {% endif %}
-      <div class="mt-6 grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+      <div class="mt-6 grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
         {%for calc in listings  %}
-        <div class="group relative mb-10" data-modal-target="defaultModal{{calc.id}}" data-modal-toggle="defaultModal{{calc.id}}" >
-          <div class="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200">
+        <div class="group relative" data-modal-target="defaultModal{{calc.id}}" data-modal-toggle="defaultModal{{calc.id}}" >
+          <div class="h-72 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200">
             <img src="{{calc.image.0}}"  class="h-full w-full object-cover object-center lg:h-full lg:w-full group-hover:opacity-50">
             <div class="flex flex-row absolute text-xl text-grey-600 opacity-0 w-full justify-center group-hover:opacity-100 font-bold top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto items-center">
               <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
@@ -33,7 +33,11 @@
                   <span aria-hidden="true" class="absolute inset-0"></span>
                   {{calc.title}}
               </h3>
-              <p class="mt-1 text-sm text-gray-500">{{calc.tags}}</p>
+            {% for tag in calc.tags %}
+            <div class="text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-blue-200 text-blue-700 rounded-full">
+              {{tag}}
+            </div>
+            {% endfor %}
             </div>
             <div>
               <p class="text-sm font-medium text-gray-900">${{calc.price}}</p>

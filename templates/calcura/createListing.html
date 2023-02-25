@@ -54,9 +54,17 @@
         </div>
       <div class="p-2 w-full">
         <div class="relative">
-          <label for="tags" class="leading-7 text-sm text-gray-600">Tags</label>
-          <input type="text" id="tags" name="tags"
-            class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <label for="tagsSelect" class="leading-7 text-sm text-gray-600">Tags</label>
+          <select multiple id="tagsSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+            <option></option>
+            <option>Texas Instruments  </option>
+            <option>HP  </option>
+            <option>Casio  </option>
+            <option>Sharp  </option>
+            <option>New  </option>
+            <option>Used  </option>
+          </select>
+          <input type="hidden" id="tags" name="tags">
         </div>
       </div>
       <div class="p-2 w-full flex flex-row">
@@ -74,6 +82,22 @@
   </div>
   </div>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script>
+  $(document).ready(function(){
+    $("#tagsSelect").select2({
+      placeholder: 'Select Tags...',
+      maximumSelectionLength: 5,
+      allowClear: true,
+    });
+    $("#tagsSelect").on("change",function(){
+      var tagsdisplay = $("#tagsSelect option:selected").text();
+      $("#tags").val(tagsdisplay);
+    });
+  });
+</script>
 <script>
   function showPreview(event) {
     var wrapper = document.getElementById("imageswrapper");
