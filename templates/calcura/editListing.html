@@ -30,6 +30,7 @@
               </div>
             </div>
             {% endfor %}
+
           </div>
         </div>
         <input name="docfile" type="file" id="id_docfile" class="form-control-file mt-5" onchange="showPreview(event);"
@@ -70,6 +71,11 @@
             <option>Sharp  </option>
             <option>New  </option>
             <option>Used  </option>
+            {% for tag in l.tags %}
+            <div class="text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-blue-200 text-blue-700 rounded-full">
+              {{tag}}
+            </div>
+            {% endfor %}
           </select>
           <input type="hidden" id="tags" name="tags">
         </div>
@@ -92,7 +98,9 @@
     </div>
   </div>
   </form>
-
+  {% if invalidEnding %}
+  <p class="text-2xl text-red-600 text-center font-sans pt-5">Invalid image ending, must be in: jpg, jpeg, png, webp</p>
+  {%  endif %}
   </div>
   </div>
 </body>
