@@ -11,7 +11,7 @@ class Calculator(models.Model):
         description (str): description of an object
         image (str): image links seperated by commas for later usage within code, hard to store as a list
         price (float): price of an object
-        tags (str): tags seperated by commas for later usage within code, hard to store as a list
+        tags (str): tags seperated by double spaces for later usage within code, hard to store as a list
         email (str): email address of object's poster. Email addresses are unique within ocdsb so allows us to link an object to a client
         fullname (str): full name of the poster. Used within shop page to show who owns a listing
     """
