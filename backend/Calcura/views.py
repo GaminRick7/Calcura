@@ -31,13 +31,12 @@ def Index(request):
     #Returning the template
     return render(request, 'calcura/index.html')
 
+
+@login_required(login_url='/')
 def chatPage(request, *args, **kwargs):
-    if request.user.is_authenticated == False:
-        return HttpResponseRedirect("/")
     context = {}
     return render(request, "calcura/chatPage.html", context)
 
-@login_required(login_url='/')
 def vendorPage(request):
     #Variables
     a=[]
@@ -195,21 +194,38 @@ def shop(request):
 
     
     #If the request was sent through the search bar...
-    if request.method=="POST":
-
+    if "search-navbar" in request.POST:
         #Get the filter from the form
         filter = request.POST["search-navbar"]
 
         #Get all listings from Calculator table, and create an empty list to append filtered listings
-        allListings=Calculator.objects.all()
         listings=[]
 
         #Loop through all the listings
-        for listing in allListings:
+        for listing in Calculator.objects.all():
 
             #If the filter is in a listing title, append the listing to the filtered listings list
             if filter.lower() in listing.title.lower():
                 listings.append(listing)
+
+    if "priceFilter" in request.POST:
+
+        #Getting filter with min and max
+        min=int(request.POST["min"])
+        max=int(request.POST["max"])
+        filter=request.POST["filter"]
+
+        #Creating empty list to store listings
+        listings=[]
+
+        #Loop through all the listings
+        for listing in Calculator.objects.all():
+
+            #If the filter is in a listing title, and the price lies within the min and max, append the listing to the filtered listings list
+            if filter.lower() in listing.title.lower() and listing.price in range(min,max+1):
+                listings.append(listing)
+
+
     
     #In the listings, split the image list so it is accessible as a list
     for i in range(len(listings)):
