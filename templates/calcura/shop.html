@@ -12,18 +12,53 @@
 
   {% block content %}
     <div class="mx-auto max-w-7xl my-4 px-4 sm:py-4 sm:px-6 lg:px-8">
-      {% if filter%}
+      
+      {% if filter %}
       <h2 class="content-center text-2xl font-bold tracking-tight text-gray-900">Results for "{{filter}}"</h2>
       {% endif %}
+      <div class="text-center">
+        <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation">
+        Show navigation
+        </button>
+     </div>
+     
+     <!-- drawer component -->
+     <div id="drawer-navigation" class="fixed top-0 left-0 z-40 w-64 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-navigation-label">
+         <h5 id="drawer-navigation-label" class="text-base font-semibold text-gray-500 uppercase dark:text-gray-400">Filters</h5>
+         <button type="button" data-drawer-hide="drawer-navigation" aria-controls="drawer-navigation" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" >
+             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+             <span class="sr-only">Close menu</span>
+         </button>
+       <div class="py-4 overflow-y-auto">
+           <p>Price</p>
+           <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="p-2 w-1/2">
+              <div class="relative">
+                <label for="min" class="inline leading-7 text-sm text-gray-600">Min</label>
+                <input type="number" placeholder="Min" id="min" name="min" step="0.01"
+                  class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+              </div>
+            </div>
+            <div class="p-2 w-1/2">
+              <div class="relative">
+                <label for="max" class="inline leading-7 text-sm text-gray-600">Max</label>
+                <input type="number" placeholder="Max" id="max" step="0.01" name="max"
+                  class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+              </div>
+            </div>
+            <input type="hidden" name="filter" id="filter" value="{{filter}}">
+            <button class="grow ml-2 block text-white bg-indigo-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" name="priceFilter">Go</button>
+            
+           </form>
+        </div>
+     </div>
       <div class="mt-6 grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
         {%for calc in listings  %}
         <div class="group relative" data-modal-target="defaultModal{{calc.id}}" data-modal-toggle="defaultModal{{calc.id}}" >
           <div class="h-72 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200">
             <img src="{{calc.image.0}}"  class="h-full w-full object-cover object-center lg:h-full lg:w-full group-hover:opacity-50">
             <div class="flex flex-row absolute text-xl text-grey-600 opacity-0 w-full justify-center group-hover:opacity-100 font-bold top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto items-center">
-              <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-              </svg> -->
             </div>
           </div>
           
@@ -82,6 +117,7 @@
           </div>
         </div>
         </div>
+        
         {% endfor %}
         <!-- More products... -->
       </div>

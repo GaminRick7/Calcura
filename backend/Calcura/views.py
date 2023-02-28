@@ -31,17 +31,16 @@ def Index(request):
     #Returning the template
     return render(request, 'calcura/index.html')
 
+
+@login_required(login_url='/')
 def chatPage(request, *args, **kwargs):
-    if request.user.is_authenticated == False:
-        return HttpResponseRedirect("/")
     context = {}
     return render(request, "calcura/chatPage.html", context)
 
-@login_required(login_url='/')
 def vendorPage(request):
     #Variables
     a=[]
-    length=False
+    noListings=False
     
     #Looping through all Calculator objects
     for listing in Calculator.objects.all():
@@ -54,11 +53,15 @@ def vendorPage(request):
             print(listing.tags)
             listing.tags = listing.tags.split("  ")[0:-1]
             a.append(listing)
+    
+    #Reversing list, so most recent is at top
+    a.reverse()
 
+    #If a is empty, there are no listings. Pass as context to frontend
     if len(a) == 0:
-        length = True
+        noListings = True
     #Returning the template with listings information
-    return render(request, "calcura/vendorPage.html", {"listing": a, "length": length})
+    return render(request, "calcura/vendorPage.html", {"listing": a, "length": noListings})
 
 #Method to create a listing in the calculator model
 @login_required(login_url='/')
@@ -77,6 +80,8 @@ def createListing(request):
 
         #Looping through the images they pasted, and storing them in TempImage database model. Storing them to upload to cloudinary and to get image link url. Email is needed to link a temporary image to the user
         for image in images:
+            if not checkValidImageEnding(str(image)):
+                return render(request, "calcura/createListing.html", {"invalidEnding": True})
             listing = TempImage(image= image, email=request.user.email)
             listing.save()
 
@@ -86,6 +91,7 @@ def createListing(request):
 
         #Go through the images, and if the image belongs to the user, add it to the imageUrls string. After that, delete the image from the database for storage purposes
         for image in images:
+            
             if image.email==request.user.email:
                 imageUrls += str(image.image.url) + ","
                 image.delete()
@@ -146,6 +152,9 @@ def editListing(request, id):
             images=request.FILES.getlist('docfile')
             #Looping through the images they pasted, and storing them in TempImage database model. Storing them to upload to cloudinary and to get image link url. Email is needed to link a temporary image to the user
             for image in images:
+                if not checkValidImageEnding(str(image)):
+                    return render(request, "calcura/editListing.html", {"l": listing, "invalidEnding": True})
+
                 tempImg = TempImage(image= image, email=request.user.email)
                 tempImg.save()
 
@@ -185,21 +194,38 @@ def shop(request):
 
     
     #If the request was sent through the search bar...
-    if request.method=="POST":
-
+    if "search-navbar" in request.POST:
         #Get the filter from the form
         filter = request.POST["search-navbar"]
 
         #Get all listings from Calculator table, and create an empty list to append filtered listings
-        allListings=Calculator.objects.all()
         listings=[]
 
         #Loop through all the listings
-        for listing in allListings:
+        for listing in Calculator.objects.all():
 
             #If the filter is in a listing title, append the listing to the filtered listings list
             if filter.lower() in listing.title.lower():
                 listings.append(listing)
+
+    if "priceFilter" in request.POST:
+
+        #Getting filter with min and max
+        min=int(request.POST["min"])
+        max=int(request.POST["max"])
+        filter=request.POST["filter"]
+
+        #Creating empty list to store listings
+        listings=[]
+
+        #Loop through all the listings
+        for listing in Calculator.objects.all():
+
+            #If the filter is in a listing title, and the price lies within the min and max, append the listing to the filtered listings list
+            if filter.lower() in listing.title.lower() and listing.price in range(min,max+1):
+                listings.append(listing)
+
+
     
     #In the listings, split the image list so it is accessible as a list
     for i in range(len(listings)):
@@ -208,3 +234,9 @@ def shop(request):
 
     #Return the template
     return render(request, "calcura/shop.html", {"listings":listings, "filter": filter})
+
+def checkValidImageEnding(imageLink):
+    splitImage=imageLink.split(".")
+    if splitImage[len(splitImage)-1] not in ["jpg","webp","png","jpeg"]:
+        return False
+    return True
