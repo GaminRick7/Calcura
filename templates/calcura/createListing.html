@@ -25,7 +25,7 @@
           <div id="imageswrapper" class="flex flex-wrap">
           </div>
         </div>
-        <input name="docfile" type="file" id="id_docfile" class="form-control-file mt-5" onchange="showPreview(event);"
+        <input required name="docfile" type="file" id="id_docfile" class="form-control-file mt-5" onchange="showPreview(event);"
           multiple>
       </div>
     </div>
@@ -34,28 +34,28 @@
         <div class="p-2 w-1/2">
           <div class="relative">
             <label for="title" class="leading-7 text-sm text-gray-600">Title</label>
-            <input type="text" id="title" name="title"
+            <input required type="text" id="title" name="title"
               class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
           </div>
         </div>
         <div class="p-2 w-1/2">
           <div class="relative">
             <label for="price" class="leading-7 text-sm text-gray-600">Price</label>
-            <input type="number" id="price" step="0.01" name="price"
+            <input required type="number" id="price" step="0.01" name="price"
               class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
           </div>
         </div>
         <div class="p-2 w-full">
           <div class="relative">
             <label for="description" class="leading-7 text-sm text-gray-600">Description</label>
-            <textarea id="description" name="description"  maxlength = "400"
+            <textarea required id="description" name="description"  maxlength = "400"
               class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
           </div>
         </div>
       <div class="p-2 w-full">
         <div class="relative">
           <label for="tagsSelect" class="leading-7 text-sm text-gray-600">Tags</label>
-          <select multiple id="tagsSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+          <select required multiple id="tagsSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             <option></option>
             <option>Texas Instruments  </option>
             <option>HP  </option>
