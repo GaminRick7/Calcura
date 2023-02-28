@@ -80,69 +80,42 @@
           </div>
         </div>
         {% endfor %}
+
         {% for calc in listings%}
         <div id="defaultModal{{calc.id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
-          <div class="relative w-full h-full max-w-7xl md:h-auto">
+          <div class="bg-white rounded-lg shadow relative w-full h-max min-h-full max-w-7xl">
               <!-- Modal content -->
-              <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                <div class="flex flex-row py-4 justify">
-                    <div class="flex p-2 aspect-w-1  border-r-4">
-                      <img src="{{calc.image.0}}" alt="gallery" id = "id_docfile-preview" class="block object-cover object-center w-max h-full rounded-lg  inline-flex">
+                  <!-- Modal header -->
+                  <div class="m-2 flex items-center justify-between rounded-t">
+                      <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal{{calc.id}}">
+                          <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                          <span class="sr-only">Close modal</span>
+                      </button>
+                  </div>
+                  <div class="mt-24 flex flex-row mx-5 justify items-center">
+                    <div class="flex w-2/5">
+                      <img class="max-w-md rounded-lg" src="{{calc.image.0}}" alt="image description">
                     </div>
-                  <div class="flex py-2 px-5">
-                      <div class="flex flex-wrap -m-2">
-                        <div class="p-2 w-full">
-                          <div class="relative">
-                            <h2 class="content-center text-2xl font-bold tracking-tight text-gray-900">{{calc.title}}</h2>
-                            
-                          </div>
+                    <div class="w-3/5">
+                      <div>
+                        <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{calc.title}}</h1>
+                      </div>
+                      <div class="mt-5">
+                        <h3 class="sr-only">Description</h3>
+              
+                        <div class="space-y-6">
+                          <p class="text-base text-gray-900">{{calc.description}}</p>
                         </div>
-                        <div class="p-2 w-full">
-                          <div class="relative">
-                            <p class="text-sm font-medium text-gray-900">${{calc.price}}</p>
-                            
-                          </div>
-                        </div>
-                        <div class="p-2 w-full">
-                          <div class="relative">
-                            <p class="font-sans text-sm font-family font-medium text-gray-900"><pre>{{calc.description}}</pre></p>
-
-                              
-                          </div>
-                        </div>
-                        {% for tag in calc.tags %}
-                        <div class="text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-blue-200 text-blue-700 rounded-full">
-                          {{tag}}
-                        </div>
-                        {% endfor %}
-                      <!-- <div class="p-2 w-full">
-                        <div class="relative">
-                          <label for="tags" class="leading-7 text-sm text-gray-600">Tags</label>
-                          <input type="text" id="tags" placeholder="{{l.tags}}" name="tags"
-                            class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                        </div>
-                      </div> -->
-                      <div class="p-2 w-full">
-                        <div class="relative">
-                          <h6 class="content-center text-2xl font-bold tracking-tight text-gray-900">Contact Seller</h2>
-                          
-                        </div>
-                      </div>                      <a href="/chat">
-                        <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center w-auto">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                            class="w-6 h-6 text-gray-400"
-                            viewBox="0 0 24 24"
-                            stroke="grey">
-                            <path id="primary" d="M21,4V16a1,1,0,0,1-1,1H13L8,21V17H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H20A1,1,0,0,1,21,4Z" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></svg>
-                            <span class="leading-7 text-sm text-gray-600">&nbsp{{calc.fullname}}</span>
-                        </button>
-                    </a>
+                      </div>
+                      {% for tag in calc.tags %}
+                      <div class="text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-blue-200 text-blue-700 rounded-full">
+                        {{tag}}
+                      </div>
+                      {% endfor %}
                     </div>
-              </div>
-                    </div>
-                    </div>
-                </div>
-            </div>
+                  </div>
+          </div>
+        </div>
         </div>
         
         {% endfor %}
