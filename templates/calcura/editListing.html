@@ -90,7 +90,6 @@
         </button>
       </div>
     </div>
-    <p id="demo"></p>
     </div>
   </div>
   </form>
@@ -117,7 +116,6 @@
       maximumSelectionLength: 5,
       allowClear: true,
     });
-    $("#tagsSelect").val(["Texas Instruments  "]);
     $("#tagsSelect").on("change",function(){
       var tagsdisplay = $("#tagsSelect option:selected").text();
       $("#tags").val(tagsdisplay);
