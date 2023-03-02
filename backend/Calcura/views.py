@@ -3,7 +3,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-from .models import Calculator, TempImage
+from .models import Calculator, TempImage, Administration
 from django.contrib.auth.decorators import login_required
 from django.db.models.query_utils import DeferredAttribute
 
@@ -105,7 +105,6 @@ def createListing(request):
 def editListing(request, id):
     #Define listing variable, set it to the Calculator model
     listing=Calculator
-
     #Try to get a calculator with the given id, if it doesn't exist, return to vendorPage
     try:
         listing=Calculator.objects.all().get(id=id)
@@ -188,11 +187,12 @@ def editListing(request, id):
 def shop(request):
 
     #If form didn't return anything/method wasn't POST, return all available listings, and state no filters were given
-    filter=None
+    filter=""
     listings=Calculator.objects.all()
+    tags=[]
+    min=""
+    max=""
 
-
-    
     #If the request was sent through the search bar...
     if "search-navbar" in request.POST:
         #Get the filter from the form
@@ -208,35 +208,69 @@ def shop(request):
             if filter.lower() in listing.title.lower():
                 listings.append(listing)
 
-    if "priceFilter" in request.POST:
+    if "advancedFilter" in request.POST:
 
-        #Getting filter with min and max
-        min=int(request.POST["min"])
-        max=int(request.POST["max"])
         filter=request.POST["filter"]
 
         #Creating empty list to store listings
         listings=[]
+        advancedFilters=[False,False,False]
+        a=Administration.objects.all()
 
-        #Loop through all the listings
+        #Getting filter with min and max, if one is blank don't do the filter
+        if request.POST['min'] != "" and request.POST['max']!="":
+            max=int(request.POST["max"])
+            min=int(request.POST["min"])
+            advancedFilters[0]=True
+        
+        for i in a[0].tags.split(","):
+            checkIfChecked(request, i, tags)
+        
+        if len(tags)>0:
+            advancedFilters[1]=True
+        print(filter,"wof")
+        if filter!=None:
+            advancedFilters[2]=True
+        else:
+            print("true")
+
         for listing in Calculator.objects.all():
-
+            count=0
             #If the filter is in a listing title, and the price lies within the min and max, append the listing to the filtered listings list
-            if filter.lower() in listing.title.lower() and listing.price in range(min,max+1):
-                listings.append(listing)
+            if advancedFilters[2]:
+                if filter.lower() not in listing.title.lower():
+                    continue
+            if advancedFilters[1]:
+                for i in tags:
+                    print(listing.tags.split("  "),i)
+                    if i in listing.tags.split("  "):
+                        count+=1
+                print(count)
+                if count!=len(tags):
+                    continue
+            if advancedFilters[0]:
+                if listing.price not in range(min,max+1):
+                    continue
+            listings.append(listing)
 
-
-    
     #In the listings, split the image list so it is accessible as a list
     for i in range(len(listings)):
         listings[i].image = listings[i].image.split(",")
         listings[i].tags = listings[i].tags.split("  ")[0:-1]
 
     #Return the template
-    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter})
+    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "tags":tags})
 
 def checkValidImageEnding(imageLink):
     splitImage=imageLink.split(".")
     if splitImage[len(splitImage)-1] not in ["jpg","webp","png","jpeg"]:
         return False
     return True
+
+def checkIfChecked(request, string, listy):
+    try:
+        request.POST[string]
+        listy.append(string)
+    except:
+        #They did not check the textbox
+        pass
