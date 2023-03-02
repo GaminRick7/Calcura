@@ -22,7 +22,7 @@
         </button>
      </div>
      
-     <!-- drawer component -->
+     <!-- Expandable sidebar for more filters -->
      <div id="drawer-navigation" class="fixed top-0 left-0 z-40 w-64 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-navigation-label">
          <h5 id="drawer-navigation-label" class="text-base font-semibold text-gray-500 uppercase dark:text-gray-400">Filters</h5>
          <button type="button" data-drawer-hide="drawer-navigation" aria-controls="drawer-navigation" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" >
@@ -30,27 +30,33 @@
              <span class="sr-only">Close menu</span>
          </button>
        <div class="py-4 overflow-y-auto">
-           <p>Price</p>
-           <form action="" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="p-2 w-1/2">
-              <div class="relative">
-                <label for="min" class="inline leading-7 text-sm text-gray-600">Min</label>
-                <input type="number" placeholder="Min" id="min" name="min" step="0.01"
-                  class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-              </div>
-            </div>
-            <div class="p-2 w-1/2">
-              <div class="relative">
-                <label for="max" class="inline leading-7 text-sm text-gray-600">Max</label>
-                <input type="number" placeholder="Max" id="max" step="0.01" name="max"
-                  class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-              </div>
-            </div>
-            <input type="hidden" name="filter" id="filter" value="{{filter}}">
-            <button class="grow ml-2 block text-white bg-indigo-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" name="priceFilter">Go</button>
-            
-           </form>
+        <p>Price</p>
+        <form action="" method="POST" enctype="multipart/form-data">
+         {% csrf_token %}
+         <div class="inline-flex p-2 w-1/2">
+           <div class="inline relative">
+             <label for="min" class="inline leading-7 text-sm text-gray-600">Min</label>
+             <input type="number" id="min" placeholder="{{min}}" name="min" step="0.01"
+               class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+           </div>
+         </div>
+         <div class="p-2 w-1/2">
+           <div class="inline relative">
+             <label for="max" class="inline leading-7 text-sm text-gray-600">Max</label>
+             <input type="number" id="max" placeholder="{{max}}" step="0.01" name="max"
+               class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+           </div>
+         </div>
+         <p class="py-2">Tags</p>
+         {% for tag in allTags %}
+         <div class="flex items-center">
+          <input id="{{tag}}" name="{{tag}}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+          <label for="{{tag}}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{tag}}</label>
+         </div>
+         {% endfor %}
+         <input type="hidden" name="filter" id="filter" value="{{filter}}">
+         <button class="grow ml-2 block text-white bg-indigo-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" name="advancedFilter">Go</button>
+        </form>
         </div>
      </div>
       <div class="mt-6 grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
@@ -69,7 +75,7 @@
                   {{calc.title}}
               </h3>
             {% for tag in calc.tags %}
-            <div class="text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-blue-200 text-blue-700 rounded-full">
+            <div class="text-xs inline-flex font-bold leading-sm uppercase px-3 py-1 bg-blue-200 text-blue-700 rounded-full">
               {{tag}}
             </div>
             {% endfor %}
@@ -111,7 +117,18 @@
                       <div class="text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-blue-200 text-blue-700 rounded-full">
                         {{tag}}
                       </div>
+                      <p></p>
                       {% endfor %}
+                      <a href="/chat">
+                        <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center w-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-6 h-6 text-gray-400"
+                            viewBox="0 0 24 24"
+                            stroke="grey">
+                            <path id="primary" d="M21,4V16a1,1,0,0,1-1,1H13L8,21V17H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H20A1,1,0,0,1,21,4Z" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></svg>
+                            <span class="leading-7 text-sm text-gray-600">&nbsp{{calc.fullname}}</span>
+                        </button>
+                    </a>
                     </div>
                   </div>
           </div>

@@ -25,10 +25,18 @@ class Calculator(models.Model):
 
 class TempImage(models.Model):
     """
-    Temporary model to get cloudinary image url
+    Model to get cloudinary image url
     Attributes:
         image (CloudinaryField): the image being uploaded to cloudinary
         email (str): email address of person who is uploading image for a listing. Email addresses need to differentiate listings in case multiple people upload a listing at same time.  
     """
     image=CloudinaryField('image')
     email=models.TextField()
+
+class Administration(models.Model):
+    """
+    Model for administrators to control website/get key data
+    Attributes:
+        tags: (str) all tags currently in use
+    """
+    tags=models.TextField(default="Texas Instruments,Sharp,Casio,New,Used")
