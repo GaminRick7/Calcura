@@ -27,7 +27,7 @@ def Index(request):
             user.delete()
 
             #Redirect back to homepage to reload, hence removing the sign out button
-            messages.error(request, "You cannot log in with a gmail account")
+            messages.error(request, "You must log in with an ocdsb account")
             return HttpResponseRedirect("/")
 
     #Returning the template
@@ -265,7 +265,7 @@ def shop(request):
 
 def checkValidImageEnding(imageLink):
     splitImage=imageLink.split(".")
-    if splitImage[len(splitImage)-1] not in ["jpg","webp","png","jpeg"]:
+    if splitImage[len(splitImage)-1] not in ["jpg","webp","png","jpeg","svg"]:
         return False
     return True
 
