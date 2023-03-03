@@ -1,11 +1,9 @@
 from django.shortcuts import render
-from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from .models import Calculator, TempImage, Administration
 from django.contrib.auth.decorators import login_required
-from django.db.models.query_utils import DeferredAttribute
 from django.contrib import messages
 
 # The view to handle the home page
@@ -260,8 +258,11 @@ def shop(request):
         listings[i].image = listings[i].image.split(",")
         listings[i].tags = listings[i].tags.split("  ")[0:-1]
 
+    #Items in the listings table are stored so the higher rows are the earliest added. Default option is sort by upload date, so reverse so most recent uplaoded/edited listing is at top
+    listings.reverse()
+
     #Return the template
-    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "tags":tags})
+    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "tags":tags})
 
 def checkValidImageEnding(imageLink):
     splitImage=imageLink.split(".")
