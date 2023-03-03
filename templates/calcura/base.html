@@ -9,7 +9,7 @@
         <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css" rel="stylesheet" />
     </head>
-    <header class="sticky top-0 z-40">
+    <header class="sticky top-0 z-30">
       
 <nav class="bg-white border-gray-200 px-2 py-2.5 rounded-[18px] border-2 border-gray shadow-lg mx-5 my-2">
   <div class="container flex flex-wrap items-center justify-between mx-auto">
@@ -35,8 +35,9 @@
     <path id="primary" d="M21,4V16a1,1,0,0,1-1,1H13L8,21V17H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H20A1,1,0,0,1,21,4Z" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></svg>
   </a>
   {% else %}
-  <a href="{% provider_login_url 'google' %}" class="inline-block rounded-lg bg-indigo-600 px-4 py-1 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-indigo-600 hover:bg-indigo-700 hover:ring-indigo-700">
-    Sign Up
+  <a href="{% provider_login_url 'google' %}" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-[8] text-center inline-flex items-center dark:focus:ring-[#4285F4]/55">
+    <svg class="w-4 h-4 mr-2 -ml-1" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path></svg>
+    Sign in
   </a>
   {% endif %}
   {% if user.is_authenticated %}
@@ -45,7 +46,7 @@
         <img class="w-8 h-8 rounded-full" src="{{ user.socialaccount_set.all.0.get_avatar_url }}" alt="user photo">
       </button>
       <!-- Dropdown menu -->
-      <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="user-dropdown">
+      <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow-lg" id="user-dropdown">
         <div class="px-4 py-3">
           <span class="block text-sm text-gray-900 dark:text-white">{{request.user.get_full_name}}</span>
           <span class="block text-sm font-medium text-gray-500 truncate dark:text-gray-400">{{request.user.email}}</span>
@@ -56,9 +57,6 @@
           </li>
           <li>
             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
-          </li>
-          <li>
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Earnings</a>
           </li>
           <li>
             <form method="post" action="{% url 'account_logout' %}">
