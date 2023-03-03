@@ -16,6 +16,7 @@ def Index(request):
         The template itself
     """
     
+    
     #If the user is logged in
     if request.user.is_authenticated:
         #Only keep users which are staff or are ocdsb.ca email addresses. If not delete them. 
@@ -66,7 +67,6 @@ def vendorPage(request):
 #Method to create a listing in the calculator model
 @login_required(login_url='/')
 def createListing(request):
-
     #Retrieve items if they sent form
     if request.method=="POST":
         title=request.POST['title']
