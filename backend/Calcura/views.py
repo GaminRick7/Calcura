@@ -6,6 +6,7 @@ from django.contrib import messages
 from .models import Calculator, TempImage, Administration
 from django.contrib.auth.decorators import login_required
 from django.db.models.query_utils import DeferredAttribute
+from django.contrib import messages
 
 # The view to handle the home page
 def Index(request):
@@ -26,7 +27,8 @@ def Index(request):
             user.delete()
 
             #Redirect back to homepage to reload, hence removing the sign out button
-            return HttpResponseRedirect("/", {"gmail": True})
+            messages.error(request, "You cannot log in with a gmail account")
+            return HttpResponseRedirect("/")
 
     #Returning the template
     return render(request, 'calcura/index.html')
