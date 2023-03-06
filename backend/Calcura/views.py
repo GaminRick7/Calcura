@@ -208,36 +208,43 @@ def shop(request):
             if filter.lower() in listing.title.lower():
                 listings.append(listing)
 
+    #If they submitted the advanced filter 
     if "advancedFilter" in request.POST:
-
+        
+        #Initialization
         filter=request.POST["filter"]
-
-        #Creating empty list to store listings
         listings=[]
         advancedFilters=[False,False,False]
         a=Administration.objects.all()
 
-        #Getting filter with min and max, if one is blank don't do the filter
+        #Getting filter with min and max, if one is blank accept neither
         if request.POST['min'] != "" and request.POST['max']!="":
             max=int(request.POST["max"])
             min=int(request.POST["min"])
             advancedFilters[0]=True
         
+        #For all currently existing tags, check if they are checked using checkIfChecked method
         for i in a[0].tags.split(","):
             checkIfChecked(request, i, tags)
         
+        #If the tags list's length is greater than zero, then accept it as a filter
         if len(tags)>0:
             advancedFilters[1]=True
-        print(filter,"wof")
+
+        #If the filter is not none, then accept it as a filter
         if filter!=None:
             advancedFilters[2]=True
-        else:
-            print("true")
 
+        #Loop through all listings
         for listing in Calculator.objects.all():
+
+            #Reset a count variable used for tag filtering
             count=0
+
             #If the filter is in a listing title, and the price lies within the min and max, append the listing to the filtered listings list
             if advancedFilters[2]:
+
+                #Check if the filter is within the title of a listing. If not, go to next listing
                 if filter.lower() not in listing.title.lower():
                     continue
             if advancedFilters[1]:
@@ -265,13 +272,33 @@ def shop(request):
     return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "tags":tags})
 
 def checkValidImageEnding(imageLink):
+    """
+    Check if an image ending is valid
+    Args:
+        imageLink: the link of the image to check
+    """
+
+    #Split the image by its period
     splitImage=imageLink.split(".")
+
+    #If the last element in the list is not of an acceptable format, return False
     if splitImage[len(splitImage)-1] not in ["jpg","webp","png","jpeg","svg"]:
         return False
+    #If not, return True
     return True
 
 def checkIfChecked(request, string, listy):
+    """
+    Function to check if a checkbox is checked
+    Args:
+        request: the request sent by user
+        string (str): the name of the checkbox to check
+        listy (list): list which contains all checked checkboxes
+    """
+
+    #If a request contains the checkbox, it was checked. If not, it wasn't checked
     try:
+        #Check if request contains the string, and if yes, append it
         request.POST[string]
         listy.append(string)
     except:

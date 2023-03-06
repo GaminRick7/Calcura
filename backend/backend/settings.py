@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'Calcura.apps.CalcuraConfig',
-    'chatSystem.apps.ChatsystemConfig',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -69,6 +67,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'backend.urls'
 
+#Define the templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -85,10 +84,12 @@ TEMPLATES = [
     },
 ]
 
+#Backends used for user authentication
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
@@ -97,6 +98,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+#Initialization for our database
 DATABASES = {
      'default': {
 
@@ -152,6 +154,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+#Staticfiles such as images
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, '../static/'),
 ]
@@ -174,7 +177,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-#Cloudinary to upload images to
+#Cloudinary configuration
 cloudinary.config(  
   cloud_name = "dypjdgg0n", 
   api_key = "493993287995787", 
