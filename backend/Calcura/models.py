@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
+import datetime
 
 # Create your models here.
 class Calculator(models.Model):
@@ -22,6 +23,7 @@ class Calculator(models.Model):
     tags = models.TextField()
     email = models.TextField()
     fullname = models.TextField()
+    datetime = models.DateTimeField(default=datetime.datetime.now())
 
 class TempImage(models.Model):
     """
