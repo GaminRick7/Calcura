@@ -244,9 +244,10 @@ def shop(request):
             #If the filter is in a listing title, and the price lies within the min and max, append the listing to the filtered listings list
             if advancedFilters[2]:
 
-                #Check if the filter is within the title of a listing. If not, go to next listing
+                #Check if the filter is within the title of a listing. If skip all and go to next listing
                 if filter.lower() not in listing.title.lower():
                     continue
+                
             if advancedFilters[1]:
                 for i in tags:
                     print(listing.tags.split("  "),i)
@@ -276,6 +277,9 @@ def checkValidImageEnding(imageLink):
     Check if an image ending is valid
     Args:
         imageLink: the link of the image to check
+    Returns:
+        True if its of acceptable ending
+        False if it is not
     """
 
     #Split the image by its period
