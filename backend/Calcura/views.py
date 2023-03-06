@@ -1,11 +1,10 @@
 from django.shortcuts import render
-from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from .models import Calculator, TempImage, Administration
 from django.contrib.auth.decorators import login_required
-from django.db.models.query_utils import DeferredAttribute
+from django.contrib import messages
 
 # The view to handle the home page
 def Index(request):
@@ -15,7 +14,6 @@ def Index(request):
         HttpResponseRedirect: if the user is not ocdsb.ca or a staff
         The template itself
     """
-    
     
     #If the user is logged in
     if request.user.is_authenticated:
@@ -27,16 +25,11 @@ def Index(request):
             user.delete()
 
             #Redirect back to homepage to reload, hence removing the sign out button
-            return HttpResponseRedirect("/", {"gmail": True})
+            messages.error(request, "You must log in with an Ocdsb account")
+            return HttpResponseRedirect("/")
 
     #Returning the template
     return render(request, 'calcura/index.html')
-
-
-@login_required(login_url='/')
-def chatPage(request, *args, **kwargs):
-    context = {}
-    return render(request, "calcura/chatPage.html", context)
 
 def vendorPage(request):
     #Variables
@@ -67,6 +60,7 @@ def vendorPage(request):
 #Method to create a listing in the calculator model
 @login_required(login_url='/')
 def createListing(request):
+
     #Retrieve items if they sent form
     if request.method=="POST":
         title=request.POST['title']
@@ -208,49 +202,66 @@ def shop(request):
             if filter.lower() in listing.title.lower():
                 listings.append(listing)
 
+    #If they submitted the advanced filter 
     if "advancedFilter" in request.POST:
-
+        
+        #Initialization
         filter=request.POST["filter"]
-
-        #Creating empty list to store listings
         listings=[]
         advancedFilters=[False,False,False]
         a=Administration.objects.all()
 
-        #Getting filter with min and max, if one is blank don't do the filter
+        #Getting filter with min and max, if one is blank accept neither
         if request.POST['min'] != "" and request.POST['max']!="":
             max=int(request.POST["max"])
             min=int(request.POST["min"])
             advancedFilters[0]=True
         
+        #For all currently existing tags, check if they are checked using checkIfChecked method
         for i in a[0].tags.split(","):
             checkIfChecked(request, i, tags)
         
+        #If the tags list's length is greater than zero, then accept it as a filter
         if len(tags)>0:
             advancedFilters[1]=True
-        print(filter,"wof")
+
+        #If the filter is not none, then accept it as a filter
         if filter!=None:
             advancedFilters[2]=True
-        else:
-            print("true")
 
+        #Loop through all listings
         for listing in Calculator.objects.all():
+
+            #Reset a count variable used for tag filtering
             count=0
+
             #If the filter is in a listing title, and the price lies within the min and max, append the listing to the filtered listings list
             if advancedFilters[2]:
+
+                #Check if the filter is within the title of a listing. If skip all and go to next listing
                 if filter.lower() not in listing.title.lower():
                     continue
+                    
+            #Check for tags
             if advancedFilters[1]:
+
+                #For each tag in the tags that were selected
                 for i in tags:
-                    print(listing.tags.split("  "),i)
+                    
+                    #If the tag (i) is within the listing's tags, increase the count
                     if i in listing.tags.split("  "):
                         count+=1
-                print(count)
+                
+                #If the count is not the same as the length of selected tags, break
                 if count!=len(tags):
                     continue
+            
+            #Check if the price is within the tags
             if advancedFilters[0]:
                 if listing.price not in range(min,max+1):
                     continue
+            
+            #Append the listing to the list with all acceptable listings
             listings.append(listing)
 
     #In the listings, split the image list so it is accessible as a list
@@ -258,17 +269,43 @@ def shop(request):
         listings[i].image = listings[i].image.split(",")
         listings[i].tags = listings[i].tags.split("  ")[0:-1]
 
+    #Items in the listings table are stored so the higher rows are the earliest added. Default option is sort by upload date, so reverse so most recent uplaoded/edited listing is at top
+    listings.reverse()
+
     #Return the template
-    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "tags":tags})
+    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "tags":tags})
 
 def checkValidImageEnding(imageLink):
+    """
+    Check if an image ending is valid
+    Args:
+        imageLink: the link of the image to check
+    Returns:
+        True if its of acceptable ending
+        False if it is not
+    """
+
+    #Split the image by its period
     splitImage=imageLink.split(".")
-    if splitImage[len(splitImage)-1] not in ["jpg","webp","png","jpeg"]:
+
+    #If the last element in the list is not of an acceptable format, return False
+    if splitImage[len(splitImage)-1] not in ["jpg","webp","png","jpeg","svg"]:
         return False
+    #If not, return True
     return True
 
 def checkIfChecked(request, string, listy):
+    """
+    Function to check if a checkbox is checked
+    Args:
+        request: the request sent by user
+        string (str): the name of the checkbox to check
+        listy (list): list which contains all checked checkboxes
+    """
+
+    #If a request contains the checkbox, it was checked. If not, it wasn't checked
     try:
+        #Check if request contains the string, and if yes, append it
         request.POST[string]
         listy.append(string)
     except:
