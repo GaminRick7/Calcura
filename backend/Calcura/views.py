@@ -25,7 +25,7 @@ def Index(request):
             user.delete()
 
             #Redirect back to homepage to reload, hence removing the sign out button
-            messages.error(request, "You must log in with an Ocdsb account")
+            messages.error(request, "You must log in with an OCDSB account")
             return HttpResponseRedirect("/")
 
     #Returning the template
