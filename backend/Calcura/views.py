@@ -25,17 +25,11 @@ def Index(request):
             user.delete()
 
             #Redirect back to homepage to reload, hence removing the sign out button
-            messages.error(request, "You must log in with an ocdsb account")
+            messages.error(request, "You must log in with an Ocdsb account")
             return HttpResponseRedirect("/")
 
     #Returning the template
     return render(request, 'calcura/index.html')
-
-
-@login_required(login_url='/')
-def chatPage(request, *args, **kwargs):
-    context = {}
-    return render(request, "calcura/chatPage.html", context)
 
 def vendorPage(request):
     #Variables
@@ -247,18 +241,27 @@ def shop(request):
                 #Check if the filter is within the title of a listing. If skip all and go to next listing
                 if filter.lower() not in listing.title.lower():
                     continue
-                
+                    
+            #Check for tags
             if advancedFilters[1]:
+
+                #For each tag in the tags that were selected
                 for i in tags:
-                    print(listing.tags.split("  "),i)
+                    
+                    #If the tag (i) is within the listing's tags, increase the count
                     if i in listing.tags.split("  "):
                         count+=1
-                print(count)
+                
+                #If the count is not the same as the length of selected tags, break
                 if count!=len(tags):
                     continue
+            
+            #Check if the price is within the tags
             if advancedFilters[0]:
                 if listing.price not in range(min,max+1):
                     continue
+            
+            #Append the listing to the list with all acceptable listings
             listings.append(listing)
 
     #In the listings, split the image list so it is accessible as a list
