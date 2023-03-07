@@ -271,9 +271,14 @@ def shop(request):
 
     #Items in the listings table are stored so the higher rows are the earliest added. Default option is sort by upload date, so reverse so most recent uplaoded/edited listing is at top
     listings.reverse()
+    
+    #Check if listings are present
+    listingsPresent=True
+    if len(listings)==0:
+        listingsPresent=False
 
     #Return the template
-    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "tags":tags})
+    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "listingsPresent":listingsPresent})
 
 def checkValidImageEnding(imageLink):
     """
