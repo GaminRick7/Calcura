@@ -28,11 +28,7 @@
       </form>
     </div>
   {% if user.is_authenticated %}
-    <svg xmlns="http://www.w3.org/2000/svg"
-    class="w-6 h-6 text-gray-400"
-    viewBox="0 0 24 24"
-    stroke="grey">
-    <path id="primary" d="M21,4V16a1,1,0,0,1-1,1H13L8,21V17H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H20A1,1,0,0,1,21,4Z" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></svg>
+    <svg class="w-6 h-6" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path fill="#000000" d="M273.536 736H800a64 64 0 0 0 64-64V256a64 64 0 0 0-64-64H224a64 64 0 0 0-64 64v570.88L273.536 736zM296 800 147.968 918.4A32 32 0 0 1 96 893.44V256a128 128 0 0 1 128-128h576a128 128 0 0 1 128 128v416a128 128 0 0 1-128 128H296z"/></svg>
   </a>
   {% else %}
   <a href="{% provider_login_url 'google' %}" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-[8] text-center inline-flex items-center dark:focus:ring-[#4285F4]/55">
@@ -53,7 +49,7 @@
         </div>
         <ul class="py-1" aria-labelledby="user-menu-button">
           <li>
-            <a href="{% url 'vendorPage' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Vendor Page</a>
+            <a href="{% url 'vendorPage' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Vendor Hub</a>
           </li>
           <li>
             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
