@@ -133,16 +133,19 @@
                         </div>
                         {% endfor %}
                         <p></p>
-                        <a href="/chat">
-                          <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center w-auto">
+                        <form method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <button name="chat" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center w-auto">
                               <svg xmlns="http://www.w3.org/2000/svg"
                               class="w-6 h-6 text-gray-400"
                               viewBox="0 0 24 24"
                               stroke="grey">
                               <path id="primary" d="M21,4V16a1,1,0,0,1-1,1H13L8,21V17H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H20A1,1,0,0,1,21,4Z" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></svg>
                               <span class="leading-7 text-sm text-gray-600">&nbsp{{calc.fullname}}</span>
+                              <input type="hidden" name="name" id="name" value="{{calc.fullname}}">
                           </button>
-                      </a>
+                          
+                        </form>
                     </div>
                     </div>
                   </div>

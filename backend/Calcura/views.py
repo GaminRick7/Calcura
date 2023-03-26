@@ -2,9 +2,10 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-from .models import Calculator, TempImage, Administration
+from .models import Calculator, TempImage, Administration, MessageRoom
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+import random
 
 # The view to handle the home page
 def Index(request):
@@ -14,7 +15,8 @@ def Index(request):
         HttpResponseRedirect: if the user is not ocdsb.ca or a staff
         The template itself
     """
-    
+    # a=Administration()
+    # a.save()
     #If the user is logged in
     if request.user.is_authenticated:
         #Only keep users which are staff or are ocdsb.ca email addresses. If not delete them. 
@@ -91,7 +93,7 @@ def createListing(request):
                 image.delete()
 
         #Creating a new calculator listing, with the images stored as a string. 
-        a=Calculator(title=title, description=description,image=imageUrls,price=price,tags=tags,email=request.user.email,fullname=request.user.get_full_name())
+        a=Calculator(title=title, description=description,image=imageUrls,price=price,tags=tags,email=request.user.email,fullname=request.user.get_full_name(),id=generateId(Calculator))
         a.save()
         return HttpResponseRedirect("/vendorPage")
     return render(request, "calcura/createListing.html")
@@ -263,6 +265,22 @@ def shop(request):
             
             #Append the listing to the list with all acceptable listings
             listings.append(listing)
+    if "chat" in request.POST:
+        fullname = request.POST["name"]
+        if request.user.get_full_name()!=fullname:
+            name=request.user.get_full_name()+","+fullname
+            name2=fullname+","+request.user.get_full_name()
+            if MessageRoom.objects.filter(users=name).exists():
+                obj=MessageRoom.objects.get(users=name)
+                return HttpResponseRedirect("/chat/"+str(obj.id))
+            if MessageRoom.objects.filter(users=name2).exists():
+                obj=MessageRoom.objects.get(users=name2)
+                return HttpResponseRedirect("/chat/"+obj.id)
+            else:
+                id=generateId(MessageRoom)
+                messageRoom = MessageRoom(users=name, id=id)
+                messageRoom.save()
+                return HttpResponseRedirect("/chat/"+str(id))
 
     #In the listings, split the image list so it is accessible as a list
     for i in range(len(listings)):
@@ -270,8 +288,8 @@ def shop(request):
         listings[i].tags = listings[i].tags.split("  ")[0:-1]
 
     #Items in the listings table are stored so the higher rows are the earliest added. Default option is sort by upload date, so reverse so most recent uplaoded/edited listing is at top
-    listings.reverse()
-    
+    for l in listings:
+        print(l.datetime)
     #Check if listings are present
     listingsPresent=True
     if len(listings)==0:
@@ -316,3 +334,9 @@ def checkIfChecked(request, string, listy):
     except:
         #They did not check the textbox
         pass
+
+def generateId(model):
+    id=random.randint(10**10,10**11-1)
+    while model.objects.filter(id=id).exists():
+        id=random.randint(10**20,10**21-1)
+    return id
