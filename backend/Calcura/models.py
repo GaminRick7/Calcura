@@ -24,6 +24,7 @@ class Calculator(models.Model):
     email = models.TextField()
     fullname = models.TextField()
     datetime = models.DateTimeField(default=datetime.datetime.now())
+    id = models.BigAutoField(primary_key=True)
 
 class TempImage(models.Model):
     """
@@ -42,3 +43,13 @@ class Administration(models.Model):
         tags: (str) all tags currently in use
     """
     tags=models.TextField(default="Texas Instruments,Sharp,Casio,New,Used")
+
+class MessageRoom(models.Model):
+    """
+    Class to hold message rooms between a consumer and a vendor
+    Attributes:
+        users (str): usernames of people which are in the chat
+        id (int): id of the group (created by defalt in django)
+    """
+    users=models.TextField()
+    id = models.BigAutoField(primary_key=True)

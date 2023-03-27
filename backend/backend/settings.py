@@ -30,9 +30,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,18 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'Calcura.apps.CalcuraConfig',
     'allauth',
+    'chatSystem.apps.ChatsystemConfig',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'cloudinary',
-    'channels',
 ]
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': "channels.layers.InMemoryChannelLayer"
-        }
-    }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -84,16 +80,23 @@ TEMPLATES = [
     },
 ]
 
+
 #Backends used for user authentication
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
+# WSGI_APPLICATION = 'backend.wsgi.application'
 
-WSGI_APPLICATION = 'backend.wsgi.application'
+ASGI_APPLICATION = 'backend.asgi.application' 
 
-# ASGI_APPLICATION = "backend.asgi.application"
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': "channels.layers.InMemoryChannelLayer"
+    }
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
