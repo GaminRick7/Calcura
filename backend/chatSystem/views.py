@@ -10,9 +10,9 @@ def chatPage(request,room_name): #https://www.youtube.com/watch?v=F4nwRQPXD8w&ab
     if request.user.get_full_name() not in allowedUsers:
         return HttpResponseRedirect("/shop")
     
-    for i in Messages.objects.all():
-        print(i.message)
 
+    for i in Messages.objects.all():
+        print(i.message,i.user,i.roomId)
 
 
 

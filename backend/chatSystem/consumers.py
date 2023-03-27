@@ -1,6 +1,17 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Messages
+import os
+import django
+
+#Allowing sync operations to run in an async setting
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'rest.settings')
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+django.setup()
+
+async def saveItems(self,message,user):
+    toSave=Messages(message=message,user=user,roomId=self.scope['url_route']['kwargs']['room_name'])
+    toSave.save()
 
 class ChatConsumer(AsyncWebsocketConsumer):
     """
@@ -38,7 +49,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = text_data_json["message"]
         username = text_data_json["username"]
         print(self.scope['url_route']['kwargs']['room_name'])
-
+        
+        toSave=Messages(message=message,user=username,roomId=self.scope['url_route']['kwargs']['room_name'])
+        toSave.save()
+        
         #Spread the message to other users in the chatroom with the sendMessage function defined right below
         await self.channel_layer.group_send(
             self.roomGroupName,{
@@ -52,4 +66,3 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = event["message"]
         username = event["username"]
         await self.send(text_data = json.dumps({"message":message ,"username":username}))
-    
