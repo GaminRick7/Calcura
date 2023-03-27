@@ -1,6 +1,7 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
- 
+from .models import Messages
+
 class ChatConsumer(AsyncWebsocketConsumer):
     """
     Class to create destroy and modify Websockets. Groups are the area which many users can store. The channel is how data is sent. 
@@ -36,6 +37,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
         username = text_data_json["username"]
+        print(self.scope['url_route']['kwargs']['room_name'])
 
         #Spread the message to other users in the chatroom with the sendMessage function defined right below
         await self.channel_layer.group_send(
@@ -50,3 +52,4 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = event["message"]
         username = event["username"]
         await self.send(text_data = json.dumps({"message":message ,"username":username}))
+    
