@@ -1,6 +1,20 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Messages
+import os
+import django
+from Calcura.views import generateId
+
+#Allowing sync operations to run in an async setting
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'rest.settings')
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+django.setup()
+
+async def saveItems(self,message,user):
+    print("why no here")
+    print(generateId(Messages),"\n\n\n\n\n\n\n\nGRAAAAAAAAAAAAAAAAAAH")
+    toSave=Messages(message=message,user=user,roomId=self.scope['url_route']['kwargs']['roomId'], id=generateId(Messages))
+    toSave.save()
 
 class ChatConsumer(AsyncWebsocketConsumer):
     """
@@ -12,11 +26,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     """
 
+    outfile = open("chatSystem/badwords.txt", "r")
+    badWordsList=list(outfile)
+    for i in range(len(badWordsList)):
+        badWordsList[i]=badWordsList[i][:-1]
+    outfile.close()
+
     #When a websocket connection is created or a connection has been opened, creates a groupname for chat and adds it to the channel layer
     async def connect(self):
 
         #Setting the groupname to the items after the /
-        self.roomGroupName = self.scope['url_route']['kwargs']['room_name']
+        self.roomGroupName = self.scope['url_route']['kwargs']['roomId']
         await self.channel_layer.group_add(
             self.roomGroupName ,
             self.channel_name
@@ -37,19 +57,25 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
         username = text_data_json["username"]
-        print(self.scope['url_route']['kwargs']['room_name'])
 
-        #Spread the message to other users in the chatroom with the sendMessage function defined right below
-        await self.channel_layer.group_send(
-            self.roomGroupName,{
-                "type" : "sendMessage" ,
-                "message" : message ,
-                "username" : username ,
-            })
+        #If the message isn't blank
+        if message!="":
+            message = message.capitalize()
+            for badWord in self.badWordsList:
+                if badWord in message or badWord.capitalize() in message:
+                    print("hi")
+                    message = message.replace(badWord,"*"*len(badWord))
+                    message=message.replace(badWord.capitalize(),"*"*len(badWord))
+                #Spread the message to other users in the chatroom with the sendMessage function defined right below
+            await self.channel_layer.group_send(
+                self.roomGroupName,{
+                    "type" : "sendMessage" ,
+                    "message" : message ,
+                    "username" : username ,
+                })
 
     #Takes the user which is sending data and then holds it. It then sends the message and user to all instances in group. 
     async def sendMessage(self , event) :
         message = event["message"]
         username = event["username"]
         await self.send(text_data = json.dumps({"message":message ,"username":username}))
-    

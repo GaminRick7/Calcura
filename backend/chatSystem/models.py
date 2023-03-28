@@ -9,4 +9,5 @@ class Messages(models.Model):
     """
     message=models.TextField()
     user=models.TextField()
-    roomId = models.BigAutoField(primary_key=True)
+    roomId = models.TextField()
+    id = models.BigAutoField(primary_key=True)
