@@ -60,15 +60,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         #If the message isn't blank
         if message!="":
-            if message not in self.badWordsList:
-                pass
+            message = message.capitalize()
+            for badWord in self.badWordsList:
+                if badWord in message or badWord.capitalize() in message:
+                    print("hi")
+                    message = message.replace(badWord,"*"*len(badWord))
+                    message=message.replace(badWord.capitalize(),"*"*len(badWord))
                 #Spread the message to other users in the chatroom with the sendMessage function defined right below
-                await self.channel_layer.group_send(
-                    self.roomGroupName,{
-                        "type" : "sendMessage" ,
-                        "message" : message ,
-                        "username" : username ,
-                    })
+            await self.channel_layer.group_send(
+                self.roomGroupName,{
+                    "type" : "sendMessage" ,
+                    "message" : message ,
+                    "username" : username ,
+                })
 
     #Takes the user which is sending data and then holds it. It then sends the message and user to all instances in group. 
     async def sendMessage(self , event) :
