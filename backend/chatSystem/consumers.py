@@ -26,6 +26,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     """
 
+    outfile = open("chatSystem/badwords.txt", "r")
+    badWordsList=list(outfile)
+    for i in range(len(badWordsList)):
+        badWordsList[i]=badWordsList[i][:-1]
+    outfile.close()
+
     #When a websocket connection is created or a connection has been opened, creates a groupname for chat and adds it to the channel layer
     async def connect(self):
 
@@ -52,16 +58,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = text_data_json["message"]
         username = text_data_json["username"]
 
+        #If the message isn't blank
         if message!="":
-            await saveItems(self,message,username)
-        
-        #Spread the message to other users in the chatroom with the sendMessage function defined right below
-        await self.channel_layer.group_send(
-            self.roomGroupName,{
-                "type" : "sendMessage" ,
-                "message" : message ,
-                "username" : username ,
-            })
+            if message not in self.badWordsList:
+                pass
+                #Spread the message to other users in the chatroom with the sendMessage function defined right below
+                await self.channel_layer.group_send(
+                    self.roomGroupName,{
+                        "type" : "sendMessage" ,
+                        "message" : message ,
+                        "username" : username ,
+                    })
 
     #Takes the user which is sending data and then holds it. It then sends the message and user to all instances in group. 
     async def sendMessage(self , event) :
