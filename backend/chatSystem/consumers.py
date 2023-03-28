@@ -3,6 +3,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Messages
 import os
 import django
+from Calcura.views import generateId
 
 #Allowing sync operations to run in an async setting
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'rest.settings')
@@ -10,7 +11,9 @@ os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 django.setup()
 
 async def saveItems(self,message,user):
-    toSave=Messages(message=message,user=user,roomId=self.scope['url_route']['kwargs']['room_name'])
+    print("why no here")
+    print(generateId(Messages),"\n\n\n\n\n\n\n\nGRAAAAAAAAAAAAAAAAAAH")
+    toSave=Messages(message=message,user=user,roomId=self.scope['url_route']['kwargs']['roomId'], id=generateId(Messages))
     toSave.save()
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -27,7 +30,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
 
         #Setting the groupname to the items after the /
-        self.roomGroupName = self.scope['url_route']['kwargs']['room_name']
+        self.roomGroupName = self.scope['url_route']['kwargs']['roomId']
         await self.channel_layer.group_add(
             self.roomGroupName ,
             self.channel_name
@@ -48,10 +51,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
         username = text_data_json["username"]
-        print(self.scope['url_route']['kwargs']['room_name'])
-        
-        toSave=Messages(message=message,user=username,roomId=self.scope['url_route']['kwargs']['room_name'])
-        toSave.save()
+
+        if message!="":
+            await saveItems(self,message,username)
         
         #Spread the message to other users in the chatroom with the sendMessage function defined right below
         await self.channel_layer.group_send(

@@ -5,5 +5,5 @@ from chatSystem.consumers import ChatConsumer
 # will handle the chat functionality.
 websocket_urlpatterns = [
     #Websocket routing to host multiple different chat rooms
-    re_path(r'ws/chat/(?P<room_name>\w+)/$' , ChatConsumer.as_asgi()) ,
+    re_path(r'ws/chat/(?P<roomId>\w+)/$' , ChatConsumer.as_asgi()) ,
 ]

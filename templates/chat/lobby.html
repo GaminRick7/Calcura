@@ -24,6 +24,9 @@
       <button type="submit" id="id_message_send_button">Send Message</button>
       <br />
       <br />
+      {% for message in messages %}
+        <p>{{message.user}}: {{message.message}}</p>
+      {% endfor %}
     </div>
     <script>
 
