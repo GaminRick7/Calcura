@@ -15,8 +15,10 @@ def Index(request):
         HttpResponseRedirect: if the user is not ocdsb.ca or a staff
         The template itself
     """
+
     # a=Administration()
     # a.save()
+
     #If the user is logged in
     if request.user.is_authenticated:
         #Only keep users which are staff or are ocdsb.ca email addresses. If not delete them. 

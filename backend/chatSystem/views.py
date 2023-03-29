@@ -5,11 +5,12 @@ from django.http import HttpResponseRedirect
 from .models import Messages
 @login_required(login_url='/')
 def chatPage(request,roomId): #https://www.youtube.com/watch?v=F4nwRQPXD8w&ab_channel=VeryAcademy
-    
+    print("HI")
     allowedUsers = MessageRoom.objects.get(id=roomId).users.split(",")
 
     if request.user.get_full_name() not in allowedUsers:
         return HttpResponseRedirect("/shop")
+    print(roomId)
     
     for i in Messages.objects.filter(roomId=roomId):
         print(i.message,i.user,i.roomId)

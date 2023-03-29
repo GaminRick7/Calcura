@@ -25,7 +25,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         channel_layer (str): the layer of the channel which the user is in
 
     """
-
     outfile = open("chatSystem/badwords.txt", "r")
     badWordsList=list(outfile)
     for i in range(len(badWordsList)):
@@ -60,6 +59,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         #If the message isn't blank
         if message!="":
+
             message = message.capitalize()
             for badWord in self.badWordsList:
                 if badWord in message or badWord.capitalize() in message:
