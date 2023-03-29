@@ -3,6 +3,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Messages
 import os
 import django
+import re
 from Calcura.views import generateId
 
 #Allowing sync operations to run in an async setting
@@ -60,12 +61,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         #If the message isn't blank
         if message!="":
-            message = message.capitalize()
             for badWord in self.badWordsList:
-                if badWord in message or badWord.capitalize() in message:
-                    print("hi")
-                    message = message.replace(badWord,"*"*len(badWord))
-                    message=message.replace(badWord.capitalize(),"*"*len(badWord))
+                if badWord.lower() in message.lower():
+                    message = message.split(" ")
+                    print(message)
+                    for i in range(len(message)):
+                        if badWord.lower() in message[i].lower():
+                            print(len(badWord))
+                            message[i] = message[i].lower().replace(badWord.lower(), "*"*len(badWord))
+                            print(message[i])
+
+                    message=" ".join(message)
                 #Spread the message to other users in the chatroom with the sendMessage function defined right below
             await self.channel_layer.group_send(
                 self.roomGroupName,{

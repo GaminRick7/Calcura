@@ -265,20 +265,21 @@ def shop(request):
             
             #Append the listing to the list with all acceptable listings
             listings.append(listing)
+            
     if "chat" in request.POST:
-        fullname = request.POST["name"]
-        if request.user.get_full_name()!=fullname:
-            name=request.user.get_full_name()+","+fullname
-            name2=fullname+","+request.user.get_full_name()
-            if MessageRoom.objects.filter(users=name).exists():
-                obj=MessageRoom.objects.get(users=name)
+        fullname = request.POST["email"]
+        if request.user.email!=fullname:
+            email=request.user.email+","+fullname
+            email2=fullname+","+request.user.get_full_name()
+            if MessageRoom.objects.filter(users=email).exists():
+                obj=MessageRoom.objects.get(users=email)
                 return HttpResponseRedirect("/chat/"+str(obj.id))
-            if MessageRoom.objects.filter(users=name2).exists():
-                obj=MessageRoom.objects.get(users=name2)
-                return HttpResponseRedirect("/chat/"+obj.id)
+            if MessageRoom.objects.filter(users=email2).exists():
+                obj=MessageRoom.objects.get(users=email2)
+                return HttpResponseRedirect("/chat/"+str(obj.id))
             else:
                 id=generateId(MessageRoom)
-                messageRoom = MessageRoom(users=name, id=id)
+                messageRoom = MessageRoom(users=email, id=id)
                 messageRoom.save()
                 return HttpResponseRedirect("/chat/"+str(id))
 
