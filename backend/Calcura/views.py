@@ -15,8 +15,8 @@ def Index(request):
         HttpResponseRedirect: if the user is not ocdsb.ca or a staff
         The template itself
     """
-    # a=Administration()
-    # a.save()
+    a=Administration()
+    a.save()
     #If the user is logged in
     if request.user.is_authenticated:
         #Only keep users which are staff or are ocdsb.ca email addresses. If not delete them. 
@@ -42,7 +42,7 @@ def vendorPage(request):
     for listing in Calculator.objects.all():
 
         #If the calculator belongs to the user, go inside if statement
-        if listing.email==request.user.email:
+        if listing.user.email==request.user.email:
 
             #Split the image string by a comma to store each link in its own list index, then append the listing to the list containing all listings
             listing.image=listing.image.split(",")
@@ -93,7 +93,7 @@ def createListing(request):
                 image.delete()
 
         #Creating a new calculator listing, with the images stored as a string. 
-        a=Calculator(title=title, description=description,image=imageUrls,price=price,tags=tags,email=request.user.email,fullname=request.user.get_full_name(),id=generateId(Calculator))
+        a=Calculator(title=title, description=description,image=imageUrls,price=price,tags=tags,id=generateId(Calculator), user=request.user)
         a.save()
         return HttpResponseRedirect("/vendorPage")
     return render(request, "calcura/createListing.html")
@@ -109,7 +109,7 @@ def editListing(request, id):
     print(listing)
 
     #If the listing doesn't belong to the user, then redirect back to index
-    if listing.email!=request.user.email:
+    if listing.user.email!=request.user.email:
         return HttpResponseRedirect("/")
 
     #Getting the first image in the image list stored within the listing
@@ -279,7 +279,7 @@ def shop(request):
                 return HttpResponseRedirect("/chat/"+str(obj.id))
             else:
                 id=generateId(MessageRoom)
-                messageRoom = MessageRoom(users=email, id=id)
+                messageRoom = MessageRoom(users=email, user1= request.user, user2= User.objects.get(email__exact=fullname),id=id)
                 messageRoom.save()
                 return HttpResponseRedirect("/chat/"+str(id))
 

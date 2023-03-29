@@ -5,6 +5,7 @@ import os
 import django
 import re
 from Calcura.views import generateId
+import datetime
 
 #Allowing sync operations to run in an async setting
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'rest.settings')
@@ -14,7 +15,7 @@ django.setup()
 async def saveItems(self,message,user):
     print("why no here")
     print(generateId(Messages),"\n\n\n\n\n\n\n\nGRAAAAAAAAAAAAAAAAAAH")
-    toSave=Messages(message=message,user=user,roomId=self.scope['url_route']['kwargs']['roomId'], id=generateId(Messages))
+    toSave=Messages(message=message,user=user,roomId=self.scope['url_route']['kwargs']['roomId'], datetime= datetime.datetime.now(),id=generateId(Messages))
     toSave.save()
 
 class ChatConsumer(AsyncWebsocketConsumer):

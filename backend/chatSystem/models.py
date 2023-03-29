@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 class Messages(models.Model):
     """
@@ -10,4 +11,5 @@ class Messages(models.Model):
     message=models.TextField()
     user=models.TextField()
     roomId = models.TextField()
+    datetime = models.DateTimeField(default=datetime.datetime.now())
     id = models.BigAutoField(primary_key=True)

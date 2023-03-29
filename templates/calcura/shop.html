@@ -141,8 +141,8 @@
                               viewBox="0 0 24 24"
                               stroke="grey">
                               <path id="primary" d="M21,4V16a1,1,0,0,1-1,1H13L8,21V17H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H20A1,1,0,0,1,21,4Z" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></svg>
-                              <span class="leading-7 text-sm text-gray-600">&nbsp{{calc.fullname}}</span>
-                              <input type="hidden" name="email" id="email" value="{{calc.email}}">
+                              <span class="leading-7 text-sm text-gray-600">&nbsp{{calc.user.get_full_name}}</span>
+                              <input type="hidden" name="email" id="email" value="{{calc.user.email}}">
                           </button>
                           
                         </form>
