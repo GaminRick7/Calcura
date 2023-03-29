@@ -3,6 +3,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Messages
 import os
 import django
+import re
 from Calcura.views import generateId
 
 #Allowing sync operations to run in an async setting
@@ -25,6 +26,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         channel_layer (str): the layer of the channel which the user is in
 
     """
+
     outfile = open("chatSystem/badwords.txt", "r")
     badWordsList=list(outfile)
     for i in range(len(badWordsList)):
@@ -59,20 +61,27 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         #If the message isn't blank
         if message!="":
-
-            message = message.capitalize()
             for badWord in self.badWordsList:
-                if badWord in message or badWord.capitalize() in message:
-                    print("hi")
-                    message = message.replace(badWord,"*"*len(badWord))
-                    message=message.replace(badWord.capitalize(),"*"*len(badWord))
-                #Spread the message to other users in the chatroom with the sendMessage function defined right below
+                if badWord.lower() in message.lower():
+                    message = message.split(" ")
+                    print(message)
+                    for i in range(len(message)):
+                        if badWord.lower() in message[i].lower():
+                            print(len(badWord))
+                            message[i] = message[i].lower().replace(badWord.lower(), "*"*len(badWord))
+                            print(message[i])
+
+                    message=" ".join(message)
+            #Spread the message to other users in the chatroom with the sendMessage function defined right below
             await self.channel_layer.group_send(
                 self.roomGroupName,{
                     "type" : "sendMessage" ,
                     "message" : message ,
                     "username" : username ,
                 })
+            
+            #Saving message to db
+            await saveItems(self,message,username)
 
     #Takes the user which is sending data and then holds it. It then sends the message and user to all instances in group. 
     async def sendMessage(self , event) :
