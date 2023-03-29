@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Calculator, TempImage
+from .models import Calculator, Administration, MessageRoom
 
-# Registering models so we can acess them within django's admin page
+# Registering models so we can access them within django's admin page
 admin.site.register(Calculator)
-admin.site.register(TempImage)
+admin.site.register(Administration)
+admin.site.register(MessageRoom)

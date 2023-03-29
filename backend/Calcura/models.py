@@ -25,6 +25,12 @@ class Calculator(models.Model):
     fullname = models.TextField()
     datetime = models.DateTimeField(default=datetime.datetime.now())
     id = models.BigAutoField(primary_key=True)
+    
+
+    def __str__(self):
+        correctUser = User.objects.get(email=self.email)
+        return f"{self.title} by {correctUser.get_full_name()}"
+    
 
 class TempImage(models.Model):
     """

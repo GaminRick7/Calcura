@@ -72,13 +72,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
                             print(message[i])
 
                     message=" ".join(message)
-                #Spread the message to other users in the chatroom with the sendMessage function defined right below
+            #Spread the message to other users in the chatroom with the sendMessage function defined right below
             await self.channel_layer.group_send(
                 self.roomGroupName,{
                     "type" : "sendMessage" ,
                     "message" : message ,
                     "username" : username ,
                 })
+            
+            #Saving message to db
+            await saveItems(self,message,username)
 
     #Takes the user which is sending data and then holds it. It then sends the message and user to all instances in group. 
     async def sendMessage(self , event) :
