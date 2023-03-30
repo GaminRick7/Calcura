@@ -7,6 +7,7 @@ from .models import Messages
 def chatPage(request,roomId): #https://www.youtube.com/watch?v=F4nwRQPXD8w&ab_channel=VeryAcademy
     
     allowedEmails = MessageRoom.objects.get(id=roomId).users.split(",")
+    print(allowedEmails)
 
     if request.user.email not in allowedEmails:
         return HttpResponseRedirect("/shop")

@@ -13,3 +13,6 @@ class Messages(models.Model):
     roomId = models.TextField()
     datetime = models.DateTimeField(default=datetime.datetime.now())
     id = models.BigAutoField(primary_key=True)
+    def __str__(self):
+        return f"{self.user}({self.datetime}): {self.message}"
+
