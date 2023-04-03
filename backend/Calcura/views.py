@@ -33,8 +33,7 @@ def Index(request):
             return HttpResponseRedirect("/")
 
     #Returning the template
-    # {'message': findTopMessageRoom()}
-    return render(request, 'calcura/index.html')
+    return render(request, 'calcura/index.html', {'message': findTopMessageRoom(request.user)})
 
 def vendorPage(request):
     #Variables
@@ -61,7 +60,7 @@ def vendorPage(request):
         noListings = True
     
     #Returning the template with listings information
-    return render(request, "calcura/vendorPage.html", {"listing": a, "length": noListings})
+    return render(request, "calcura/vendorPage.html", {"listing": a, "length": noListings, 'message': findTopMessageRoom(request.user)})
 
 #Method to create a listing in the calculator model
 @login_required(login_url='/')
@@ -81,7 +80,7 @@ def createListing(request):
         #Looping through the images they pasted, and storing them in TempImage database model. Storing them to upload to cloudinary and to get image link url. Email is needed to link a temporary image to the user
         for image in images:
             if not checkValidImageEnding(str(image)):
-                return render(request, "calcura/createListing.html", {"invalidEnding": True})
+                return render(request, "calcura/createListing.html", {"invalidEnding": True, 'message': findTopMessageRoom(request.user)})
             listing = TempImage(image= image, email=request.user.email)
             listing.save()
 
@@ -100,7 +99,7 @@ def createListing(request):
         a=Calculator(title=title, description=description,image=imageUrls,price=price,tags=tags,id=generateId(Calculator), user=request.user)
         a.save()
         return HttpResponseRedirect("/vendorPage")
-    return render(request, "calcura/createListing.html")
+    return render(request, "calcura/createListing.html", {'message': findTopMessageRoom(request.user)})
 
 def editListing(request, id):
     #Define listing variable, set it to the Calculator model
@@ -152,7 +151,7 @@ def editListing(request, id):
             #Looping through the images they pasted, and storing them in TempImage database model. Storing them to upload to cloudinary and to get image link url. Email is needed to link a temporary image to the user
             for image in images:
                 if not checkValidImageEnding(str(image)):
-                    return render(request, "calcura/editListing.html", {"l": listing, "invalidEnding": True})
+                    return render(request, "calcura/editListing.html", {"l": listing, "invalidEnding": True, 'message': findTopMessageRoom(request.user)})
 
                 tempImg = TempImage(image= image, email=request.user.email)
                 tempImg.save()
@@ -301,7 +300,7 @@ def shop(request):
         listingsPresent=False
 
     #Return the template
-    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "listingsPresent":listingsPresent})
+    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "listingsPresent":listingsPresent, 'message': findTopMessageRoom(request.user)})
 
 def checkValidImageEnding(imageLink):
     """
@@ -347,24 +346,19 @@ def generateId(model):
     return id
 
 @login_required(login_url='/')
-def chats(request):
-    a=[]
-    email = request.user.email
-    count = 0
-    for x in MessageRoom.objects().all():
-        if email in x.users:
-            otherUser = User.objects.get(email=x.users.replace(",","").replace(email, ""))
-            a.append([x, otherUser])
-            count+=1
-    chatsExist = count != 0
-    return render(request, "calcura/chats.html", {"chats": a, "length": chatsExist, 'message': findTopMessageRoom()})
+def nochat(request):
 
-def findTopMessageRoom():
+    return render(request, "chat/nochat.html", {'message': findTopMessageRoom(request.user)})
+
+def findTopMessageRoom(user):
     """
     Function to find the room from which the user sent or received their latest message
     Args: none
     Returns:
         topMessageRoom.roomId (latest room id)
     """
-    topMessageRoom = Messages.objects.filter().order_by('-datetime')[:1].get()
-    return topMessageRoom.roomId
+    try:
+        topMessageRoom = Messages.objects.filter(user=user).order_by('-datetime')[:1].get()
+        return topMessageRoom.roomId
+    except:
+        return False

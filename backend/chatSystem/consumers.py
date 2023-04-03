@@ -16,7 +16,7 @@ django.setup()
 async def saveItems(self,message,user):
     print("why no here")
     print(generateId(Messages),"\n\n\n\n\n\n\n\nGRAAAAAAAAAAAAAAAAAAH")
-    toSave=Messages(message=message,user=user,roomId=self.scope['url_route']['kwargs']['roomId'], datetime= datetime.datetime.now(),id=generateId(Messages))
+    toSave=Messages(message=message,user=User.objects.filter(email=user).get(),roomId=self.scope['url_route']['kwargs']['roomId'], datetime= datetime.datetime.now(),id=generateId(Messages))
     toSave.save()
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -88,5 +88,5 @@ class ChatConsumer(AsyncWebsocketConsumer):
     #Takes the user which is sending data and then holds it. It then sends the message and user to all instances in group. 
     async def sendMessage(self , event) :
         message = event["message"]
-        username = event["email"]
-        await self.send(text_data = json.dumps({"message":message ,"email":username}))
+        email = event["email"]
+        await self.send(text_data = json.dumps({"message":message ,"email":email, "fullname" : User.objects.filter(email=email).get().get_full_name()}))

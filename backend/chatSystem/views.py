@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from Calcura.models import MessageRoom, Calculator
-from Calcura.views import generateId
+from Calcura.views import generateId, findTopMessageRoom
 from django.http import HttpResponseRedirect
 from .models import Messages
 @login_required(login_url='/')
@@ -19,7 +19,9 @@ def chatPage(request,roomId): #https://www.youtube.com/watch?v=F4nwRQPXD8w&ab_ch
             count+=1
     chatsExist = count != 0
 
-    allowedEmails = MessageRoom.objects.get(id=roomId).users.split(",")
+    room = MessageRoom.objects.get(id=roomId)
+    allowedEmails = room.users.split(",")
+    otherUser = User.objects.get(email=room.users.replace(",","").replace(email, ""))
     print(allowedEmails)
 
     if email not in allowedEmails:
@@ -30,7 +32,7 @@ def chatPage(request,roomId): #https://www.youtube.com/watch?v=F4nwRQPXD8w&ab_ch
 
 
 
-    return render(request, "chat/lobby.html", {"room":roomId, "messages":Messages.objects.filter(roomId=roomId), "chats": a, "length": chatsExist})
+    return render(request, "chat/lobby.html", {"room":roomId, "messages":Messages.objects.filter(roomId=roomId), "chats": a, "length": chatsExist, "otherUser" : otherUser, 'message': findTopMessageRoom(request.user)})
 
 
 
