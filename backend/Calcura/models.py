@@ -60,18 +60,17 @@ class MessageRoom(models.Model):
     """
 
     users=models.TextField()
-    user1 = models.ForeignKey(User, on_delete=models.CASCADE, default=User.objects.first().pk, related_name="user1")
-    user2 = models.ForeignKey(User, on_delete=models.CASCADE, default=User.objects.first().pk)
+    user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user1")
+    user2 = models.ForeignKey(User, on_delete=models.CASCADE)
     id = models.BigAutoField(primary_key=True)
     messages = models.ManyToManyField(Messages, limit_choices_to={'roomId': id})
-    message=Messages.objects.all()
-    for m in message:
-        print(m.roomId,type(m.roomId))
-        print(m.roomId==id)
-        print(str(id),"im gay i suck dick")
-        print(m.roomId==id)
+    # message=Messages.objects.all()
+    # for m in message:
+    #     print(m.roomId,type(m.roomId))
+    #     print(m.roomId==id)
+    #     print(str(id))
+    #     print(m.roomId==id)
 
     print(type(str(id)))
-    print("im raihaan and im gay")
     def __str__(self):
         return f"{self.user1.get_full_name()} and {self.user2.get_full_name()} - {self.id}"

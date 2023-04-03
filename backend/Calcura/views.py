@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from .models import Calculator, TempImage, Administration, MessageRoom
+from chatSystem.models import Messages
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import random
@@ -15,8 +16,9 @@ def Index(request):
         HttpResponseRedirect: if the user is not ocdsb.ca or a staff
         The template itself
     """
-    a=Administration()
-    a.save()
+    # a=Administration()
+    # a.save()
+    
     #If the user is logged in
     if request.user.is_authenticated:
         #Only keep users which are staff or are ocdsb.ca email addresses. If not delete them. 
@@ -31,6 +33,7 @@ def Index(request):
             return HttpResponseRedirect("/")
 
     #Returning the template
+    # {'message': findTopMessageRoom()}
     return render(request, 'calcura/index.html')
 
 def vendorPage(request):
@@ -56,6 +59,7 @@ def vendorPage(request):
     #If a is empty, there are no listings. Pass as context to frontend
     if len(a) == 0:
         noListings = True
+    
     #Returning the template with listings information
     return render(request, "calcura/vendorPage.html", {"listing": a, "length": noListings})
 
@@ -177,7 +181,7 @@ def editListing(request, id):
         return HttpResponseRedirect("/vendorPage")
     
     #Return template, with the listing which is being edited
-    return render(request, "calcura/editListing.html", {"l": listing})
+    return render(request, "calcura/editListing.html", {"l": listing, 'message': findTopMessageRoom()})
 
 @login_required(login_url='/')
 def shop(request):
@@ -341,3 +345,26 @@ def generateId(model):
     while model.objects.filter(id=id).exists():
         id=random.randint(10**20,10**21-1)
     return id
+
+@login_required(login_url='/')
+def chats(request):
+    a=[]
+    email = request.user.email
+    count = 0
+    for x in MessageRoom.objects().all():
+        if email in x.users:
+            otherUser = User.objects.get(email=x.users.replace(",","").replace(email, ""))
+            a.append([x, otherUser])
+            count+=1
+    chatsExist = count != 0
+    return render(request, "calcura/chats.html", {"chats": a, "length": chatsExist, 'message': findTopMessageRoom()})
+
+def findTopMessageRoom():
+    """
+    Function to find the room from which the user sent or received their latest message
+    Args: none
+    Returns:
+        topMessageRoom.roomId (latest room id)
+    """
+    topMessageRoom = Messages.objects.filter().order_by('-datetime')[:1].get()
+    return topMessageRoom.roomId

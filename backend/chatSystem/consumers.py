@@ -4,6 +4,7 @@ from .models import Messages
 import os
 import django
 import re
+from django.contrib.auth.models import User
 from Calcura.views import generateId
 import datetime
 
@@ -58,7 +59,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         #Retreive the text data, the message and username of person who sent message
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
-        username = text_data_json["username"]
+        email = text_data_json["email"]
 
         #If the message isn't blank
         if message!="":
@@ -78,14 +79,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 self.roomGroupName,{
                     "type" : "sendMessage" ,
                     "message" : message ,
-                    "username" : username ,
+                    "email" : email ,
                 })
             
             #Saving message to db
-            await saveItems(self,message,username)
+            await saveItems(self,message,email)
 
     #Takes the user which is sending data and then holds it. It then sends the message and user to all instances in group. 
     async def sendMessage(self , event) :
         message = event["message"]
-        username = event["username"]
-        await self.send(text_data = json.dumps({"message":message ,"username":username}))
+        username = event["email"]
+        await self.send(text_data = json.dumps({"message":message ,"email":username}))
