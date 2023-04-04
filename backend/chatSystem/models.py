@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 import datetime
 
 class Messages(models.Model):
@@ -9,7 +10,7 @@ class Messages(models.Model):
         id (int): id of the group (created by defalt in django)
     """
     message=models.TextField()
-    user=models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     roomId = models.TextField()
     datetime = models.DateTimeField(default=datetime.datetime.now())
     id = models.BigAutoField(primary_key=True)
