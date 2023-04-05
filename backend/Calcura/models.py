@@ -64,7 +64,6 @@ class MessageRoom(models.Model):
     user2 = models.ForeignKey(User, on_delete=models.CASCADE)
     id = models.BigAutoField(primary_key=True)
     messages = models.ManyToManyField(Messages, limit_choices_to={'roomId': id})
-
-    print(type(str(id)))
+    latestDateTime = models.DateTimeField(default=datetime.datetime.now())
     def __str__(self):
         return f"{self.user1.get_full_name()} and {self.user2.get_full_name()} - {self.id}"
