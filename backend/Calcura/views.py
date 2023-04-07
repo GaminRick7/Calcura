@@ -358,7 +358,7 @@ def findTopMessageRoom(user):
         topMessageRoom.idd (latest room id) or False (if no room is found)
     """
     try:
-        topMessageRoom = MessageRoom.objects.filter(users__contains = user.email).order_by('-latestDateTime')[:1].get()
+        topMessageRoom = MessageRoom.objects.filter(users__contains = user.email).order_by('-latestDateTime')[-1]
         return topMessageRoom.id
     except:
         return False

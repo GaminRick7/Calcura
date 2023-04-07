@@ -10,7 +10,7 @@
     <title>Edit Listing | Calcura</title>
 </head> 
 <html>
-  <body>
+  <body onload="scrollDown()">
     {% block content %}
     <div class="flex flex-row mx-auto items-center justify-center mt-3">
       <svg class="w-10 h-10 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -77,6 +77,9 @@
         var objDiv = document.getElementById("id_chat_item_container");
         objDiv.scrollTop = objDiv.scrollHeight;
       }
+      document.addEventListener("DOMContentLoaded", function() {
+        scrollDown();
+      });
       //Setting the websocket route to the domain + websocket/chat and the roomname provided by backend
       const chatSocket = new WebSocket(`ws://` + window.location.host + `/ws/chat/`+"{{room}}" + '/');
       chatSocket.onopen = function (e) {
