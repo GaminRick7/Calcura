@@ -107,14 +107,14 @@
           var div = document.createElement("div");
           if (data.email == "{{request.user.email}}"){
             div.innerHTML = `<div class="grid justify-items-end mr-2">
-            <p class="text-xs text-gray-400">${data.fullname}</p>
+            <p class="text-xs text-gray-400">{{request.user.get_full_name}}</p>
             <div class="bg-blue-400 shadow-lg rounded-tl-lg rounded-tr-lg rounded-bl-lg max-w-lg inline-block">
               <p class="text-base text-white p-1.5">${data.message}</p>
             </div>
             </div>`;
           }
           else{
-            div.innerHTML = `<p class="text-xs text-gray-400">${data.email}</p>
+            div.innerHTML = `<p class="text-xs text-gray-400">{{otherUser.get_full_name}}</p>
             <div class="bg-gray-400 shadow-lg rounded-tl-lg rounded-tr-lg rounded-br-lg max-w-lg inline-block">
               <p class="text-base text-white p-1.5">${data.message}</p>
             </div>`;

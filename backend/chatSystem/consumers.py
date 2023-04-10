@@ -89,4 +89,4 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def sendMessage(self , event) :
         message = event["message"]
         email = event["email"]
-        await self.send(text_data = json.dumps({"message":message ,"email":email, "fullname" : User.objects.filter(email=email).get().get_full_name()}))
+        await self.send(text_data = json.dumps({"message":message ,"email":email}))

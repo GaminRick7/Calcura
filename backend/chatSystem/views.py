@@ -12,11 +12,15 @@ def chatPage(request,roomId): #https://www.youtube.com/watch?v=F4nwRQPXD8w&ab_ch
     email = request.user.email
     count = 0
 
-    for x in MessageRoom.objects.all():
-        if email in x.users:
-            otherUser = User.objects.get(email=x.users.replace(",","").replace(email, ""))
-            a.append([x, otherUser])
-            count+=1
+    for x in MessageRoom.objects.filter(user1=request.user).order_by('-datetime'):
+        otherUser = x.user2
+        a.append([x, otherUser])
+        count+=1
+
+    for x in MessageRoom.objects.filter(user2=request.user).order_by('-datetime'):
+        otherUser = x.user1
+        a.append([x, otherUser])
+        count+=1
     chatsExist = count != 0
 
     room = MessageRoom.objects.get(id=roomId)
@@ -33,7 +37,3 @@ def chatPage(request,roomId): #https://www.youtube.com/watch?v=F4nwRQPXD8w&ab_ch
 
 
     return render(request, "chat/lobby.html", {"room":roomId, "messages":Messages.objects.filter(roomId=roomId), "chats": a, "length": chatsExist, "otherUser" : otherUser, 'message': findTopMessageRoom(request.user)})
-
-
-
-

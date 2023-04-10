@@ -16,9 +16,11 @@ def Index(request):
         HttpResponseRedirect: if the user is not ocdsb.ca or a staff
         The template itself
     """
-    # a=Administration()
-    # a.save()
-    
+
+    if not Administration.objects.filter(tags="Texas Instruments,Sharp,Casio,New,Used").exists():
+        a=Administration()
+        a.save()
+
     #If the user is logged in
     if request.user.is_authenticated:
         #Only keep users which are staff or are ocdsb.ca email addresses. If not delete them. 
@@ -151,7 +153,7 @@ def editListing(request, id):
             #Looping through the images they pasted, and storing them in TempImage database model. Storing them to upload to cloudinary and to get image link url. Email is needed to link a temporary image to the user
             for image in images:
                 if not checkValidImageEnding(str(image)):
-                    return render(request, "calcura/editListing.html", {"l": listing, "invalidEnding": True, 'message': findTopMessageRoom(request.user)})
+                    return render(request, "calcura/editListing.html", {"l": listing, "invalidEnding": True})
 
                 tempImg = TempImage(image= image, email=request.user.email)
                 tempImg.save()
@@ -180,7 +182,7 @@ def editListing(request, id):
         return HttpResponseRedirect("/vendorPage")
     
     #Return template, with the listing which is being edited
-    return render(request, "calcura/editListing.html", {"l": listing, 'message': findTopMessageRoom()})
+    return render(request, "calcura/editListing.html", {"l": listing})
 
 @login_required(login_url='/')
 def shop(request):
@@ -270,19 +272,22 @@ def shop(request):
             listings.append(listing)
             
     if "chat" in request.POST:
-        fullname = request.POST["email"]
-        if request.user.email!=fullname:
-            email=request.user.email+","+fullname
-            email2=fullname+","+request.user.get_full_name()
+        otherUserEmail = request.POST["email"]
+        if request.user.email!=otherUserEmail:
+            email=request.user.email+","+otherUserEmail
+            email2=otherUserEmail+","+request.user.email
             if MessageRoom.objects.filter(users=email).exists():
+                print(1)
                 obj=MessageRoom.objects.get(users=email)
                 return HttpResponseRedirect("/chat/"+str(obj.id))
             if MessageRoom.objects.filter(users=email2).exists():
+                print(2)
                 obj=MessageRoom.objects.get(users=email2)
                 return HttpResponseRedirect("/chat/"+str(obj.id))
             else:
+                print(3)
                 id=generateId(MessageRoom)
-                messageRoom = MessageRoom(users=email, user1= request.user, user2= User.objects.get(email__exact=fullname),id=id)
+                messageRoom = MessageRoom(users=email, user1= request.user, user2= User.objects.get(email__exact=otherUserEmail),id=id)
                 messageRoom.save()
                 return HttpResponseRedirect("/chat/"+str(id))
 
