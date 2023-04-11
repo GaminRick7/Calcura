@@ -355,10 +355,10 @@ def findTopMessageRoom(user):
     Function to find the room from which the user sent or received their latest message
     Args: none
     Returns:
-        topMessageRoom.roomId (latest room id)
+        topMessageRoom.idd (latest room id) or False (if no room is found)
     """
     try:
-        topMessageRoom = Messages.objects.filter(user=user).order_by('-datetime')[:1].get()
-        return topMessageRoom.roomId
+        topMessageRoom = MessageRoom.objects.filter(users__contains = user.email).order_by('-latestDateTime')[-1]
+        return topMessageRoom.id
     except:
         return False

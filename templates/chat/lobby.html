@@ -10,7 +10,7 @@
     <title>Edit Listing | Calcura</title>
 </head> 
 <html>
-  <body>
+  <body onload="scrollDown()">
     {% block content %}
     <div class="flex flex-row mx-auto items-center justify-center mt-3">
       <svg class="w-10 h-10 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -36,12 +36,12 @@
         {% endfor %}
         </div>
       </div>
-      <div class="relative w-2/3 mr-5">
+      <div class="relative w-2/3 mr-5 h-96">
         <div class="relative inline-flex items-center w-full px-4 py-2 font-medium border-b border-r border-l shadow-md border-gray-200 rounded-lg">
           <img class="w-10 h-10 mr-2 rounded-full" src="{{otherUser.socialaccount_set.all.0.get_avatar_url}}">
           {{otherUser.get_full_name}}
         </div>
-        <div class="mb-2 max-h-72 overflow-y-auto" id="id_chat_item_container" onload="scrollDown()">
+        <div class="mb-2 max-h-[17.75rem] overflow-y-auto" id="id_chat_item_container" onload="scrollDown()">
           {% for message in messages %}
           {% if message.user.email == request.user.email %}
           <div class="grid justify-items-end mr-2">
@@ -51,7 +51,7 @@
             </div>
           </div>
           {% else %}
-          <div>
+          <div class="ml-2">
             <p class="text-xs text-gray-400">{{message.user.get_full_name}}</p>
             <div class="bg-gray-400 rounded-tl-lg shadow-lg rounded-tr-lg rounded-br-lg max-w-lg inline-block">
               <p class="text-base text-white p-1.5">{{message.message}}</p>
@@ -77,6 +77,9 @@
         var objDiv = document.getElementById("id_chat_item_container");
         objDiv.scrollTop = objDiv.scrollHeight;
       }
+      document.addEventListener("DOMContentLoaded", function() {
+        scrollDown();
+      });
       //Setting the websocket route to the domain + websocket/chat and the roomname provided by backend
       const chatSocket = new WebSocket(`ws://` + window.location.host + `/ws/chat/`+"{{room}}" + '/');
       chatSocket.onopen = function (e) {
@@ -114,7 +117,7 @@
             </div>`;
           }
           else{
-            div.innerHTML = `<p class="text-xs text-gray-400">${data.email}</p>
+            div.innerHTML = `<p class="text-xs text-gray-400">${data.fullname}</p>
             <div class="bg-gray-400 shadow-lg rounded-tl-lg rounded-tr-lg rounded-br-lg max-w-lg inline-block">
               <p class="text-base text-white p-1.5">${data.message}</p>
             </div>`;

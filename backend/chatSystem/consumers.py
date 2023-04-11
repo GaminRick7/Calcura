@@ -1,6 +1,7 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Messages
+from Calcura.models import MessageRoom
 import os
 import django
 import re
@@ -60,6 +61,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
         email = text_data_json["email"]
+        MessageRoom.objects.filter(id=self.scope['url_route']['kwargs']['roomId']).update(latestDateTime=datetime.datetime.now())
 
         #If the message isn't blank
         if message!="":
