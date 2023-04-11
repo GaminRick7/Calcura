@@ -36,6 +36,7 @@
         {% endfor %}
         </div>
       </div>
+      {% if not basePage %}
       <div class="relative w-2/3 mr-5 h-96">
         <div class="relative inline-flex items-center w-full px-4 py-2 font-medium border-b border-r border-l shadow-md border-gray-200 rounded-lg">
           <img class="w-10 h-10 mr-2 rounded-full" src="{{otherUser.socialaccount_set.all.0.get_avatar_url}}">
@@ -69,6 +70,13 @@
             </svg>            
           </button>
         </div>
+        {% else %}
+          {% if roomsExist %}
+            <p class="text-lg tracking-tight text-gray-900 text-center pt-5">Open up a chat from the sidebar!</p>
+          {% else %}
+            <p class="text-lg tracking-tight text-gray-900 text-center pt-5">Its looking empty here...</p>
+          {% endif %}
+        {% endif %}
       </div>
     </div>
     <script>
@@ -117,10 +125,12 @@
             </div>`;
           }
           else{
-            div.innerHTML = `<p class="text-xs text-gray-400">${data.fullname}</p>
+            div.innerHTML = `
+            <p class="text-xs text-gray-400">${data.fullname}</p>
             <div class="bg-gray-400 shadow-lg rounded-tl-lg rounded-tr-lg rounded-br-lg max-w-lg inline-block">
               <p class="text-base text-white p-1.5">${data.message}</p>
-            </div>`;
+            </div>
+            `;
           }
           document.querySelector("#id_message_send_input").value = "";
           document.querySelector("#id_chat_item_container").appendChild(div);

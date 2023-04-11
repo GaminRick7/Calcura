@@ -19,10 +19,8 @@ def chatPage(request,roomId): #https://www.youtube.com/watch?v=F4nwRQPXD8w&ab_ch
             tempOtherUser = User.objects.get(email=x.users.replace(",","").replace(email, ""))
             print(x.latestDateTime,tempOtherUser)
             a.append([x, tempOtherUser])
-            count+=1
+        
 
-
-        chatsExist = count != 0
         room = MessageRoom.objects.get(id=roomId)
         allowedEmails = room.users.split(",")
 
@@ -33,16 +31,15 @@ def chatPage(request,roomId): #https://www.youtube.com/watch?v=F4nwRQPXD8w&ab_ch
         print(allowedEmails)
     else:
         return HttpResponseRedirect("/")
+    return render(request, "chat/lobby.html", {"room":roomId, "messages":Messages.objects.filter(roomId=roomId), "chats": a, "otherUser" : otherUser, 'message': findTopMessageRoom(request.user), "roomExists": True})
 
-
-
-    
-    
-
-
-
-    return render(request, "chat/lobby.html", {"room":roomId, "messages":Messages.objects.filter(roomId=roomId), "chats": a, "length": chatsExist, "otherUser" : otherUser, 'message': findTopMessageRoom(request.user)})
-
-
-
-
+def baseChatPage(request):
+    a=[]
+    count=0
+    for x in MessageRoom.objects.filter(users__contains = request.user.email).order_by('-latestDateTime'):
+        tempOtherUser = User.objects.get(email=x.users.replace(",","").replace(request.user.email, ""))
+        print(x.latestDateTime,tempOtherUser)
+        a.append([x, tempOtherUser])
+        count+=1
+    roomsExist=count!=0
+    return render(request, "chat/lobby.html", {"basePage": True,"chats": a, "roomsExist": roomsExist})
