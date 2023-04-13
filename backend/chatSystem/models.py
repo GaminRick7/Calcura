@@ -6,14 +6,23 @@ class Messages(models.Model):
     """
     Class to store messages in a room
     Attributes:
-        users (str): usernames of people which are in the chat
-        id (int): id of the group (created by defalt in django)
+        message (str): the message's value
+        user (User): User who sent the message
+        roomId (str): the id of the room message was sent in
+        datetime (datetime): the date and time message was sent
+        id (int): the id of the messsage
     """
     message=models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     roomId = models.TextField()
     datetime = models.DateTimeField(default=datetime.datetime.now())
     id = models.BigAutoField(primary_key=True)
+
     def __str__(self):
+        """
+        Magic method to easily represent the message
+        Returns:
+            F string of the message's representation
+        """
         return f"{self.user}({self.datetime}): {self.message}"
 

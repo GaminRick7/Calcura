@@ -49,25 +49,29 @@
           {{otherUser.get_full_name}}
         </div>
         <div style="width:100%;" class="mb-2 max-h-[17.75rem] overflow-y-auto" id="id_chat_item_container" onload="scrollDown()">
+
+          <!-- Displaying messages for the chat -->
           {% for message in messages %}
-          {% if message.user.email == request.user.email %}
-          <div class="grid justify-items-end mr-2">
-            <p class="text-xs text-gray-400">{{message.user.get_full_name}}</p>
-            <div class="bg-blue-400 rounded-tl-lg shadow-lg rounded-tr-lg rounded-bl-lg max-w-lg inline-block">
-              <p class="text-base text-white p-1.5">{{message.message}}</p>
-            </div>
-          </div>
-          {% else %}
-          <div class="ml-2">
-            <p class="text-xs text-gray-400">{{message.user.get_full_name}}</p>
-            <div class="bg-gray-400 rounded-tl-lg shadow-lg rounded-tr-lg rounded-br-lg max-w-lg inline-block">
-              <p class="text-base text-white p-1.5">{{message.message}}</p>
-            </div>
-          </div>
-          
-          {% endif %}
+            {% if message.user.email == request.user.email %}
+              <div class="grid justify-items-end mr-2">
+                <p class="text-xs text-gray-400">{{message.user.get_full_name}}</p>
+                <div class="bg-blue-400 rounded-tl-lg shadow-lg rounded-tr-lg rounded-bl-lg max-w-lg inline-block">
+                  <p class="text-base text-white p-1.5">{{message.message}}</p>
+                </div>
+              </div>
+            {% else %}
+              <div class="ml-2">
+                <p class="text-xs text-gray-400">{{message.user.get_full_name}}</p>
+                <div class="bg-gray-400 rounded-tl-lg shadow-lg rounded-tr-lg rounded-br-lg max-w-lg inline-block">
+                  <p class="text-base text-white p-1.5">{{message.message}}</p>
+                </div>
+              </div>
+            {% endif %}
           {% endfor %}
+
         </div>
+
+        <!-- Input & Button to send messages -->
         <div class="absolute bottom-0 inset-x-0 flex flex-row">
           <input type="text" id="id_message_send_input" class="bg-gray-50 shadow-lg border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
           <button type="submit" id="id_message_send_button" class="ml-2 text-white shadow-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2">
@@ -76,6 +80,7 @@
             </svg>            
           </button>
         </div>
+
         <!-- Only called if a user enters generic /chat/ page, not a specific room -->
         {% else %}
           <!-- If a user has rooms, tell them to open one -->
