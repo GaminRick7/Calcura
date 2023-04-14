@@ -56,14 +56,14 @@
               <div class="grid justify-items-end mr-2">
                 <p class="text-xs text-gray-400">{{message.user.get_full_name}}</p>
                 <div class="bg-blue-400 rounded-tl-lg shadow-lg rounded-tr-lg rounded-bl-lg max-w-lg inline-block">
-                  <p class="text-base text-white p-1.5">{{message.message}}</p>
+                  <p class="text-base text-white p-1.5 break-words">{{message.message}}</p>
                 </div>
               </div>
             {% else %}
               <div class="ml-2">
                 <p class="text-xs text-gray-400">{{message.user.get_full_name}}</p>
                 <div class="bg-gray-400 rounded-tl-lg shadow-lg rounded-tr-lg rounded-br-lg max-w-lg inline-block">
-                  <p class="text-base text-white p-1.5">{{message.message}}</p>
+                  <p class="text-base text-white p-1.5 break-words">{{message.message}}</p>
                 </div>
               </div>
             {% endif %}
@@ -98,6 +98,7 @@
         {% endif %}
       </div>
     </div>
+
     <script>
 
       function scrollDown() {
@@ -143,7 +144,7 @@
             div.innerHTML = `<div class="grid justify-items-end mr-2">
             <p class="text-xs text-gray-400">${data.fullname}</p>
             <div class="bg-blue-400 shadow-lg rounded-tl-lg rounded-tr-lg rounded-bl-lg max-w-lg inline-block">
-              <p class="text-base text-white p-1.5">${data.message}</p>
+              <p class="text-base text-white p-1.5 break-words">${data.message}</p>
             </div>
             </div>`;
           }
@@ -151,7 +152,7 @@
             div.innerHTML = `
             <p class="text-xs text-gray-400">${data.fullname}</p>
             <div class="bg-gray-400 shadow-lg rounded-tl-lg rounded-tr-lg rounded-br-lg max-w-lg inline-block">
-              <p class="text-base text-white p-1.5">${data.message}</p>
+              <p class="text-base text-white p-1.5 break-words">${data.message}</p>
             </div>
             `;
           }
