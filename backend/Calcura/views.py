@@ -343,6 +343,9 @@ def checkIfChecked(request, string, listy):
         pass
 
 def generateId(model):
+    """
+    Function to generate a random integer for models, of order of magnitude 10^10
+    """
     id=random.randint(10**10,10**11-1)
     while model.objects.filter(id=id).exists():
         id=random.randint(10**20,10**21-1)
@@ -359,6 +362,7 @@ def findTopMessageRoom(user):
     Returns:
         topMessageRoom.id (latest room id) or False (if no room is found)
     """
+
     try:
         topMessageRoom = MessageRoom.objects.filter(user2 = user.email).order_by('-latestDateTime')[-1]
         return topMessageRoom.id
