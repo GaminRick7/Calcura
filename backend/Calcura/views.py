@@ -368,3 +368,25 @@ def findTopMessageRoom(user):
         return topMessageRoom.id
     except:
         return False
+
+def showLatestChats(email, chatList):
+    """
+    Function get all chats a user is registered in, ordered by most recently a message was sent/chat created
+    Args:
+        email (str): the email of the user to get chats from
+        chatList (list): list to append indices to containing 1. the room 2. the other user in the room
+    Returns:
+        count (int): amount of rooms user is involved in
+    """
+
+    #Define count variable
+    count=0
+
+    #Start going through rooms user is in, going by most recent message room
+    for room in MessageRoom.objects.filter(users__contains = email).order_by('-latestDateTime'):
+
+        #Find the other user, append an indice to the list and increase count variable
+        otherUser = User.objects.get(email=room.users.replace(",","").replace(email, ""))
+        chatList.append([room, otherUser])
+        count+=1
+    return count
