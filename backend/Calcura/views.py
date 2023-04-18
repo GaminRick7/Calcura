@@ -225,7 +225,10 @@ def shop(request):
             max=int(request.POST["max"])
             min=int(request.POST["min"])
             advancedFilters[0]=True
-        
+        print(request.POST)
+        print(request.POST["sorting"])
+
+
         #For all currently existing tags, check if they are checked using checkIfChecked method
         for i in a[0].tags.split(","):
             checkIfChecked(request, i, tags)
@@ -269,10 +272,22 @@ def shop(request):
             if advancedFilters[0]:
                 if listing.price not in range(min,max+1):
                     continue
-            
+    
             #Append the listing to the list with all acceptable listings
-            listings.append(listing)
-            
+            listings.append(listing)     
+        
+        
+        sortMethod=request.POST["sorting"]
+        #If user wants sorting
+        if sortMethod!="ignore":
+            if sortMethod=="PA":
+                mergeSort(listings, "price")
+            elif sortMethod=="PD":
+                mergeSort(listings,"price")
+                listings.reverse()
+            elif sortMethod=="DA":
+                mergeSort(listings,"datetime")
+    
     if "chat" in request.POST:
         fullname = request.POST["email"]
         if request.user.email!=fullname:
@@ -309,7 +324,7 @@ def checkValidImageEnding(imageLink):
     """
     Check if an image ending is valid
     Args:
-        imageLink: the link of the image to check
+        imageLink (str): the link of the image to check
     Returns:
         True if its of acceptable ending
         False if it is not
@@ -390,3 +405,55 @@ def showLatestChats(email, chatList):
         chatList.append([room, otherUser])
         count+=1
     return count
+
+def mergeSort(a, param):
+    """
+    Function which performs mergeSort based on a list which holds objects via recursion
+    Args:
+        a (list): list which holds the objects
+        param (str): what parameter to check by
+    Returns:
+        a: the sorted list
+    """
+
+    #Once list is sorted down to single indices, stop splitting list
+    if len(a)>1:
+
+        #Declare variables
+        mid=len(a)//2
+        L=a[:mid]
+        R=a[mid:]
+        pointerL=pointerR=pointerArr=0
+        
+        #Start splitting list down to single indices via recursion. Only once finished it will start merging the indices
+        mergeSort(L, param)
+        mergeSort(R, param)
+        
+        #While there are elements left in the left and right side of the arrays
+        while pointerL<len(L) and pointerR<len(R):
+
+            #If the left side is smaller at its current pointer, append to the main array and increase its pointer
+            if getattr(L[pointerL],param)<getattr(R[pointerR],param):
+                a[pointerArr]=L[pointerL]
+                pointerL+=1
+            #If the right side is smaller at its pointer, append to the main array and increase its pointer
+            else:
+                a[pointerArr]=R[pointerR]
+                pointerR+=1
+            #Increase global pointer
+            pointerArr+=1
+        
+        #If there are elements left in the left array, append all to main array
+        while pointerL<len(L):
+            a[pointerArr]=L[pointerL]
+            pointerArr+=1
+            pointerL+=1
+        
+        #If there are elements left in the righ array, append all to main array
+        while pointerR<len(R):
+            a[pointerArr]=R[pointerR]
+            pointerArr+=1
+            pointerR+=1
+        
+        #Return the array
+        return a
