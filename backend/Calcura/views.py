@@ -121,6 +121,7 @@ def editListing(request, id):
     originalImageUrls = listing.image
     listing.image = listing.image.split(",")
     listing.image.pop(-1)
+    imageNumber = len(listing.image)
 
     #If submitting editListing form
     if  "submit" in request.POST:

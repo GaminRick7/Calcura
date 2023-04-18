@@ -155,13 +155,13 @@
                           <p class="text-base text-gray-900">{{calc.description}}</p>
                         </div>
                       </div>
-                      <div class="">
+                      <div class="my-2">
                         {% for tag in calc.tags %}
-                        <div class="text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-blue-200 text-blue-700 rounded-full mb-3">
+                        <div class="text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-blue-200 text-blue-700 rounded-full">
                           {{tag}}
                         </div>
                         {% endfor %}
-                        <p></p>
+                      </div>
                         <form method="POST" enctype="multipart/form-data">
                           {% csrf_token %}
                           <button name="chat" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center w-auto">

@@ -31,6 +31,7 @@ def chatPage(request,roomId): #https://www.youtube.com/watch?v=F4nwRQPXD8w&ab_ch
         #Get the message room given by the roomId, and the users who are allowed in it
         room = MessageRoom.objects.get(id=roomId)
         allowedEmails = room.users.split(",")
+        locked = room.locked
 
         #If person making request not allowed in room, redirect them
         if email not in allowedEmails:
@@ -45,7 +46,7 @@ def chatPage(request,roomId): #https://www.youtube.com/watch?v=F4nwRQPXD8w&ab_ch
         return HttpResponseRedirect("/")
 
     #Returning the template with context
-    return render(request, "chat/lobby.html", {"room":roomId, "messages":Messages.objects.filter(roomId=roomId), "chats": chatList, "otherUser" : otherUser, 'message': findTopMessageRoom(request.user), "roomExists": True})
+    return render(request, "chat/lobby.html", {"room":roomId, "locked":locked,"messages":Messages.objects.filter(roomId=roomId), "chats": chatList, "otherUser" : otherUser, 'message': findTopMessageRoom(request.user), "roomExists": True})
 
 def baseChatPage(request):
     """
