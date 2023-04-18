@@ -1,6 +1,8 @@
 env/
 .vscode/
-backend/backend/_pycache_/
-backend/Calcura/_pycache_/
-backend/Calcura/migrations/_pycache_/
+Calcura/backend/backend/_pycache_/
+Calcura/backend/Calcura/_pycache_/
+Calcura/backend/Calcura/migrations/
+Calcura/backend/chatSystem/_pycache_/
+Calcura/backend/chatSystem/migrations/
 .env

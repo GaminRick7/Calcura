@@ -57,7 +57,7 @@ class MessageRoom(models.Model):
         users (str): usernames of people which are in the chat
         id (int): id of the group (created by defalt in django)
     """
-
+    locked = models.BooleanField(default=False)
     users=models.TextField()
     user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user1")
     user2 = models.ForeignKey(User, on_delete=models.CASCADE)
