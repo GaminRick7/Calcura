@@ -3,3 +3,4 @@ env/
 backend/backend/_pycache_/
 backend/Calcura/_pycache_/
 backend/Calcura/migrations/_pycache_/
+.env
