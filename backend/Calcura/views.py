@@ -18,7 +18,7 @@ def Index(request):
     """
     # a=Administration()
     # a.save()
-    
+        
     #If the user is logged in
     if request.user.is_authenticated:
         #Only keep users which are staff or are ocdsb.ca email addresses. If not delete them. 
