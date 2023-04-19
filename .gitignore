@@ -6,3 +6,4 @@ Calcura/backend/Calcura/migrations/
 Calcura/backend/chatSystem/_pycache_/
 Calcura/backend/chatSystem/migrations/
 .env
+!.pyc
