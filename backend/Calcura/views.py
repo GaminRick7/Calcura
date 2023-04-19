@@ -88,17 +88,15 @@ def createListing(request):
         images=TempImage.objects.all()
         imageUrls=""
 
-        imageNumber = 0
         #Go through the images, and if the image belongs to the user, add it to the imageUrls string. After that, delete the image from the database for storage purposes
         for image in images:
             
             if image.email==request.user.email:
                 imageUrls += str(image.image.url) + ","
-                imageNumber += 1
                 image.delete()
 
         #Creating a new calculator listing, with the images stored as a string. 
-        a=Calculator(title=title, description=description,image=imageUrls, imageNumber=imageNumber,price=price,tags=tags,id=generateId(Calculator), user=request.user)
+        a=Calculator(title=title, description=description,image=imageUrls, price=price,tags=tags,id=generateId(Calculator), user=request.user)
         a.save()
         return HttpResponseRedirect("/vendorPage")
     return render(request, "calcura/createListing.html", {})
@@ -121,7 +119,6 @@ def editListing(request, id):
     originalImageUrls = listing.image
     listing.image = listing.image.split(",")
     listing.image.pop(-1)
-    imageNumber = len(listing.image)
 
     #If submitting editListing form
     if  "submit" in request.POST:
@@ -163,18 +160,16 @@ def editListing(request, id):
             images=TempImage.objects.all()
             imageUrls=""
 
-            imageNumber =0
             #Go through the images, and if the image belongs to the user, add it to the imageUrls string. After that, delete the image from the database for storage purposes
             for image in images:
                 if image.email==request.user.email:
                     imageUrls += str(image.image.url) + ","
                     image.delete()
-                    imageNumber+=1
         else:
             imageUrls = originalImageUrls
 
         #Updating the calculator object
-        Calculator.objects.filter(id=id).update(title=title,price=price,description=description,tags=tags,image=imageUrls,imageNumber=imageNumber)
+        Calculator.objects.filter(id=id).update(title=title,price=price,description=description,tags=tags,image=imageUrls)
 
         #Redirecting user to the vendorPage
         return HttpResponseRedirect("/vendorPage")
@@ -187,7 +182,6 @@ def editListing(request, id):
     #Return template, with the listing which is being edited
     return render(request, "calcura/editListing.html", {"l": listing, 'message': findTopMessageRoom(request.user)})
 
-@login_required(login_url='/')
 def shop(request):
 
     #If form didn't return anything/method wasn't POST, return all available listings, and state no filters were given
@@ -309,7 +303,8 @@ def shop(request):
     #In the listings, split the image list so it is accessible as a list
     for i in range(len(listings)):
         listings[i].image = listings[i].image.split(",")[:-1]
-        listings[i].imageNumber = range(listings[i].imageNumber)
+        listings[i].numImages=len(listings[i].image)
+        listings[i].imageNumber = range(listings[i].numImages)
         listings[i].tags = listings[i].tags.split("  ")[0:-1]
 
     #Items in the listings table are stored so the higher rows are the earliest added. Default option is sort by upload date, so reverse so most recent uplaoded/edited listing is at top

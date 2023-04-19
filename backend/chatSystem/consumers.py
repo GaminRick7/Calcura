@@ -25,6 +25,8 @@ async def saveItems(self,message,user):
     #Creating the message object then saving it to db
     toSave=Messages(message=message,user=User.objects.filter(email=user).get(),roomId=self.scope['url_route']['kwargs']['roomId'], datetime= datetime.datetime.now(),id=generateId(Messages))
     toSave.save()
+    messageRoom=MessageRoom.objects.get(id=self.scope['url_route']['kwargs']['roomId'])
+    messageRoom.messages.add(toSave)
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
