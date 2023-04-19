@@ -32,7 +32,7 @@
       </svg>
     </div>
       <div class="mr-auto place-self-center lg:col-span-7 delay-[300ms] duration-[600ms] taos:opacity-0" data-taos-offset="100">
-          <h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight text-indigo-700 leading-none md:text-5xl xl:text-6xl">Welcome to Calcura</h1>
+          <h1 id="app" class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight text-gray-800 leading-none md:text-5xl xl:text-6xl">Welcome to Calcura</h1>
           <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat fugiat aliqua.</p>
             {% if user.is_authenticated == False %}
             <a href="{% provider_login_url 'google' %}" class="mr-2 inline-block rounded-lg bg-indigo-600 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-indigo-600 hover:bg-indigo-700 hover:ring-indigo-700">
@@ -99,16 +99,16 @@
   </div>
 </section>
 <section>
-<div class="bg-white py-24 sm:py-32">
-  <div class="mx-auto grid max-w-7xl gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-3">
+<div class="py-24 sm:py-32">
+  <div class="mx-auto grid max-w-7xl gap-x-2 gap-y-20 px-6 lg:px-8 xl:grid-cols-3">
     <div class="max-w-2xl mx-auto">
-      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">Meet The Developers</h2>
+      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white" id="">Meet The Developers</h2>
       <p class="text-gray-500 sm:text-xl dark:text-gray-400 text-center">They made the coolest ICS4U project.</p>
     </div>
-    <ul role="list" class="grid gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-2">
+    <ul role="list" class="mx-auto grid gap-x-48 gap-y-12 sm:grid-cols-2 sm:gap-y-8 xl:col-span-2 delay-[300ms] duration-[600ms] taos:translate-y-[50px] taos:opacity-0">
       <li>
         <div class="grid justify-items-center">
-          <img class="h-16 w-16 rounded-full" src="static/images/raihaan.jpg" alt="">
+          <img class="h-32 w-32 rounded-full" src="static/images/raihaan.jpg" alt="">
           <div>
             <h3 class="text-base text-center font-semibold leading-7 tracking-tight text-gray-900">Raihaan Sandhu</h3>
             <p class="text-sm text-center font-semibold leading-6 text-indigo-600">Grade 11 Student @ MHS</p>
@@ -117,9 +117,9 @@
       </li>
       <li>
         <div class="grid justify-items-center">
-          <img class="h-16 w-16 rounded-full" src="static/images/darun.jpg" alt="">
+          <img class="h-32 w-32 rounded-full" src="static/images/darun.jpg" alt="">
           <div>
-            <h3 class="text-base text-center font-semibold leading-7 tracking-tight text-gray-900">Darun Kanesalingan</h3>
+            <h3 class="text-base text-center font-semibold leading-7 tracking-tight text-gray-900">Darun Kanesalingam</h3>
             <p class="text-sm text-center font-semibold leading-6 text-indigo-600">Grade 11 Student @ MHS</p>
           </div>
         </div>
@@ -132,6 +132,27 @@
 </section>
 <script>document.documentElement.classList.add('js')</script>
 <script src="https://unpkg.com/taos@1.0.2/dist/taos.js"></script>
+<script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+<script>
+  var app = document.getElementById('app');
+
+var typewriter = new Typewriter(app, {
+  loop: true,
+  delay: 75,
+});
+
+typewriter
+  .pauseFor(500)
+  .typeString('Welcome to <span style="color: #5145cd;">Calcura</span>')
+  .pauseFor(300)
+  .deleteChars(7)
+  .typeString('your hub to <span style="color: #5145cd;">buy</span> calculators')
+  .pauseFor(300)
+  .deleteChars(15)
+  .typeString('<span style="color: #5145cd;">sell</span> calculators')
+  .pauseFor(1000)
+  .start();
+</script>
   {% endblock %}
   </body>
 </html>
