@@ -1,10 +1,18 @@
 from django.contrib import admin
-from .models import Calculator, Administration, MessageRoom
+from .models import Calculator, Administration, MessageRoom, MessageRoomMembership
 
 
 # Registering models so we can access them within django's admin page
-admin.site.register(Calculator)
+class CalculatorAdmin(admin.ModelAdmin):
+    
+    list_display = (
+        "imageNumber",
+        "numImages",
+    )  
+
+admin.site.register(Calculator, CalculatorAdmin)
 admin.site.register(Administration)
+admin.site.register(MessageRoomMembership)
 
 @admin.action(description='Close Message Room')
 def closeMessageRoom(modeladmin, request, queryset):
@@ -15,5 +23,4 @@ def openMessageRoom(modeladmin, request, queryset):
 
 class MessageRoomAdmin(admin.ModelAdmin):
     actions = [closeMessageRoom, openMessageRoom]
-
 admin.site.register(MessageRoom, MessageRoomAdmin)
