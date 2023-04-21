@@ -10,12 +10,12 @@
   </head>
   <body>
   {% block content %}
+  
   <div class="z-40 absolute bottom-0 left-0 h-16 w-16 ...">
-    <button type="button" class="hover:fill-white text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 mx-3" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation">
+    <button type="button" class="hover:fill-white text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mx-3" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation" data-drawer-backdrop="true">
       <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
         <path stroke-linecap="round" stroke-linejoin="round" d="M6 13.5V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 9.75V10.5" />
       </svg>      
-      <span class="sr-only">Icon description</span>
     </button>
   </div>
     <div class="mx-auto max-w-7xl my-4 px-4 sm:py-4 sm:px-6 lg:px-8">
@@ -31,7 +31,7 @@
      </div>
      
      <!-- Expandable sidebar for more filters -->
-     <div id="drawer-navigation" class="fixed top-0 left-0 z-40 w-64 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-navigation-label">
+     <div id="drawer-navigation" class="fixed top-0 left-0 z-40 w-64 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white" tabindex="-1" aria-labelledby="drawer-navigation-label">
          <h5 id="drawer-navigation-label" class="text-base font-semibold text-gray-500 uppercase dark:text-gray-400">Filters</h5>
          <button type="button" data-drawer-hide="drawer-navigation" aria-controls="drawer-navigation" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" >
              <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -78,7 +78,7 @@
         </form>
         </div>
      </div>
-      <div class="mt-6 grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
+      <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
         {%for calc in listings  %}
         <div class="group relative" data-modal-target="defaultModal{{calc.id}}" data-modal-toggle="defaultModal{{calc.id}}" >
           <div class="h-72 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200">
@@ -117,8 +117,8 @@
                           <span class="sr-only">Close modal</span>
                       </button>
                   </div>
-                  <div class="mb-4 flex flex-row mx-5 justify items-center">
-                    <div class="flex w-2/5">
+                  <div class="mb-4 grid grid-cols-1 sm:grid-cols-3 mx-5 justify items-center">
+                    <div class="col-span-1">
                     <div id="default-carousel" class="relative w-full" data-carousel="static">
                       <!-- Carousel wrapper -->
                       <div class="relative h-56 overflow-hidden rounded-lg border md:h-96">
@@ -150,7 +150,7 @@
                       </button>
                     </div>
                     </div>
-                    <div class="w-3/5 space-y-12 ml-5">
+                    <div class="col-span-2 space-y-12 sm:ml-5">
                       <div>
                         <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{calc.title}}</h1>
                         <p class="text-md font-medium text-gray-900">${{calc.price}}</p>

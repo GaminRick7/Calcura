@@ -17,7 +17,7 @@
       {% if length %}
       <p class="text-lg tracking-tight text-gray-900 text-center pt-5">You don't have any Listings yet. Click below to create one</p>
       {% endif %}
-      <div class="mt-6 grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
+      <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
         {%for calc in listing%}
         <div class="group relative">
           <div class="h-72 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200">
@@ -57,7 +57,7 @@
       </div>
     </div>
   
-    <button class="m-5 text-right bg-purple-600 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded">
+    <button class="mx-auto w-1/2 text-center bg-purple-600 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded">
       <a href="{% url 'createListing' %}">Create Listing</a>
     </button>
   {% endblock %}
