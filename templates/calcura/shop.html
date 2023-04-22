@@ -119,22 +119,31 @@
                   </div>
                   <div class="mb-4 grid grid-cols-1 sm:grid-cols-3 mx-5 justify items-center">
                     <div class="col-span-1">
+                    
                     <div id="default-carousel" class="relative w-full" data-carousel="static">
-                      <!-- Carousel wrapper -->
-                      <div class="relative h-56 overflow-hidden rounded-lg border md:h-96">
+                      {% if calc.numImages == 1 %}
+                      <div class="relative h-56 overflow-y-auto rounded-lg border md:h-96">
+                        <div class="hidden duration-700 ease-in-out">
+                          <img src="{{calc.image.0}}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                        </div>
+                      </div>
+                      {% else %}
+                        <!-- Carousel wrapper -->
+                        <div class="relative h-56 overflow-hidden rounded-lg border md:h-96">
                           {% for pic in calc.image%}
                             <!-- Item 1 -->
                             <div class="hidden duration-700 ease-in-out" data-carousel-item>
                                 <img src="{{pic}}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
                             </div>
                           {% endfor %}
-                      </div>
-                      <!-- Slider indicators -->
-                      <div class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
-                        {% for pic in calc.imageNumber%}
-                          <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide {{pic}}" data-carousel-slide-to="{{pic}}"></button>
-                        {% endfor %}
-                      </div>
+                        </div>
+                        <!-- Slider indicators -->
+                        <div class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
+                          {% for pic in calc.imageNumber%}
+                            <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide {{pic}}" data-carousel-slide-to="{{pic}}"></button>
+                          {% endfor %}
+                        </div>
+                      {% endif %}
                       <!-- Slider controls -->
                       <button type="button" class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
                           <span class="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
