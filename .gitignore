@@ -5,6 +5,7 @@ backend/Calcura/_pycache_/
 backend/Calcura/migrations/
 backend/Calcura/migrations/_pycache_/
 backend/chatSystem/_pycache_/
-backend/chatSystem/migrations/
+migrations
 .env
-!.pyc
+*.pyc
+__pycache__
