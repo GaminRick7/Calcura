@@ -28,6 +28,8 @@ async def saveItems(self,message,user):
     messageRoom=MessageRoom.objects.get(id=self.scope['url_route']['kwargs']['roomId'])
     messageRoom.messages.add(toSave)
 
+async def deleteItem(self,message):
+    Messages.objects.filter(id=message).delete()
 
 class ChatConsumer(AsyncWebsocketConsumer):
     """
@@ -73,43 +75,60 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = text_data_json["message"]
         email = text_data_json["email"]
 
-        #Update the datetime value in the message room from which the message belongs to
-        MessageRoom.objects.filter(id=self.scope['url_route']['kwargs']['roomId']).update(latestDateTime=datetime.datetime.now())
-
-        #Filtering any bad words
-        if message!="":
-            #For all the bad words in the list
-            for badWord in self.badWordsList:
-                #If a bad word is in the message 
-                if badWord.lower() in message.lower():
-                    #Split the message into a list of words
-                    message = message.split(" ")
-                    
-                    #Query through the list of words
-                    for i in range(len(message)):
-
-                        #If the bad word is in the word
-                        if badWord.lower() in message[i].lower():
-                            
-                            #Replace the bad word with '*'
-                            message[i] = message[i].lower().replace(badWord.lower(), "*"*len(badWord))
-                            
-                    #Finally, turn the message BACK into a string once filtering is completed
-                    message=" ".join(message)
-                    
+        if email=="delete@delete.com":
+            print("you wanna delete")
             #Spread the message to other users in the chatroom with the sendMessage function defined right below
             await self.channel_layer.group_send(
                 self.roomGroupName,{
-                    "type" : "sendMessage" ,
+                    "type" : "deleteMessage" ,
                     "message" : message ,
                     "email" : email ,
                 })
             
             #Saving message to db
-            await saveItems(self,message,email)
+            await deleteItem(self,message)
+        else:
+            #Update the datetime value in the message room from which the message belongs to
+            MessageRoom.objects.filter(id=self.scope['url_route']['kwargs']['roomId']).update(latestDateTime=datetime.datetime.now())
+            #Filtering any bad words
+            if message!="":
+                #For all the bad words in the list
+                for badWord in self.badWordsList:
+                    #If a bad word is in the message 
+                    if badWord.lower() in message.lower():
+                        #Split the message into a list of words
+                        message = message.split(" ")
+                        
+                        #Query through the list of words
+                        for i in range(len(message)):
+
+                            #If the bad word is in the word
+                            if badWord.lower() in message[i].lower():
+                                
+                                #Replace the bad word with '*'
+                                message[i] = message[i].lower().replace(badWord.lower(), "*"*len(badWord))
+                                
+                        #Finally, turn the message BACK into a string once filtering is completed
+                        message=" ".join(message)
+                        
+                #Spread the message to other users in the chatroom with the sendMessage function defined right below
+                await self.channel_layer.group_send(
+                    self.roomGroupName,{
+                        "type" : "sendMessage" ,
+                        "message" : message ,
+                        "email" : email ,
+                    })
+                
+                #Saving message to db
+                await saveItems(self,message,email)
 
     #Takes the user which is sending data and then holds it. It then sends the message and user to all instances in group. 
     async def sendMessage(self , event) :
         message = event["message"]
         email = event["email"]
         await self.send(text_data = json.dumps({"message":message ,"email":email, "fullname" : User.objects.filter(email=email).get().get_full_name()}))
+    async def deleteMessage(self , event) :
+        message = event["message"]
+        email = event["email"]
+        print(message, email)
+        await self.send(text_data = json.dumps({"message":message ,"email":email}))
