@@ -27,6 +27,7 @@ async def saveItems(self,message,user):
     toSave.save()
     messageRoom=MessageRoom.objects.get(id=self.scope['url_route']['kwargs']['roomId'])
     messageRoom.messages.add(toSave)
+    return toSave.id
 
 async def deleteItem(self,message):
     Messages.objects.filter(id=message).delete()
@@ -76,7 +77,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         email = text_data_json["email"]
 
         if email=="delete@delete.com":
-            print("you wanna delete")
+
             #Spread the message to other users in the chatroom with the sendMessage function defined right below
             await self.channel_layer.group_send(
                 self.roomGroupName,{
@@ -85,7 +86,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     "email" : email ,
                 })
             
-            #Saving message to db
+            #Deletimg message from db
             await deleteItem(self,message)
         else:
             #Update the datetime value in the message room from which the message belongs to
@@ -110,23 +111,26 @@ class ChatConsumer(AsyncWebsocketConsumer):
                                 
                         #Finally, turn the message BACK into a string once filtering is completed
                         message=" ".join(message)
-                        
+                
+                #Saving message to db
+                messageId = await saveItems(self,message,email)
+
                 #Spread the message to other users in the chatroom with the sendMessage function defined right below
                 await self.channel_layer.group_send(
                     self.roomGroupName,{
                         "type" : "sendMessage" ,
                         "message" : message ,
                         "email" : email ,
+                        "messageId" : messageId ,
                     })
                 
-                #Saving message to db
-                await saveItems(self,message,email)
 
     #Takes the user which is sending data and then holds it. It then sends the message and user to all instances in group. 
     async def sendMessage(self , event) :
         message = event["message"]
         email = event["email"]
-        await self.send(text_data = json.dumps({"message":message ,"email":email, "fullname" : User.objects.filter(email=email).get().get_full_name()}))
+        messageId=event["messageId"]
+        await self.send(text_data = json.dumps({"message":message ,"email":email, "messageId": messageId}))
     async def deleteMessage(self , event) :
         message = event["message"]
         email = event["email"]
