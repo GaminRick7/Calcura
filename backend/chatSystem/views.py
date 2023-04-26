@@ -53,7 +53,7 @@ def chatPage(request,roomId): #https://www.youtube.com/watch?v=F4nwRQPXD8w&ab_ch
         return HttpResponseRedirect("/")
 
     #Returning the template with context
-    return render(request, "chat/lobby.html", {"room":roomId, "locked":locked,"messages":Messages.objects.filter(roomId=roomId), "chats": chatList, "otherUser" : otherUser, 'message': findTopMessageRoom(request.user), "roomExists": True})
+    return render(request, "chat/lobby.html", {"room":roomId, "locked":locked,"messages":Messages.objects.filter(roomId=roomId), "chats": chatList, "otherUser" : otherUser, "roomExists": True})
 
 def baseChatPage(request):
     """

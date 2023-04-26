@@ -68,7 +68,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
     
     #Removes the user from the group when chat page & connection is closed
-    async def disconnect(self):
+    async def disconnect(self, close_code):
         """
         Function to remove a group from a user's channel layer when they disconnect from it
         """
