@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from Calcura.models import MessageRoom, Calculator
-from Calcura.views import generateId, findTopMessageRoom
+from Calcura.views import generateId
 from django.http import HttpResponseRedirect
 from .models import Messages
 
