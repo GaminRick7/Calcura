@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from Calcura.models import MessageRoom, Calculator
-from Calcura.views import generateId, findTopMessageRoom
+from Calcura.views import generateId
 from django.http import HttpResponseRedirect
 from .models import Messages
 
@@ -53,7 +53,7 @@ def chatPage(request,roomId): #https://www.youtube.com/watch?v=F4nwRQPXD8w&ab_ch
         return HttpResponseRedirect("/")
 
     #Returning the template with context
-    return render(request, "chat/lobby.html", {"room":roomId, "locked":locked,"messages":Messages.objects.filter(roomId=roomId), "chats": chatList, "otherUser" : otherUser, 'message': findTopMessageRoom(request.user), "roomExists": True})
+    return render(request, "chat/lobby.html", {"room":roomId, "locked":locked,"messages":Messages.objects.filter(roomId=roomId), "chats": chatList, "otherUser" : otherUser, "roomExists": True})
 
 def baseChatPage(request):
     """

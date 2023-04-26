@@ -273,30 +273,48 @@ def shop(request):
         
         
         sortMethod=request.POST["sorting"]
+
         #If user wants sorting
         if sortMethod!="ignore":
+
+            #Sort by price ascending
             if sortMethod=="PA":
                 mergeSort(listings, "price")
+
+            #Sort by price descending
             elif sortMethod=="PD":
                 mergeSort(listings,"price")
                 listings.reverse()
+
+            #Sort by date added (default)
             elif sortMethod=="DA":
                 mergeSort(listings,"datetime")
     
+    #If they made a request to talk to a vendor . . .
     if "chat" in request.POST:
-        fullname = request.POST["email"]
-        if request.user.email!=fullname:
-            email=request.user.email+","+fullname
-            email2=fullname+","+request.user.get_full_name()
-            if MessageRoom.objects.filter(users=email).exists():
-                obj=MessageRoom.objects.get(users=email)
+
+        #Get the email of the vendor from the request
+        email = request.POST["email"]
+
+        #If the user who made the request isn't the same as the vendor . . .
+        if request.user.email!=email:
+
+            #Get the two possible variations for users in a room (in db stored as consumer + vendor)
+            users1=request.user.email+","+email
+            users2=email+","+request.user.email
+
+            #Checking if the variations already exist in a message room to ensure duplication does not occur
+            if MessageRoom.objects.filter(users=users1).exists():
+                obj=MessageRoom.objects.get(users=users1)
                 return HttpResponseRedirect("/chat/"+str(obj.id))
-            if MessageRoom.objects.filter(users=email2).exists():
-                obj=MessageRoom.objects.get(users=email2)
+            if MessageRoom.objects.filter(users=users2).exists():
+                obj=MessageRoom.objects.get(users=users2)
                 return HttpResponseRedirect("/chat/"+str(obj.id))
+            
+            #Create a new message room for the users, and redirect the user to the new message room
             else:
                 id=generateId(MessageRoom)
-                messageRoom = MessageRoom(users=email, user1= request.user, user2= User.objects.get(email__exact=fullname),id=id)
+                messageRoom = MessageRoom(users=users1, user1= request.user, user2= User.objects.get(email__exact=email),id=id)
                 messageRoom.save()
                 return HttpResponseRedirect("/chat/"+str(id))
 
@@ -310,6 +328,7 @@ def shop(request):
     #Items in the listings table are stored so the higher rows are the earliest added. Default option is sort by upload date, so reverse so most recent uplaoded/edited listing is at top
     for l in listings:
         print(l.datetime)
+
     #Check if listings are present
     listingsPresent = len(listings)!=0
 
@@ -332,6 +351,7 @@ def checkValidImageEnding(imageLink):
     #If the last element in the list is not of an acceptable format, return False
     if splitImage[len(splitImage)-1] not in ["jpg","webp","png","jpeg","svg"]:
         return False
+    
     #If not, return True
     return True
 
@@ -355,30 +375,26 @@ def checkIfChecked(request, string, listy):
 
 def generateId(model):
     """
-    Function to generate a random integer for models, of order of magnitude 10^10
+    Function to generate a random integer for models, of order of magnitude 10^10 (to be changed depending on scale of users)
+    Args:
+        model (class): which model to create an id for
+    Returns:
+        id (int): unique id to use for the model provided
     """
+
+    #Generate an id
     id=random.randint(10**10,10**11-1)
+    
+    #If the id already exists, create another id till it doesn't exist
     while model.objects.filter(id=id).exists():
         id=random.randint(10**20,10**21-1)
+    
+    #Return the id
     return id
 
 @login_required(login_url='/')
 def nochat(request):
     return render(request, "chat/nochat.html")
-
-def findTopMessageRoom(user):
-    """
-    Function to find the room from which the user sent or received their latest message
-    Args: none
-    Returns:
-        topMessageRoom.id (latest room id) or False (if no room is found)
-    """
-
-    try:
-        topMessageRoom = MessageRoom.objects.filter(user2 = user.email).order_by('-latestDateTime')[-1]
-        return topMessageRoom.id
-    except:
-        return False
 
 def showLatestChats(email, chatList):
     """

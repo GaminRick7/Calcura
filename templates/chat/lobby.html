@@ -43,7 +43,7 @@
      </div>
   </div>
     <div class="grid grid-cols-1 sm:grid-cols-3 h-96 max-h-96">
-
+ 
       <!-- Sidebar showing user all of their chats -->
       <div class="hidden sm:block col-span-1 mr-2 ml-5 border-2 rounded-lg max-h-full">
         <div class="relative inline-flex items-center w-full py-2 font-medium border-b shadow-md border-gray-900"></a>
@@ -52,8 +52,8 @@
           </div>
         </div>
         <div class="max-h-96 overflow-y-auto">
-
-        
+ 
+ 
         {% for chat in chats %}
           <a name="chat" href="{{chat.0.id}}" class="text-sm relative inline-flex items-center w-full px-4 py-2 font-medium border-b border-gray-200 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
             <img class="w-8 h-8 mr-2 rounded-full" src="{{chat.1.socialaccount_set.all.0.get_avatar_url}}">
@@ -63,7 +63,7 @@
         {% endfor %}
         </div>
       </div>
-
+ 
       <!-- If entering a specific room (not the base page) -->
       {% if not basePage %}
       {% if locked %}
@@ -80,7 +80,7 @@
           {{otherUser.get_full_name}}
         </div>
         <div style="width:100%;" class="mb-2 max-h-[17.75rem] overflow-y-auto" id="id_chat_item_container" onload="scrollDown()">
-
+ 
           <!-- Displaying messages for the chat -->
           {% for message in messages %}
             {% if message.user.email == request.user.email %}
@@ -141,9 +141,9 @@
               </div>
             {% endif %}
           {% endfor %}
-
+ 
         </div>
-
+ 
         <!-- Input & Button to send messages -->
         <div class="absolute bottom-0 inset-x-0 flex flex-row">
           <input type="text" id="id_message_send_input" max_length="400" class="bg-gray-50 shadow-lg border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
@@ -154,7 +154,7 @@
           </button>
         </div>
         {% endif %}
-
+ 
         <!-- Only called if a user enters generic /chat/ page, not a specific room -->
         {% else %}
           <!-- If a user has rooms, tell them to open one -->
@@ -172,9 +172,9 @@
         {% endif %}
       </div>
     </div>
-
+ 
     <script>
-
+ 
       function scrollDown() {
         var objDiv = document.getElementById("id_chat_item_container");
         objDiv.scrollTop = objDiv.scrollHeight;
