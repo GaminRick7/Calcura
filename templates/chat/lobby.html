@@ -1,24 +1,17 @@
 <!DOCTYPE html>
 {% extends '../calcura/base.html' %}
 {% load static %}
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Edit Listing | Calcura</title>
-</head> 
 <html>
   <body onload="scrollDown()">
     {% block content %}
+    <title>Chats | Calcura</title>
     <div class="grid grid-cols-7 items-center justify-center mt-3">
-      <button type="button" class="ml-1 col-span-2" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation" data-drawer-backdrop="true">
+      <button type="button" class="ml-2 col-span-2" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation" data-drawer-backdrop="true">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sm:hidden w-6 h-6 mr-3">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
         </svg>  
       </button>
-      <div class="col-span-5 flex flex-row">
+      <div class="col-span-3 flex flex-row mx-auto">
         <svg class="w-10 h-10 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
         </svg>
@@ -26,14 +19,16 @@
       </div>
     </div>
     <br>
+    <!-- Chat list is shown in the sidebar in mobile view/smaller screens -->
     <div id="drawer-navigation" class="fixed top-0 left-0 z-40 w-64 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white" tabindex="-1" aria-labelledby="drawer-navigation-label">
       <h5 id="drawer-navigation-label" class="text-base font-semibold text-gray-500 uppercase dark:text-gray-400">Your Chats</h5>
       <button type="button" data-drawer-hide="drawer-navigation" aria-controls="drawer-navigation" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" >
           <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
           <span class="sr-only">Close menu</span>
       </button>
-    <div class="py-4 overflow-y-auto">
-      {% for chat in chats %}
+      <div class="py-4 overflow-y-auto">
+        <!-- Each chat that the user is in is displayed -->
+        {% for chat in chats %}
           <a name="chat" href="{{chat.0.id}}" class="text-sm relative inline-flex items-center w-full px-4 py-2 font-medium border-b border-gray-200 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
             <img class="w-8 h-8 mr-2 rounded-full" src="{{chat.1.socialaccount_set.all.0.get_avatar_url}}">
             {{chat.1.get_full_name}}
@@ -44,16 +39,16 @@
   </div>
     <div class="grid grid-cols-1 sm:grid-cols-3 h-96 max-h-96">
  
-      <!-- Sidebar showing user all of their chats -->
+      <!-- Sidebar showing user all of their chats on larger screens-->
       <div class="hidden sm:block col-span-1 mr-2 ml-5 border-2 rounded-lg max-h-full">
-        <div class="relative inline-flex items-center w-full py-2 font-medium border-b shadow-md border-gray-900"></a>
+        <div class="relative inline-flex items-center w-full py-2 font-medium shadow-md"></a>
           <div class="mx-auto">
             <p class="text-center text-sm">Your Chats</p>
           </div>
         </div>
         <div class="max-h-96 overflow-y-auto">
  
- 
+        <!-- Each chat that the user is in is displayed -->
         {% for chat in chats %}
           <a name="chat" href="{{chat.0.id}}" class="text-sm relative inline-flex items-center w-full px-4 py-2 font-medium border-b border-gray-200 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
             <img class="w-8 h-8 mr-2 rounded-full" src="{{chat.1.socialaccount_set.all.0.get_avatar_url}}">
@@ -66,6 +61,7 @@
  
       <!-- If entering a specific room (not the base page) -->
       {% if not basePage %}
+      <!-- If the room is locked, shows an error message -->
       {% if locked %}
       <div class="flex flex-wrap p-8 m-auto col-span-2 w-1/2 sm:1/4 items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
@@ -73,6 +69,7 @@
         </svg>        
         <p class="px-5 text-lg tracking-tight text-gray-900 text-center pt-5">The administrator has locked this room.</p>
       </div>
+
       {% else %}
       <div class="col-span-2 relative mx-2 sm:ml-0 sm:mr-5 h-96">
         <div class="relative inline-flex items-center w-full px-4 py-2 font-medium border-b border-r border-l shadow-md border-gray-200 rounded-lg">       
@@ -83,59 +80,24 @@
  
           <!-- Displaying messages for the chat -->
           {% for message in messages %}
+            <!-- If the message is from the user, the message is styled and displayed to the right -->
             {% if message.user.email == request.user.email %}
               <div class="grid justify-items-end mr-2" id="{{message.id}}">
-                <p class="text-xs text-gray-400">{{message.user.get_full_name}}</p>
-                <div class="bg-blue-400 rounded-tl-lg shadow-lg rounded-tr-lg rounded-bl-lg max-w-lg inline-block">
-                  <button data-modal-target="popup-modal{{message.id}}" data-modal-toggle="popup-modal{{message.id}}"
-                  type="button">
-                  <svg class="mr-2 w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <div class="group hover:bg-violet-600 bg-violet-500 rounded-tl-lg shadow-lg rounded-tr-lg rounded-bl-lg max-w-lg inline-block border-b border-gray-200 rounded-lg flex flex-row">
+                  <p class="text-base text-white p-1.5 break-words">{{message.message}}</p>
+                <button onclick="deleteMessage('{{message.id}}')"
+                  type="button" class="hidden group-hover:inline">
+                  <svg class="mr-2 w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                   </svg>
                 </button>
-                  <p class="text-base text-white p-1.5 break-words">{{message.message}}</p>
                 </div>
               </div>
-                <div id="popup-modal{{message.id}}" tabindex="-1"
-                  class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
-                  <div class="relative w-full h-full max-w-md md:h-auto">
-                    <div class="relative bg-white rounded-lg shadow">
-                      <button type="button"
-                        class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                        data-modal-hide="popup-modal{{message.id}}">
-                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg">
-                          <path fill-rule="evenodd"
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="sr-only">Close modal</span>
-                      </button>
-                      <div class="p-6 text-center">
-                        <svg aria-hidden="true" class="mx-auto mb-4 text-gray-400 w-14 h-14" fill="none" stroke="currentColor"
-                          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <h3 class="mb-5 text-lg font-normal text-gray-500">Are you sure you want to delete this message?</h3>
-                        {%csrf_token%}
-                        <button onclick="deleteMessage('{{message.id}}')" id="delete_message_button{{message.id}}" value={{message.id}} data-modal-hide="popup-modal{{message.id}}" type="submit" name="delete"
-                          class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
-                          Yes, I'm sure
-                        </button>
-                        <p>{{message.id}}</p>
-                        <input type="hidden" name="message" id="message" value="{{message.id}}">
-                        <button data-modal-hide="popup-modal{{message.id}}" type="button"
-                          class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">No,
-                          cancel</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            
+            <!-- If the user is the recipient of the message, the message is styled and displayed to the left -->
             {% else %}
               <div class="ml-2" id="{{message.id}}">
-                <p class="text-xs text-gray-400">{{message.user.get_full_name}}</p>
-                <div class="bg-gray-400 rounded-tl-lg shadow-lg rounded-tr-lg rounded-br-lg max-w-lg inline-block">
+                <div class="bg-gray-400 rounded-lg shadow-lg max-w-lg inline-block border-b border-0.5 border-gray-200">
                   <p class="text-base text-white p-1.5 break-words">{{message.message}}</p>
                 </div>
               </div>
@@ -163,6 +125,7 @@
               <img class="w-10 h-10" src="{% static 'images/chatting-by-telephone-svgrepo-com.svg' %}">
               <p class="px-5 text-lg tracking-tight text-gray-900 text-center pt-5">Open up a chat from the sidebar!</p>
             </div>
+          <!-- If the user does not have any rooms, show an empty room message -->
           {% else %}
           <div class="col-span-2 flex flex-wrap p-8 m-auto w-1/2 sm:1/4 items-center justify-center">
             <img class="w-10 h-10" src="{% static 'images/sad-sitting-svgrepo-com.svg' %}">
@@ -176,69 +139,111 @@
     <script>
  
       function scrollDown() {
+        /*
+        Function to scroll the chat container to the bottom
+        Args: None
+        Returns: None
+        */
         var objDiv = document.getElementById("id_chat_item_container");
         objDiv.scrollTop = objDiv.scrollHeight;
       }
+      // When the page is loaded, the chat container is scrolled to the bottom
       document.addEventListener("DOMContentLoaded", function() {
         scrollDown();
       });
+      
       //Setting the websocket route to the domain + websocket/chat and the roomname provided by backend
       const chatSocket = new WebSocket(`ws://` + window.location.host + `/ws/chat/`+"{{room}}" + '/');
-      chatSocket.onopen = function (e) {
-        console.log("The connection was setup successfully !");
-      };
-      chatSocket.onclose = function (e) {
-        console.log("Something unexpected happened !");
-      };
+      // Sts focus on the input field which allows it to receive keyboard and similar events by default
       document.querySelector("#id_message_send_input").focus();
+
+      //Checks if a button is pressed
       document.querySelector("#id_message_send_input").onkeyup = function (e) {
+        /*
+        Function to check if the enter button is pressed. If so, the send button is automatically clicked
+        Args:
+          e (key): the key that has been pressed
+        Returns: none
+        */
         if (e.keyCode == 13) {
           document.querySelector("#id_message_send_button").click();
         }
       };
-      document.querySelector("#id_message_send_button").onclick = function (e) {
+      // Checks if the send button is clicked
+      document.querySelector("#id_message_send_button").onclick = function () {
+        /*
+        Function that sends the message to the backend
+        Args: None
+        Returns: none
+        */
+        // The message is stored as messageInput
         var messageInput = document.querySelector(
           "#id_message_send_input"
         ).value;
+        // Using the websocket, the message and the email of the user sending the message is sent to the backend
         chatSocket.send(JSON.stringify({ message: messageInput, email : "{{request.user.email}}"}));
       };
       function deleteMessage(id) {
+        /*
+        Used to delete a message
+        Args: None
+        Returns: None
+        */
         chatSocket.send(JSON.stringify({ message: id, email : "delete@delete.com"}));
       };
-      let messages=[-1,-1];
-      chatSocket.onmessage = function (e) {
-        const data = JSON.parse(e.data);
-        messages.push(data.message);
-        messages.pop(0);
-        console.log(messages);
-        console.log(data.message);
-        //Ensure they aren't sending empty field
+
+      // Checks if a message is reveived from the websocket
+      chatSocket.onmessage = function (parsedData) {
+        /*
+        Function that receives data sent from the backend using the websocket
+        Args:
+          parsedData(JSON): data from the chatsocket
+        Returns:
+          none
+        */
+        const data = JSON.parse(parsedData.data);
+        // Checks if the data sent wishes to delete a message
+        // This is checked using the unique email identifier "delete@delete.com" which is sent when deleting a message
         if (data.email=="delete@delete.com"){
+          //The message is deleted using the message ID 
           const element = document.getElementById(`${data.message}`);
           element.remove();
         }
+        //Ensures the message is not empty
         else if (data.message!=""){
-          // i want to check who is sending the message here; then div.innerHTML would change depending on that (i.e. message will be blue)
-          // i also need their name rather than just their email
+          //Creates a generic dive with HTML to beadded to
           var div = document.createElement("div");
+          //Checks if the user is sending the message
           if (data.email == "{{request.user.email}}"){
-            div.innerHTML = `<div class="grid justify-items-end mr-2">
-            <p class="text-xs text-gray-400">${data.fullname}</p>
-            <div class="bg-blue-400 shadow-lg rounded-tl-lg rounded-tr-lg rounded-bl-lg max-w-lg inline-block">
-              <p class="text-base text-white p-1.5 break-words">${data.message}</p>
-            </div>
-            </div>`;
+            //The user's message is styled and appended to the created div//
+            div.innerHTML =`<div class="grid justify-items-end mr-2" id="${data.messageId}">
+                <div class="group hover:bg-violet-600 bg-violet-500 rounded-tl-lg shadow-lg rounded-tr-lg rounded-bl-lg max-w-lg inline-block border-b border-gray-200 rounded-lg flex flex-row">
+                  <p class="text-base text-white p-1.5 break-words">${data.message}</p>
+                <button onclick="deleteMessage('${data.messageId}')"
+                  type="button" class="hidden group-hover:inline">
+                  <svg class="mr-2 w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                  </svg>
+                </button>
+                </div>
+              </div>`;
+            //The message input field is reset//
+            document.querySelector("#id_message_send_input").value = "";
           }
+          //Checks if the user is the recipient of the message
           else{
+            /*The other user's message is styled and appended to the created div*/
             div.innerHTML = `
-            <p class="text-xs text-gray-400">${data.fullname}</p>
-            <div class="bg-gray-400 shadow-lg rounded-tl-lg rounded-tr-lg rounded-br-lg max-w-lg inline-block">
-              <p class="text-base text-white p-1.5 break-words">${data.message}</p>
-            </div>
+            <div class="ml-2" id="${data.messageId}">
+                <div class="bg-gray-400 rounded-lg shadow-lg max-w-lg inline-block border-b border-0.5 border-gray-200">
+                  <p class="text-base text-white p-1.5 break-words">${data.message}</p>
+                </div>
+              </div>
             `;
           }
-          document.querySelector("#id_message_send_input").value = "";
+          // The created div is appended to the chat container
           document.querySelector("#id_chat_item_container").appendChild(div);
+          // The chat is scrolled to the latest message
           scrollDown()
         }
       };

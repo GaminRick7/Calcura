@@ -81,3 +81,13 @@ class MessageRoomMembership(models.Model):
     message = models.ForeignKey(Messages, on_delete=models.CASCADE)
     message_room = models.ForeignKey(MessageRoom, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+class Favourites(models.Model):
+    """
+    Class to store messages in a room
+    Attributes:
+        user (User): the user that owns the favourite
+        listing (Calculator): the favourited listing
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Calculator, on_delete=models.CASCADE)

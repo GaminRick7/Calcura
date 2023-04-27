@@ -191,6 +191,8 @@ def shop(request):
     min=""
     max=""
 
+    if "favourite" in request.POST:
+        print("favourite")
     #If the request was sent through the search bar...
     if "search-navbar" in request.POST:
         #Get the filter from the form
@@ -392,10 +394,6 @@ def generateId(model):
     #Return the id
     return id
 
-@login_required(login_url='/')
-def nochat(request):
-    return render(request, "chat/nochat.html")
-
 def showLatestChats(email, chatList):
     """
     Function get all chats a user is registered in, ordered by most recently a message was sent/chat created
@@ -469,3 +467,9 @@ def mergeSort(a, param):
         
         #Return the array
         return a
+
+#Method to create a listing in the calculator model
+@login_required(login_url='/')
+def favourites(request):
+    return render(request, "calcura/favourites.html")
+    

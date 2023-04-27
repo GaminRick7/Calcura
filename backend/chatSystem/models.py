@@ -26,3 +26,5 @@ class Messages(models.Model):
         """
         return f"{self.user}({self.datetime}): {self.message}"
 
+
+

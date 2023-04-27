@@ -13,10 +13,9 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('createListing/', vCalc.createListing, name="createListing"),
     path('vendorPage/', vCalc.vendorPage, name="vendorPage"),
-    # path("chat/", v.chatPage, name="chat"),
     path("editListing/<int:id>", vCalc.editListing, name="editListing"),
     path("shop/", vCalc.shop, name="shop"),
     path('chat/', include(chatUrls)),
-    path('nochat/', vCalc.nochat),
+    path('favourites/', vCalc.favourites, name="favourites"),
 ]
 urlpatterns += staticfiles_urlpatterns()
