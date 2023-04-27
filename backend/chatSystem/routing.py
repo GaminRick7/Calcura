@@ -7,4 +7,5 @@ print("HI")
 websocket_urlpatterns = [
     #Websocket routing to host multiple different chat rooms
     re_path(r'ws/chat/(?P<roomId>\w+)/$' , ChatConsumer.as_asgi()),
+    re_path(r'ws/chat/' , ChatConsumer.as_asgi()),
 ]

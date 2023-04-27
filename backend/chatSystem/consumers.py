@@ -52,21 +52,30 @@ class ChatConsumer(AsyncWebsocketConsumer):
     for i in range(len(badWordsList)):
         badWordsList[i]=badWordsList[i][:-1]
     outfile.close()
-
+    channel_name="name"
     async def connect(self):
         """
         Sets a group name and adds it to the channel layer when a user joins a message rom
         """
-        #Setting the groupname to the id after the [domain]/chat/
-        self.roomGroupName = self.scope['url_route']['kwargs']['roomId']
-
-        #Adding the group to the channel
-        await self.channel_layer.group_add(
-            self.roomGroupName ,
-            self.channel_name
-        )
-        await self.accept()
+        # #Setting the groupname to the id after the [domain]/chat/
+        # self.roomGroupName = self.scope['url_route']['kwargs']['roomId']
     
+        # #Adding the group to the channel
+        # await self.channel_layer.group_add(
+        #     self.roomGroupName ,
+        #     self.channel_name
+        # )
+        # await self.accept()
+        try:
+            self.roomGroupName = str(self.scope['url_route']['kwargs']['roomId'])
+        except:
+            for room in MessageRoom.objects.filter(users__contains = self.scope["user"].email):
+                await self.channel_layer.group_add(
+                    room.id,
+                    self.channel_name
+                )
+                await self.accept()
+        
     #Removes the user from the group when chat page & connection is closed
     async def disconnect(self, close_code):
         """

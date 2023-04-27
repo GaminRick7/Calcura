@@ -184,7 +184,7 @@
       });
       //Setting the websocket route to the domain + websocket/chat and the roomname provided by backend
       const chatSocket = new WebSocket(`ws://` + window.location.host + `/ws/chat/`+"{{room}}" + '/');
-      chatSocket.onopen = function (e) {
+      chatSocket.onopen() = function (e) {
         console.log("The connection was setup successfully !");
       };
       chatSocket.onclose = function (e) {
