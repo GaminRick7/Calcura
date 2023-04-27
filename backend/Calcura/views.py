@@ -191,8 +191,8 @@ def shop(request, pageNum):
     tags=[]
     min=""
     max=""
-    print(request.POST)
-    print(pageNum)
+    sortMethod=""
+    
     if "favourite" in request.POST:
         print("favourite")
     #If the request was sent through the search bar...
@@ -342,7 +342,7 @@ def shop(request, pageNum):
     listingsPresent = len(listings)!=0
 
     #Return the template
-    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "listingsPresent":listingsPresent})
+    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "sortMethod":sortMethod, "listingsPresent":listingsPresent})
 
 def checkValidImageEnding(imageLink):
     """
