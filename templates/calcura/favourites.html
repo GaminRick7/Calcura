@@ -3,8 +3,8 @@
   <body>
 
   {% block content %}
-  <title>Vendor Hub | Calcura</title>
-  <h1 class="text-4xl text-gray-900 text-center font-bold pt-5">Vendor Hub</h1>
+  <title>Favourites | Calcura</title>
+  <h1 class="text-4xl text-gray-900 text-center font-bold pt-5">Favourites</h1>
     <div class="mx-auto max-w-7xl mt-4 mb-8 px-4 sm:py-4 lg:px-8">
       <h2 class="text-2xl font-bold tracking-tight text-gray-900">Your Listings</h2>
       {% if length %}
@@ -50,9 +50,6 @@
       </div>
     </div>
   
-    <button class="mx-auto w-1/2 text-center bg-purple-600 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded">
-      <a href="{% url 'createListing' %}">Create Listing</a>
-    </button>
   {% endblock %}
   </body>
 </html>

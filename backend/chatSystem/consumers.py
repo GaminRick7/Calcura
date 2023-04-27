@@ -20,13 +20,14 @@ async def saveItems(self,message,user):
     Args:
         message (str): the value of the message which was sent
         user (User): the user who sent the message
+    Returns:
+        id (int): the id of the message
     """
 
     #Creating the message object then saving it to db
     toSave=Messages(message=message,user=User.objects.filter(email=user).get(),roomId=self.scope['url_route']['kwargs']['roomId'], datetime= datetime.datetime.now(),id=generateId(Messages))
     toSave.save()
-    messageRoom=MessageRoom.objects.get(id=self.scope['url_route']['kwargs']['roomId'])
-    messageRoom.messages.add(toSave)
+    #returning message id
     return toSave.id
 
 async def deleteItem(self,messageId):
@@ -67,7 +68,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
         await self.accept()
     
-    #Removes the user from the group when chat page & connection is closed
+    
     async def disconnect(self, close_code):
         """
         Function to remove a group from a user's channel layer when they disconnect from it

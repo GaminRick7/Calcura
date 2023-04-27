@@ -1,19 +1,10 @@
 {% extends './base.html' %}
 <html lang="en">
 
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <title>Edit Listing | Calcura</title>
-</head>
-
 <body>
 
   {% block content %}
-
+  <title>Create Listing | Calcura</title>
   <h1 class="text-2xl text-gray-900 text-center font-bold pt-5 pb-7">Create Listing</h1>
   <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
