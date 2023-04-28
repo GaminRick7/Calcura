@@ -87,37 +87,49 @@
      </div>
       <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
         {%for calc in listings  %}
-        <div class="group relative z-0" data-modal-target="defaultModal{{calc.id}}" data-modal-toggle="defaultModal{{calc.id}}" >
-          <div class="h-72 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200">
-            <img src="{{calc.image.0}}"  class="h-full w-full object-cover object-center lg:h-full lg:w-full group-hover:opacity-50">
-            <div class="flex flex-row absolute text-xl text-grey-600 opacity-0 w-full justify-center group-hover:opacity-100 font-bold top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto items-center">
+          <div class="group relative z-0"> 
+            <div class="h-72 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200"  data-modal-target="defaultModal{{calc.id}}" data-modal-toggle="defaultModal{{calc.id}}" >
+              <img src="{{calc.image.0}}"  class="h-full w-full object-cover object-center lg:h-full lg:w-full group-hover:opacity-50">
+              <div class="flex flex-row absolute text-xl text-grey-600 opacity-0 w-full justify-center group-hover:opacity-100 font-bold top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto items-center">
+              </div>
+            </div>
+            
+            <div class="mt-4 flex justify-between">
+              <div>
+                <h3 class="text-sm text-gray-700 text font-semibold">
+                    {{calc.title}}
+                </h3>
+              {% for tag in calc.tags %}
+              <div class="text-xs inline-flex font-bold leading-sm uppercase px-3 py-1 bg-blue-200 text-blue-700 rounded-full">
+                {{tag}}
+              </div>
+              {% endfor %}
+              </div>
+              <div class="grid grid-cols-1 justify-items-end">
+                <p class="text-sm font-medium text-gray-900">${{calc.price}}</p>
+                  <form action="" method="POST" enctype="multipart/form-data" class="z-50">
+                  {% csrf_token %}
+                  <input type="hidden" name="listing" id="listing" value="{{calc.id}}">
+                    {% if calc.id in favourites %}
+                      <button type="submit" name="favourite" class="z-10">
+                      <svg class="fill-red-400 w-5 h-5 hover:fill-red-400 z-10 hover:scale-110" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                      </svg>
+                      </button>
+                      <input type="hidden" name="favorited" id="favorited" value="True">
+                    {% else %}
+                      <button type="submit" name="favourite" class="z-10">
+                      <svg class="w-5 h-5 hover:fill-red-400 z-10 hover:scale-110" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                      </svg>
+                      </button>
+                      <input type="hidden" name="favorited" id="favorited" value="False">
+                    {% endif %}
+                </a>
+              </form>
+              </div>
             </div>
           </div>
-          
-          <div class="mt-4 flex justify-between">
-            <div>
-              <h3 class="text-sm text-gray-700 text font-semibold">
-                  {{calc.title}}
-              </h3>
-            {% for tag in calc.tags %}
-            <div class="text-xs inline-flex font-bold leading-sm uppercase px-3 py-1 bg-blue-200 text-blue-700 rounded-full">
-              {{tag}}
-            </div>
-            {% endfor %}
-            </div>
-            <div class="grid grid-cols-1 justify-items-end">
-              <p class="text-sm font-medium text-gray-900">${{calc.price}}</p>
-              <form action="" method="POST" enctype="multipart/form-data" class="z-50">
-                {% csrf_token %}
-                <button type="submit" name="favourite" class="z-10">
-                  <svg class="w-5 h-5 hover:fill-red-400 z-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                  </svg>
-                </button>
-              <form>
-            </div>
-          </div>
-        </div>
         {% endfor %}
 
         {% for calc in listings%}

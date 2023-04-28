@@ -90,4 +90,4 @@ class Favourites(models.Model):
         listing (Calculator): the favourited listing
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    listing = models.ForeignKey(Calculator, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Calculator, on_delete=models.CASCADE, unique=True)

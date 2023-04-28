@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-from .models import Calculator, TempImage, Administration, MessageRoom
+from .models import Calculator, TempImage, Administration, MessageRoom, Favourites
 from chatSystem.models import Messages
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -49,13 +49,12 @@ def vendorPage(request):
 
             #Split the image string by a comma to store each link in its own list index, then append the listing to the list containing all listings
             listing.image=listing.image.split(",")
-            print(listing.tags)
             listing.tags = listing.tags.split("  ")[0:-1]
             a.append(listing)
     
     #Reversing list, so most recent is at top
-    a.reverse()
-
+    mergeSort(a, "datetime")
+    
     #If a is empty, there are no listings. Pass as context to frontend
     if len(a) == 0:
         noListings = True
@@ -192,8 +191,15 @@ def shop(request, pageNum):
     min=""
     max=""
     sortMethod=""
+
     if "favourite" in request.POST:
-        print("favourite")
+        id=request.POST['listing']
+        if request.POST['favorited']=="False":
+            a=Favourites(user=request.user, listing=Calculator.objects.get(id=id))
+            a.save()
+        else:
+            Favourites.objects.get(listing=Calculator.objects.get(id=id)).delete()
+
     #If the request was sent through the search bar...
     if "search-navbar" in request.POST:
         #Get the filter from the form
@@ -332,8 +338,13 @@ def shop(request, pageNum):
     #Check if listings are present
     listingsPresent = len(listings)!=0
 
+    favoritedListings=[]
+    for i in Favourites.objects.filter(user=request.user):
+        favoritedListings.append(i.listing.id)
+    print(favoritedListings)
+
     #Return the template
-    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "sortMethod":sortMethod, "listingsPresent":listingsPresent, "pageNum": pageNum})
+    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "sortMethod":sortMethod, "listingsPresent":listingsPresent, "pageNum": pageNum, "favourites": favoritedListings})
 
 def checkValidImageEnding(imageLink):
     """
@@ -469,5 +480,18 @@ def mergeSort(a, param):
 #Method to create a listing in the calculator model
 @login_required(login_url='/')
 def favourites(request):
-    return render(request, "calcura/favourites.html")
     
+    if request.method=="POST":
+        id=request.POST["listing"]
+        Favourites.objects.get(listing=Calculator.objects.get(id=id)).delete()
+
+    listings=Favourites.objects.filter(user=request.user)
+    
+    #In the listings, split the image list so it is accessible as a list
+    for i in range(len(listings)):
+        listings[i].listing.image = listings[i].listing.image.split(",")[:-1]
+        listings[i].listing.numImages=len(listings[i].listing.image)
+        listings[i].listing.imageNumber = range(listings[i].listing.numImages)
+        listings[i].listing.tags = listings[i].listing.tags.split("  ")[0:-1]
+
+    return render(request, "calcura/favourites.html", {"listings": listings})
