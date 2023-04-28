@@ -7,7 +7,7 @@ from chatSystem.models import Messages
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import random
-from django.shortcuts import redirect
+from django.urls import reverse
 
 # The view to handle the home page
 def Index(request):
@@ -192,7 +192,6 @@ def shop(request, pageNum):
     min=""
     max=""
     sortMethod=""
-    
     if "favourite" in request.POST:
         print("favourite")
     #If the request was sent through the search bar...
@@ -210,18 +209,10 @@ def shop(request, pageNum):
             if filter.lower() in listing.title.lower():
                 listings.append(listing)
 
-    if "prev" in request.POST:
-        if pageNum>0: pageNum-=1
-        return redirect("/shop/"+str(pageNum))
-
-    elif "next" in request.POST:
-        pageNum+=1
-        return redirect("/shop/"+str(pageNum))
-    
-    #If they submitted the advanced filter 
-    if "advancedFilter" in request.POST:
+    #If they submitted the advanced filter, or if the clicked the previous or next button (still want to check for filters on new page)
+    if "advancedFilter" in request.POST or "prev" in request.POST or "next" in request.POST:
         
-        #Initialization
+        #Initialization of variables
         filter=request.POST["filter"]
         listings=[]
         advancedFilters=[False,False,False]
@@ -329,7 +320,7 @@ def shop(request, pageNum):
                 messageRoom.save()
                 return HttpResponseRedirect("/chat/"+str(id))    
 
-    listings=listings[30*pageNum:(1+pageNum)*30]
+    listings=listings[30*pageNum:30*(1+pageNum)]
 
     #In the listings, split the image list so it is accessible as a list
     for i in range(len(listings)):
@@ -342,7 +333,7 @@ def shop(request, pageNum):
     listingsPresent = len(listings)!=0
 
     #Return the template
-    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "sortMethod":sortMethod, "listingsPresent":listingsPresent})
+    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "sortMethod":sortMethod, "listingsPresent":listingsPresent, "pageNum": pageNum})
 
 def checkValidImageEnding(imageLink):
     """
