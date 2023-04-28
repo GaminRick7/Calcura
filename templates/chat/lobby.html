@@ -84,7 +84,11 @@
             {% if message.user.email == request.user.email %}
               <div class="grid justify-items-end mr-2" id="{{message.id}}">
                 <div class="group hover:bg-violet-600 bg-violet-500 rounded-tl-lg shadow-lg rounded-tr-lg rounded-bl-lg max-w-lg inline-block border-b border-gray-200 rounded-lg flex flex-row">
-                  <p class="text-base text-white p-1.5 break-words">{{message.message}}</p>
+                  <div class="grid grid-cols-1">
+                  <p class="text-xs text-gray-200 pt-1 px-1.5 hidden group-hover:grid">{{message.user.get_full_name}}</p>
+                  <p class="text-base text-white px-1.5 pb-1.5 pt-1.5 group-hover:pt-0 break-words">{{message.message}}</p>
+                  <p class="text-[7px] text-gray-200 px-1.5 hidden group-hover:grid">{{message.datetime}}</p>
+                </div>
                 <button onclick="deleteMessage('{{message.id}}')"
                   type="button" class="hidden group-hover:inline">
                   <svg class="mr-2 w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" class="w-6 h-6">
@@ -97,8 +101,10 @@
             <!-- If the user is the recipient of the message, the message is styled and displayed to the left -->
             {% else %}
               <div class="ml-2" id="{{message.id}}">
-                <div class="bg-gray-400 rounded-lg shadow-lg max-w-lg inline-block border-b border-0.5 border-gray-200">
-                  <p class="text-base text-white p-1.5 break-words">{{message.message}}</p>
+                <div class="group hover:bg-gray-500 bg-gray-400 rounded-lg shadow-lg max-w-lg inline-block border-b border-0.5 border-gray-200">
+                  <p class="text-xs text-gray-200 pt-1 px-1.5 hidden group-hover:grid">{{message.user.get_full_name}}</p>
+                  <p class="text-base text-white px-1.5 pb-1.5 pt-1.5 group-hover:pt-0 break-words">{{message.message}}</p>
+                  <p class="text-[7px] text-gray-200 px-1.5 hidden group-hover:grid">{{message.datetime}}</p>
                 </div>
               </div>
             {% endif %}
@@ -218,7 +224,11 @@
             //The user's message is styled and appended to the created div//
             div.innerHTML =`<div class="grid justify-items-end mr-2" id="${data.messageId}">
                 <div class="group hover:bg-violet-600 bg-violet-500 rounded-tl-lg shadow-lg rounded-tr-lg rounded-bl-lg max-w-lg inline-block border-b border-gray-200 rounded-lg flex flex-row">
-                  <p class="text-base text-white p-1.5 break-words">${data.message}</p>
+                  <div class="grid grid-cols-1">
+                    <p class="text-xs text-gray-200 pt-1 px-1.5 hidden group-hover:grid">${data.fullname}</p>
+                    <p class="text-base text-white px-1.5 pb-1.5 pt-1.5 group-hover:pt-0 break-words">${data.message}</p>
+                    <p class="text-[7px] text-gray-200 px-1.5 hidden group-hover:grid">${data.time}</p>
+                  </div>
                 <button onclick="deleteMessage('${data.messageId}')"
                   type="button" class="hidden group-hover:inline">
                   <svg class="mr-2 w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" class="w-6 h-6">
