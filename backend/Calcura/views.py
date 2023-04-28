@@ -7,6 +7,7 @@ from chatSystem.models import Messages
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import random
+from django.urls import reverse
 
 # The view to handle the home page
 def Index(request):
@@ -180,9 +181,9 @@ def editListing(request, id):
         return HttpResponseRedirect("/vendorPage")
     
     #Return template, with the listing which is being edited
-    return render(request, "calcura/editListing.html", {"l": listing, 'message': findTopMessageRoom(request.user)})
+    return render(request, "calcura/editListing.html", {"l": listing})
 
-def shop(request):
+def shop(request, pageNum):
 
     #If form didn't return anything/method wasn't POST, return all available listings, and state no filters were given
     filter=""
@@ -190,7 +191,7 @@ def shop(request):
     tags=[]
     min=""
     max=""
-
+    sortMethod=""
     if "favourite" in request.POST:
         print("favourite")
     #If the request was sent through the search bar...
@@ -208,10 +209,10 @@ def shop(request):
             if filter.lower() in listing.title.lower():
                 listings.append(listing)
 
-    #If they submitted the advanced filter 
-    if "advancedFilter" in request.POST:
+    #If they submitted the advanced filter, or if the clicked the previous or next button (still want to check for filters on new page)
+    if "advancedFilter" in request.POST or "prev" in request.POST or "next" in request.POST:
         
-        #Initialization
+        #Initialization of variables
         filter=request.POST["filter"]
         listings=[]
         advancedFilters=[False,False,False]
@@ -222,8 +223,7 @@ def shop(request):
             max=int(request.POST["max"])
             min=int(request.POST["min"])
             advancedFilters[0]=True
-        print(request.POST)
-        print(request.POST["sorting"])
+
 
 
         #For all currently existing tags, check if they are checked using checkIfChecked method
@@ -318,7 +318,9 @@ def shop(request):
                 id=generateId(MessageRoom)
                 messageRoom = MessageRoom(users=users1, user1= request.user, user2= User.objects.get(email__exact=email),id=id)
                 messageRoom.save()
-                return HttpResponseRedirect("/chat/"+str(id))
+                return HttpResponseRedirect("/chat/"+str(id))    
+
+    listings=listings[30*pageNum:30*(1+pageNum)]
 
     #In the listings, split the image list so it is accessible as a list
     for i in range(len(listings)):
@@ -327,15 +329,11 @@ def shop(request):
         listings[i].imageNumber = range(listings[i].numImages)
         listings[i].tags = listings[i].tags.split("  ")[0:-1]
 
-    #Items in the listings table are stored so the higher rows are the earliest added. Default option is sort by upload date, so reverse so most recent uplaoded/edited listing is at top
-    for l in listings:
-        print(l.datetime)
-
     #Check if listings are present
     listingsPresent = len(listings)!=0
 
     #Return the template
-    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "listingsPresent":listingsPresent})
+    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "sortMethod":sortMethod, "listingsPresent":listingsPresent, "pageNum": pageNum})
 
 def checkValidImageEnding(imageLink):
     """

@@ -14,7 +14,7 @@ urlpatterns = [
     path('createListing/', vCalc.createListing, name="createListing"),
     path('vendorPage/', vCalc.vendorPage, name="vendorPage"),
     path("editListing/<int:id>", vCalc.editListing, name="editListing"),
-    path("shop/", vCalc.shop, name="shop"),
+    path("shop/<int:pageNum>", vCalc.shop, name="shop"),
     path('chat/', include(chatUrls)),
     path('favourites/', vCalc.favourites, name="favourites"),
 ]
