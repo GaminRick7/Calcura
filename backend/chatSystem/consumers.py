@@ -28,7 +28,7 @@ async def saveItems(self,message,user):
     toSave=Messages(message=message,user=User.objects.filter(email=user).get(),roomId=self.scope['url_route']['kwargs']['roomId'], datetime= datetime.datetime.now(),id=generateId(Messages))
     toSave.save()
     #returning message id
-    return toSave.id
+    return toSave.id, toSave.datetime
 
 async def deleteItem(self,messageId):
     """
@@ -126,7 +126,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         message=" ".join(message)
                 
                 #Saving message to db
-                messageId = await saveItems(self,message,email)
+                messageId, time = await saveItems(self,message,email)
 
                 #Spread the message to other users in the chatroom with the sendMessage function defined right below
                 await self.channel_layer.group_send(
@@ -135,6 +135,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         "message" : message ,
                         "email" : email ,
                         "messageId" : messageId ,
+                        "time" : str(time)[:-10] ,
                     })
                 
 
@@ -148,7 +149,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = event["message"]
         email = event["email"]
         messageId=event["messageId"]
-        await self.send(text_data = json.dumps({"message":message ,"email":email, "messageId": messageId, "fullname" : User.objects.filter(email=email).get().get_full_name()}))
+        time=event["time"]
+        await self.send(text_data = json.dumps({"time":time,"message":message ,"email":email, "messageId": messageId, "fullname" : User.objects.filter(email=email).get().get_full_name()}))
     
     async def deleteMessage(self , event) :
         """
