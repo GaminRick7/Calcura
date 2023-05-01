@@ -82,7 +82,7 @@ class MessageRoomMembership(models.Model):
     message_room = models.ForeignKey(MessageRoom, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
 
-class Favourites(models.Model):
+class Favourite(models.Model):
     """
     Class to store messages in a room
     Attributes:
@@ -90,4 +90,18 @@ class Favourites(models.Model):
         listing (Calculator): the favourited listing
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    listing = models.ForeignKey(Calculator, on_delete=models.CASCADE, unique=True)
+    listing = models.OneToOneField(Calculator, on_delete=models.CASCADE)
+
+class Report(models.Model):
+    """
+    Class to store all reports
+    Attributes:
+        listing (Calcuator): the reported listing
+        reason (text): the reason for the report
+        description (text): Additional reason
+        user (User): the user that reported the listing
+    """
+    listing = models.OneToOneField(Calculator, on_delete=models.CASCADE)
+    reason = models.TextField()
+    description =  models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

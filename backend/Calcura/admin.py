@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Calculator, Administration, MessageRoom, MessageRoomMembership, Favourites
+from .models import Calculator, Administration, MessageRoom, MessageRoomMembership, Favourite, Report
 
 
 # Registering models so we can access them within django's admin page
@@ -18,4 +18,5 @@ def openMessageRoom(modeladmin, request, queryset):
 class MessageRoomAdmin(admin.ModelAdmin):
     actions = [closeMessageRoom, openMessageRoom]
 admin.site.register(MessageRoom, MessageRoomAdmin)
-admin.site.register(Favourites)
+admin.site.register(Favourite)
+admin.site.register(Report)
