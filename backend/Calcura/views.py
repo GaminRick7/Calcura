@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-from .models import Calculator, TempImage, Administration, MessageRoom, Favourites
+from .models import Calculator, TempImage, Administration, MessageRoom, Favourite, Report
 from chatSystem.models import Messages
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -191,14 +191,18 @@ def shop(request, pageNum):
     min=""
     max=""
     sortMethod=""
+    if "report" in request.POST:
+        listing = request.POST['listingname']
+        description = request.POST['description']
+        r = Report(listing=listing, reason="STFU", description=description, user=request.user)
 
     if "favourite" in request.POST:
         id=request.POST['listing']
         if request.POST['favorited']=="False":
-            a=Favourites(user=request.user, listing=Calculator.objects.get(id=id))
+            a=Favourite(user=request.user, listing=Calculator.objects.get(id=id))
             a.save()
         else:
-            Favourites.objects.get(listing=Calculator.objects.get(id=id)).delete()
+            Favourite.objects.get(listing=Calculator.objects.get(id=id)).delete()
 
     #If the request was sent through the search bar...
     if "search-navbar" in request.POST:
@@ -339,7 +343,7 @@ def shop(request, pageNum):
     listingsPresent = len(listings)!=0
 
     favoritedListings=[]
-    for i in Favourites.objects.filter(user=request.user):
+    for i in Favourite.objects.filter(user=request.user):
         favoritedListings.append(i.listing.id)
     print(favoritedListings)
 
@@ -483,9 +487,9 @@ def favourites(request):
     
     if request.method=="POST":
         id=request.POST["listing"]
-        Favourites.objects.get(listing=Calculator.objects.get(id=id)).delete()
+        Favourite.objects.get(listing=Calculator.objects.get(id=id)).delete()
 
-    listings=Favourites.objects.filter(user=request.user)
+    listings=Favourite.objects.filter(user=request.user)
     
     #In the listings, split the image list so it is accessible as a list
     for i in range(len(listings)):
