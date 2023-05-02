@@ -17,5 +17,6 @@ urlpatterns = [
     path("shop/<int:pageNum>", vCalc.shop, name="shop"),
     path('chat/', include(chatUrls)),
     path('favourites/', vCalc.favourites, name="favourites"),
+    path('contact/', vCalc.contact, name="contact"),
 ]
 urlpatterns += staticfiles_urlpatterns()
