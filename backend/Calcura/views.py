@@ -8,8 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import random
 from django.urls import reverse
-from django.core.mail import send_mail
-from django.http import HttpResponse
+from django.core.mail import send_mail,get_connection
 
 # The view to handle the home page
 def Index(request):
@@ -511,6 +510,5 @@ def contact(request):
         name=request.POST["name"]
         email=request.POST["email"]
         message=request.POST["message"]
-        res = send_mail("Message from"+name, message, email, ["dkanesal3@gmail.com"])
-        return HttpResponse('%s'%res)
+        res = send_mail("Message from: "+name, message+"\nEmail of sender: "+email, email, ["Calcura06@gmail.com"], fail_silently=False)
     return render(request, "calcura/contact.html")
