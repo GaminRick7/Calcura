@@ -94,10 +94,9 @@ class Favourite(models.Model):
 
 class Report(models.Model):
     """
-    Class to store all reports
+    Class to store all listing reports
     Attributes:
         listing (Calcuator): the reported listing
-        reason (text): the reason for the report
         description (text): Additional reason
         user (User): the user that reported the listing
     """
@@ -108,9 +107,32 @@ class Report(models.Model):
         """
         Magic method to return a string representation of the object
         Args:
-            self (Calculator): the object to return representation of
+            self (Report): the object to return representation of
         Returns:
             the string representation of form (title by full name)
         """
         return f"{self.listing} | Report by {self.user.get_full_name()}"
+
+class MessageReport(models.Model):
+    """
+    Class to store all message reports
+    Attributes:
+        room (MessageRoom): the reported message room
+        description (text): Additional reason
+        reporter (User): the user that reported the messsage room
+        reported (User): the user that is being reported
+    """
+    room = models.ForeignKey(MessageRoom, on_delete=models.CASCADE)
+    description =  models.TextField()
+    reporter = models.ForeignKey(User, on_delete=models.CASCADE)
+    reported = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reported")
+    def __str__(self):
+        """
+        Magic method to return a string representation of the object
+        Args:
+            self (Calculator): the object to return representation of
+        Returns:
+            the string representation of form (title by full name)
+        """
+        return f"{self.reported.get_full_name()} | Report by {self.reporter.get_full_name()}"
     
