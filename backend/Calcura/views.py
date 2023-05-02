@@ -194,9 +194,10 @@ def shop(request, pageNum):
     max=""
     sortMethod=""
     if "report" in request.POST:
-        listing = request.POST['listingname']
+        listing = Calculator.objects.get(id=request.POST['listingid'])
         description = request.POST['description']
-        r = Report(listing=listing, reason="STFU", description=description, user=request.user)
+        r = Report(listing=listing, description=description, user=request.user)
+        r.save()
 
     if "favourite" in request.POST:
         id=request.POST['listing']
