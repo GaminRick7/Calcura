@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import random
 from django.urls import reverse
+from django.core.mail import send_mail,get_connection
 
 # The view to handle the home page
 def Index(request):
@@ -221,7 +222,7 @@ def shop(request, pageNum):
                 listings.append(listing)
 
     #If they submitted the advanced filter, or if the clicked the previous or next button (still want to check for filters on new page)
-    if "advancedFilter" in request.POST or "prev" in request.POST or "next" in request.POST:
+    if "advancedFilter" in request.POST or "prev" in request.POST or "next" in request.POST or "favourite" in request.POST:
         
         #Initialization of variables
         filter=request.POST["filter"]
@@ -301,7 +302,10 @@ def shop(request, pageNum):
 
             #Sort by date added (default)
             elif sortMethod=="DA":
+
+                #Sorts by datetime from earliest, so most recent calculators are at end. That is why reverse() is needed
                 mergeSort(listings,"datetime")
+                listings.reverse()
     
     #If they made a request to talk to a vendor . . .
     if "chat" in request.POST:
@@ -500,6 +504,14 @@ def favourites(request):
         listings[i].listing.tags = listings[i].listing.tags.split("  ")[0:-1]
 
     return render(request, "calcura/favourites.html", {"listings": listings})
+
+def contact(request):
+    if request.method=="POST":
+        name=request.POST["name"]
+        email=request.POST["email"]
+        message=request.POST["message"]
+        res = send_mail("Message from: "+name, message+"\nEmail of sender: "+email, email, ["Calcura06@gmail.com"], fail_silently=False)
+    return render(request, "calcura/contact.html")
 
 def faq(request):
     #Return template

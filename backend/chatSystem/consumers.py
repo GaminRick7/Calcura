@@ -125,7 +125,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         #Finally, turn the message BACK into a string once filtering is completed
                         message=" ".join(message)
                 
-                #Saving message to db
+                #Saving message to db, while getting messageId and the time message was sent
                 messageId, time = await saveItems(self,message,email)
 
                 #Spread the message to other users in the chatroom with the sendMessage function defined right below
@@ -160,5 +160,4 @@ class ChatConsumer(AsyncWebsocketConsumer):
         """
         message = event["message"]
         email = event["email"]
-        print(message, email)
         await self.send(text_data = json.dumps({"message":message ,"email":email}))

@@ -190,3 +190,13 @@ cloudinary.config(
   api_key = "493993287995787", 
   api_secret = "QAtfbDDzizMzO0sGaa9kqMi8gDc" 
 )
+
+#SMTP configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+#Attempted to save passwords in .env file but for some reason would not allow connection. Oh well.
+EMAIL_HOST_USER = 'Calcura06@gmail.com'
+EMAIL_HOST_PASSWORD = 'lblqfxxkyrnnctnm'

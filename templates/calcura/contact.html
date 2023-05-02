@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% extends '../calcura/base.html' %}
+{% load static %}
+<html>
+  <body onload="scrollDown()">
+    {% block content %}
+    <title>Contact | Calcura</title>
+    <div class="container mx-auto p-6 md:p-12">
+      <h1 class="text-3xl md:text-4xl font-bold mb-6 text-center">Contact Us</h1>
+      <h5 class="text-gray-600   md:text-sm mb-6 text-center">Got a question that needs answering? Feel free to fill out the form or send an email to <a class="text-blue-600 underline" href="mailto:Calcura06@gmail.com">Calcura06@gmail.com</a></h5>
+      <form action="" method="POST" class="mx-auto max-w-lg">
+        {% csrf_token %}
+        <div class="mb-6">
+          <label for="name" class="block text-gray-700 font-bold mb-2">Name:</label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="Enter your name"
+          />
+        </div>
+        <div class="mb-6">
+          <label for="email" class="block text-gray-700 font-bold mb-2">Email:</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="Enter your email"
+          />
+        </div>
+        <div class="mb-6">
+          <label for="message" class="block text-gray-700 font-bold mb-2">Message:</label>
+          <textarea
+            name="message"
+            id="message"
+            rows="5"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="Enter your message"
+          ></textarea>
+        </div>
+        <button
+          type="submit"
+          class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
+    {% endblock %}
+  </body>
+</html>

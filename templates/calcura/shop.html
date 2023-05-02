@@ -131,6 +131,13 @@
                       </button>
                       <input type="hidden" name="favorited" id="favorited" value="False">
                     {% endif %}
+                    <input type="hidden" name="filter" id="filter" value="{{filter}}">
+                    <input type="hidden" name="min" id="min" value="{{min}}">
+                    <input type="hidden" name="max" id="max" value="{{max}}">
+                    {% for tag in tagList %}
+                     <input type="hidden" name="{{tag}}" id="{{tag}}" value="{{tag}}">
+                    {% endfor %}
+                    <input type="hidden" name="sorting" id="sorting" value="{{sortMethod}}">
                   </div>
               </form>
               </div>
@@ -265,9 +272,15 @@
     <form action="" method="POST" id="pageForm">
       {% csrf_token %}
       <div class="inline-flex text-center text-justify flow-root">
+        {% if pageNum > 0 %}
         <button onclick="setAction('/shop/{{pageNum|add:-1}}')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" name="prev" id="prev">
           Prev
         </button>
+        {% else %}
+        <button onclick="setAction('/shop/{{pageNum}}')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" name="prev" id="prev">
+          Prev
+        </button>
+        {% endif %}
         <button onclick="setAction('/shop/{{pageNum|add:1}}')" name="next" id="next" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
           Next
         </button>
@@ -277,12 +290,13 @@
          <input type="hidden" name="min" id="min" value="{{min}}">
          <input type="hidden" name="max" id="max" value="{{max}}">
          {% for tag in tagList %}
-          <input type="hidden" name="tag" id="tag" value="{{tag}}">
+         <input type="hidden" name="{{tag}}" id="{{tag}}" value="{{tag}}">
          {% endfor %}
          <input type="hidden" name="sorting" id="sorting" value="{{sortMethod}}">
     </form>
     <script>
       function setAction(action) {
+
         document.getElementById('pageForm').action = action;
       }
       </script>

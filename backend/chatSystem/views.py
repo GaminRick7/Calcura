@@ -39,8 +39,7 @@ def chatPage(request,roomId): #https://www.youtube.com/watch?v=F4nwRQPXD8w&ab_ch
 
         # Get the other user in the room
         otherUser = User.objects.get(email=room.users.replace(",","").replace(email, ""))
-        for message in Messages.objects.all():
-            print(message.id)
+
         if request.method=="POST":
             if "report" in request.POST:
                 room = MessageRoom.objects.get(id=request.POST['roomid'])
