@@ -500,3 +500,7 @@ def favourites(request):
         listings[i].listing.tags = listings[i].listing.tags.split("  ")[0:-1]
 
     return render(request, "calcura/favourites.html", {"listings": listings})
+
+def faq(request):
+    #Return template
+    return render(request, "calcura/faq.html")
