@@ -101,7 +101,16 @@ class Report(models.Model):
         description (text): Additional reason
         user (User): the user that reported the listing
     """
-    listing = models.OneToOneField(Calculator, on_delete=models.CASCADE)
-    reason = models.TextField()
+    listing = models.ForeignKey(Calculator, on_delete=models.CASCADE)
     description =  models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    def __str__(self):
+        """
+        Magic method to return a string representation of the object
+        Args:
+            self (Calculator): the object to return representation of
+        Returns:
+            the string representation of form (title by full name)
+        """
+        return f"{self.listing} | Report by {self.user.get_full_name()}"
+    
