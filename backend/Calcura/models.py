@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
-from chatSystem.models import Messages
 import datetime
 
 # Create your models here.
@@ -72,15 +71,15 @@ class MessageRoom(models.Model):
     user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user1")
     user2 = models.ForeignKey(User, on_delete=models.CASCADE)
     id = models.BigAutoField(primary_key=True)
-    messages = models.ManyToManyField(Messages, through="MessageRoomMembership")
     latestDateTime = models.DateTimeField(default=datetime.datetime.now())
-    def __str__(self):
-        return f"{self.user1.get_full_name()} and {self.user2.get_full_name()} - {self.id}"
 
-class MessageRoomMembership(models.Model):
-    message = models.ForeignKey(Messages, on_delete=models.CASCADE)
-    message_room = models.ForeignKey(MessageRoom, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        """
+        Magic method to return a string representation of the MessageRoom
+        Returns:
+            string in format full name of user1 + fullname of user 2 + roomId
+        """
+        return f"{self.user1.get_full_name()} and {self.user2.get_full_name()} - {self.id}"
 
 class Favourite(models.Model):
     """

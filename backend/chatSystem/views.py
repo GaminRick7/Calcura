@@ -58,7 +58,7 @@ def chatPage(request,roomId): #https://www.youtube.com/watch?v=F4nwRQPXD8w&ab_ch
         return HttpResponseRedirect("/")
 
     #Returning the template with context
-    return render(request, "chat/lobby.html", {"room":roomId, "locked":locked,"messages":Messages.objects.filter(roomId=roomId), "chats": chatList, "otherUser" : otherUser, "roomExists": True})
+    return render(request, "chat/lobby.html", {"room":roomId, "locked":locked,"messages":Messages.objects.filter(room=room), "chats": chatList, "otherUser" : otherUser, "roomExists": True})
 
 def baseChatPage(request):
     """
@@ -98,4 +98,5 @@ def showLatestChats(email, chatList):
         otherUser = User.objects.get(email=room.users.replace(",","").replace(email, ""))
         chatList.append([room, otherUser])
         count+=1
+
     return count
