@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import datetime
+from Calcura.models import MessageRoom
 
 class Messages(models.Model):
     """
@@ -14,7 +15,7 @@ class Messages(models.Model):
     """
     message=models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    roomId = models.TextField()
+    room = models.ForeignKey(MessageRoom, on_delete=models.CASCADE)
     datetime = models.DateTimeField(default=datetime.datetime.now())
     id = models.BigAutoField(primary_key=True)
 
