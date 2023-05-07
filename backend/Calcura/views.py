@@ -511,6 +511,7 @@ def contact(request):
         email=request.POST["email"]
         message=request.POST["message"]
         res = send_mail("Message from: "+name, message+"\nEmail of sender: "+email, email, ["Calcura06@gmail.com"], fail_silently=False)
+        messages.success(request, "Your message was sent! We will get back to you as soon as possible.")
     return render(request, "calcura/contact.html")
 
 def faq(request):
