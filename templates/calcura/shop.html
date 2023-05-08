@@ -234,7 +234,11 @@
                     <div class="col-span-2 space-y-12 sm:ml-5">
                       <div class="mb-24">
                         <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{calc.title}}</h1>
+                        {% if calc.price == -1 %}
+                        <p class="text-md font-medium text-gray-900">Negotiable</p>
+                        {% else %}
                         <p class="text-md font-medium text-gray-900">${{calc.price}}</p>
+                        {% endif %}
                       </div>
                       <div class="mt-5">
                         <h3 class="sr-only">Description</h3>
