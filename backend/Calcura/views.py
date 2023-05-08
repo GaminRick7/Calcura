@@ -70,6 +70,7 @@ def createListing(request):
     #Retrieve items if they sent form
     if request.method=="POST":
         title=request.POST['title']
+        print(request.POST['price'])
         price=float(request.POST['price'])
         description=request.POST['description']
         tags=request.POST['tags']

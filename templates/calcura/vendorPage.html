@@ -33,7 +33,11 @@
               </h3>
             </div>
             <div>
+              {% if calc.price == -1 %}
+              <p class="text-sm font-medium text-gray-900">Negotiable</p>
+              {% else %}
               <p class="text-sm font-medium text-gray-900">${{calc.price}}</p>
+              {% endif %}
             </div>
           </div>
           <div class="my-2">

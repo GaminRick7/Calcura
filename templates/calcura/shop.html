@@ -106,7 +106,11 @@
               {% endfor %}
               </div>
               <div class="grid grid-cols-1 justify-items-end">
+                {% if calc.price == -1 %}
+                <p class="text-sm font-medium text-gray-900">Negotiable</p>
+                {% else %}
                 <p class="text-sm font-medium text-gray-900">${{calc.price}}</p>
+                {% endif %}
                   <div class="grid grid-cols-1">
                     <button name="report" class="absolute top-1" data-modal-target="report-modal{{calc.id}}" data-modal-toggle="report-modal{{calc.id}}">
                       <svg class="w-4 h-4 hover:fill-yellow-400 z-10 hover:scale-110" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

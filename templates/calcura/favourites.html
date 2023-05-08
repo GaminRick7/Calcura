@@ -28,7 +28,11 @@
               {% endfor %}
               </div>
               <div class="grid grid-cols-1 justify-items-end">
+                {% if calc.listing.price == -1 %}
+                <p class="text-sm font-medium text-gray-900">Negotiable</p>
+                {% else %}
                 <p class="text-sm font-medium text-gray-900">${{calc.listing.price}}</p>
+                {% endif %}
                   <form action="" method="POST" enctype="multipart/form-data" class="z-50">
                   {% csrf_token %}
                   <input type="hidden" name="listing" id="listing" value="{{calc.listing.id}}">
