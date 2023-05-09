@@ -107,7 +107,7 @@
               </div>
               <div class="grid grid-cols-1 justify-items-end">
                 {% if calc.price == -1 %}
-                <p class="text-sm font-medium text-gray-900">Negotiable</p>
+                <p class="text-sm font-medium text-gray-900">Negotiable Price</p>
                 {% else %}
                 <p class="text-sm font-medium text-gray-900">${{calc.price}}</p>
                 {% endif %}
@@ -235,7 +235,7 @@
                       <div class="mb-24">
                         <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{calc.title}}</h1>
                         {% if calc.price == -1 %}
-                        <p class="text-md font-medium text-gray-900">Negotiable</p>
+                        <p class="text-md font-medium text-gray-900">Negotiable Price</p>
                         {% else %}
                         <p class="text-md font-medium text-gray-900">${{calc.price}}</p>
                         {% endif %}
@@ -279,7 +279,7 @@
     </div>
     <form action="" method="POST" id="pageForm">
       {% csrf_token %}
-      <div class="inline-flex text-center text-justify flow-root">
+      <div class="inline-flex text-center flex items-center flow-root">
         {% if pageNum > 0 %}
         <button onclick="setAction('/shop/{{pageNum|add:-1}}')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" name="prev" id="prev">
           Prev

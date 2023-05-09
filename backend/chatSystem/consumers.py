@@ -8,7 +8,7 @@ import re
 from django.contrib.auth.models import User
 from Calcura.views import generateId
 import datetime
-
+from django.utils import timezone
 #Allowing sync operations to run in an async setting (saving messages won't be allowed otherwise)
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'rest.settings')
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
@@ -104,7 +104,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await deleteItem(self,message)
         else:
             #Update the datetime value in the message room from which the message belongs to
-            MessageRoom.objects.filter(id=self.scope['url_route']['kwargs']['roomId']).update(latestDateTime=datetime.datetime.now())
+            MessageRoom.objects.filter(id=self.scope['url_route']['kwargs']['roomId']).update(latestDateTime=datetime.datetime.now(timezone.utc))
             #Filtering any bad words
             if message!="":
                 #For all the bad words in the list

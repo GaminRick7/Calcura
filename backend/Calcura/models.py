@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
 import datetime
-
+from django.utils import timezone
 # Create your models here.
 class Calculator(models.Model):
     """
@@ -71,7 +71,7 @@ class MessageRoom(models.Model):
     user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user1")
     user2 = models.ForeignKey(User, on_delete=models.CASCADE)
     id = models.BigAutoField(primary_key=True)
-    latestDateTime = models.DateTimeField(default=datetime.datetime.now())
+    latestDateTime = models.DateTimeField()
 
     def __str__(self):
         """
@@ -125,6 +125,7 @@ class MessageReport(models.Model):
     description =  models.TextField()
     reporter = models.ForeignKey(User, on_delete=models.CASCADE)
     reported = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reported")
+    
     def __str__(self):
         """
         Magic method to return a string representation of the object
