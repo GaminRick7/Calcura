@@ -1,6 +1,6 @@
 import os
 from django.core.asgi import get_asgi_application
- 
+import time
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ChatApp.settings')
  
 from channels.auth import AuthMiddlewareStack

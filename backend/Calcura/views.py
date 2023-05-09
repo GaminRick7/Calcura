@@ -9,7 +9,8 @@ from django.contrib import messages
 import random
 from django.urls import reverse
 from django.core.mail import send_mail,get_connection
-
+from datetime import datetime
+from django.utils import timezone
 # The view to handle the home page
 def Index(request):
     """
@@ -66,7 +67,7 @@ def vendorPage(request):
 #Method to create a listing in the calculator model
 @login_required(login_url='/')
 def createListing(request):
-
+    
     #Retrieve items if they sent form
     if request.method=="POST":
         title=request.POST['title']
@@ -331,7 +332,7 @@ def shop(request, pageNum):
             #Create a new message room for the users, and redirect the user to the new message room
             else:
                 id=generateId(MessageRoom)
-                messageRoom = MessageRoom(users=users1, user1= request.user, user2= User.objects.get(email__exact=email),id=id)
+                messageRoom = MessageRoom(users=users1, user1= request.user, user2= User.objects.get(email__exact=email),id=id, latestDateTime=datetime.now(timezone.utc))
                 messageRoom.save()
                 return HttpResponseRedirect("/chat/"+str(id))    
 
