@@ -28,7 +28,11 @@
               {% endfor %}
               </div>
               <div class="grid grid-cols-1 justify-items-end">
+                {% if calc.listing.price == -1 %}
+                <p class="text-sm font-medium text-gray-900">Negotiable</p>
+                {% else %}
                 <p class="text-sm font-medium text-gray-900">${{calc.listing.price}}</p>
+                {% endif %}
                   <form action="" method="POST" enctype="multipart/form-data" class="z-50">
                   {% csrf_token %}
                   <input type="hidden" name="listing" id="listing" value="{{calc.listing.id}}">
@@ -99,7 +103,11 @@
                     <div class="col-span-2 space-y-12 sm:ml-5">
                       <div>
                         <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{calc.listing.title}}</h1>
+                        {% if calc.listing.price == -1 %}
+                        <p class="text-md font-medium text-gray-900">Negotiable</p>
+                        {% else %}
                         <p class="text-md font-medium text-gray-900">${{calc.listing.price}}</p>
+                        {% endif %}
                       </div>
                       <div class="mt-5">
                         <h3 class="sr-only">Description</h3>
