@@ -55,7 +55,7 @@ def vendorPage(request):
             a.append(listing)
     
     #Reversing list, so most recent is at top
-    mergeSort(a, "datetime")
+    a.reverse()
     
     #If a is empty, there are no listings. Pass as context to frontend
     if len(a) == 0:
@@ -188,11 +188,13 @@ def shop(request, pageNum):
 
     #If form didn't return anything/method wasn't POST, return all available listings, and state no filters were given
     filter=""
-    listings=Calculator.objects.all()
+    listings=list(Calculator.objects.all())
     tags=[]
     min=""
     max=""
     sortMethod=""
+    notSorted=True
+
     if "report" in request.POST:
         listing = Calculator.objects.get(id=request.POST['listingid'])
         description = request.POST['description']
@@ -295,11 +297,13 @@ def shop(request, pageNum):
             #Sort by price ascending
             if sortMethod=="PA":
                 mergeSort(listings, "price")
+                notSorted=False
 
             #Sort by price descending
             elif sortMethod=="PD":
                 mergeSort(listings,"price")
                 listings.reverse()
+                notSorted=False
 
             #Sort by date added (default)
             elif sortMethod=="DA":
@@ -307,7 +311,8 @@ def shop(request, pageNum):
                 #Sorts by datetime from earliest, so most recent calculators are at end. That is why reverse() is needed
                 mergeSort(listings,"datetime")
                 listings.reverse()
-    
+                notSorted=False
+
     #If they made a request to talk to a vendor . . .
     if "chat" in request.POST:
 
@@ -336,8 +341,12 @@ def shop(request, pageNum):
                 messageRoom.save()
                 return HttpResponseRedirect("/chat/"+str(id))    
 
-    listings=listings[30*pageNum:30*(1+pageNum)]
 
+    if notSorted:
+        mergeSort(listings,"datetime")
+        listings.reverse()
+
+    listings=listings[32*pageNum:32*(1+pageNum)]
     #In the listings, split the image list so it is accessible as a list
     for i in range(len(listings)):
         listings[i].image = listings[i].image.split(",")[:-1]
@@ -351,7 +360,6 @@ def shop(request, pageNum):
     favoritedListings=[]
     for i in Favourite.objects.filter(user=request.user):
         favoritedListings.append(i.listing.id)
-    print(favoritedListings)
 
     #Return the template
     return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "sortMethod":sortMethod, "listingsPresent":listingsPresent, "pageNum": pageNum, "favourites": favoritedListings})

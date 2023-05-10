@@ -107,7 +107,7 @@
               </div>
               <div class="grid grid-cols-1 justify-items-end">
                 {% if calc.price == -1 %}
-                <p class="text-sm font-medium text-gray-900">Negotiable Price</p>
+                <p class="text-sm font-medium text-gray-900">Negotiable</p>
                 {% else %}
                 <p class="text-sm font-medium text-gray-900">${{calc.price}}</p>
                 {% endif %}
@@ -204,7 +204,7 @@
                         <div class="relative h-56 overflow-hidden rounded-lg border md:h-96">
                           {% for pic in calc.image%}
                             <!-- Item 1 -->
-                            <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                            <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
                                 <img src="{{pic}}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
                             </div>
                           {% endfor %}
@@ -235,7 +235,7 @@
                       <div class="mb-24">
                         <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{calc.title}}</h1>
                         {% if calc.price == -1 %}
-                        <p class="text-md font-medium text-gray-900">Negotiable Price</p>
+                        <p class="text-md font-medium text-gray-900">Negotiable</p>
                         {% else %}
                         <p class="text-md font-medium text-gray-900">${{calc.price}}</p>
                         {% endif %}
