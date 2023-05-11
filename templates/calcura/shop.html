@@ -63,9 +63,9 @@
          <select id="sorting" name="sorting" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
           
           {% if sortMethod == "DA" %}
-            <option value="DA">Date Added/Modified</option>
+            <option value="DA">Date Added/Modified (Latest - Oldest)</option>
           {% else %}
-            <option value="DA">Date Added/Modified</option>
+            <option value="DA">Date Added/Modified (Latest - Oldest)</option>
           {% endif %}
 
           {% if sortMethod == "PA" %}
@@ -100,7 +100,7 @@
                     {{calc.title}}
                 </h3>
               {% for tag in calc.tags %}
-              <div class="text-xs inline-flex font-bold leading-sm uppercase px-3 py-1 bg-blue-200 text-blue-700 rounded-full">
+              <div class="text-xs inline-flex font-bold leading-sm uppercase px-3 py-1 bg-blue-200 text-blue-700 rounded-full my-0.5">
                 {{tag}}
               </div>
               {% endfor %}

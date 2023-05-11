@@ -184,6 +184,7 @@ def editListing(request, id):
     #Return template, with the listing which is being edited
     return render(request, "calcura/editListing.html", {"l": listing})
 
+@login_required(login_url='/')
 def shop(request, pageNum):
 
     #If form didn't return anything/method wasn't POST, return all available listings, and state no filters were given
