@@ -15,6 +15,10 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 from dotenv import load_dotenv
+import time
+
+from django.core.management.base import BaseCommand
+from threading import Thread
 
 load_dotenv()
 
@@ -199,4 +203,5 @@ EMAIL_USE_TLS = True
 
 #Attempted to save passwords in .env file but for some reason would not allow connection. Oh well.
 EMAIL_HOST_USER = 'Calcura06@gmail.com'
-EMAIL_HOST_PASSWORD = 'lblqfxxkyrnnctnm'
+EMAIL_HOST_PASSWORD = 'xtorisanbezorgyo'
+

@@ -9,7 +9,8 @@ from django.contrib import messages
 import random
 from django.urls import reverse
 from django.core.mail import send_mail,get_connection
-
+from datetime import datetime
+from django.utils import timezone
 # The view to handle the home page
 def Index(request):
     """
@@ -54,7 +55,7 @@ def vendorPage(request):
             a.append(listing)
     
     #Reversing list, so most recent is at top
-    mergeSort(a, "datetime")
+    a.reverse()
     
     #If a is empty, there are no listings. Pass as context to frontend
     if len(a) == 0:
@@ -66,7 +67,7 @@ def vendorPage(request):
 #Method to create a listing in the calculator model
 @login_required(login_url='/')
 def createListing(request):
-
+    
     #Retrieve items if they sent form
     if request.method=="POST":
         title=request.POST['title']
@@ -183,15 +184,18 @@ def editListing(request, id):
     #Return template, with the listing which is being edited
     return render(request, "calcura/editListing.html", {"l": listing})
 
+@login_required(login_url='/')
 def shop(request, pageNum):
 
     #If form didn't return anything/method wasn't POST, return all available listings, and state no filters were given
     filter=""
-    listings=Calculator.objects.all()
+    listings=list(Calculator.objects.all())
     tags=[]
     min=""
     max=""
     sortMethod=""
+    notSorted=True
+
     if "report" in request.POST:
         listing = Calculator.objects.get(id=request.POST['listingid'])
         description = request.POST['description']
@@ -294,11 +298,13 @@ def shop(request, pageNum):
             #Sort by price ascending
             if sortMethod=="PA":
                 mergeSort(listings, "price")
+                notSorted=False
 
             #Sort by price descending
             elif sortMethod=="PD":
                 mergeSort(listings,"price")
                 listings.reverse()
+                notSorted=False
 
             #Sort by date added (default)
             elif sortMethod=="DA":
@@ -306,7 +312,8 @@ def shop(request, pageNum):
                 #Sorts by datetime from earliest, so most recent calculators are at end. That is why reverse() is needed
                 mergeSort(listings,"datetime")
                 listings.reverse()
-    
+                notSorted=False
+
     #If they made a request to talk to a vendor . . .
     if "chat" in request.POST:
 
@@ -331,12 +338,16 @@ def shop(request, pageNum):
             #Create a new message room for the users, and redirect the user to the new message room
             else:
                 id=generateId(MessageRoom)
-                messageRoom = MessageRoom(users=users1, user1= request.user, user2= User.objects.get(email__exact=email),id=id)
+                messageRoom = MessageRoom(users=users1, user1= request.user, user2= User.objects.get(email__exact=email),id=id, latestDateTime=datetime.now(timezone.utc))
                 messageRoom.save()
                 return HttpResponseRedirect("/chat/"+str(id))    
 
-    listings=listings[30*pageNum:30*(1+pageNum)]
 
+    if notSorted:
+        mergeSort(listings,"datetime")
+        listings.reverse()
+
+    listings=listings[32*pageNum:32*(1+pageNum)]
     #In the listings, split the image list so it is accessible as a list
     for i in range(len(listings)):
         listings[i].image = listings[i].image.split(",")[:-1]
@@ -350,7 +361,6 @@ def shop(request, pageNum):
     favoritedListings=[]
     for i in Favourite.objects.filter(user=request.user):
         favoritedListings.append(i.listing.id)
-    print(favoritedListings)
 
     #Return the template
     return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "sortMethod":sortMethod, "listingsPresent":listingsPresent, "pageNum": pageNum, "favourites": favoritedListings})
