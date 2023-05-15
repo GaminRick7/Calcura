@@ -11,6 +11,7 @@ from django.urls import reverse
 from django.core.mail import send_mail,get_connection
 from datetime import datetime
 from django.utils import timezone
+
 # The view to handle the home page
 def Index(request):
     """
@@ -19,6 +20,8 @@ def Index(request):
         HttpResponseRedirect: if the user is not ocdsb.ca or a staff
         The template itself
     """
+
+    #Create administration object for tags
     # a=Administration()
     # a.save()
         
@@ -39,8 +42,15 @@ def Index(request):
     return render(request, 'calcura/index.html', {})
 
 def vendorPage(request):
+    """
+    Hosts the backend for the vendorPage
+    Args:
+        request: User making the request
+    Returns:
+        render: the template
+    """
     #Variables
-    a=[]
+    listings=[]
     noListings=False
     
     #Looping through all Calculator objects
@@ -52,22 +62,28 @@ def vendorPage(request):
             #Split the image string by a comma to store each link in its own list index, then append the listing to the list containing all listings
             listing.image=listing.image.split(",")
             listing.tags = listing.tags.split("  ")[0:-1]
-            a.append(listing)
+            listings.append(listing)
     
     #Reversing list, so most recent is at top
-    a.reverse()
+    mergeSort(listings,"datetime")
+    listings.reverse()
     
     #If a is empty, there are no listings. Pass as context to frontend
-    if len(a) == 0:
-        noListings = True
+    noListings = len(listings) == 0
     
     #Returning the template with listings information
-    return render(request, "calcura/vendorPage.html", {"listing": a, "length": noListings})
+    return render(request, "calcura/vendorPage.html", {"listing": listings, "length": noListings})
 
 #Method to create a listing in the calculator model
 @login_required(login_url='/')
 def createListing(request):
-    
+    """
+    Backend for creating a listing
+    Args:
+        request (User): user making the request to the page
+    Returns:
+        render: the template
+    """
     #Retrieve items if they sent form
     if request.method=="POST":
         title=request.POST['title']
@@ -97,13 +113,24 @@ def createListing(request):
                 imageUrls += str(image.image.url) + ","
                 image.delete()
 
-        #Creating a new calculator listing, with the images stored as a string. 
+        #Creating a new calculator listing, with the images stored as a string.
         a=Calculator(title=title, description=description,image=imageUrls, price=price,tags=tags,id=generateId(Calculator), user=request.user)
         a.save()
         return HttpResponseRedirect("/vendorPage")
     return render(request, "calcura/createListing.html", {})
 
 def editListing(request, id):
+    
+    """
+    Backend for the editListing page
+    Args:
+        request (User): user making the request
+        id (int): id of the calculator to be edited
+    Returns:
+        HttpResonseRedirect: To home if accessing someone else's listing, or to vendorpage if an invalid id is provided/deleting a listing
+        render: the template
+    """
+
     #Define listing variable, set it to the Calculator model
     listing=Calculator
     #Try to get a calculator with the given id, if it doesn't exist, return to vendorPage
@@ -130,7 +157,7 @@ def editListing(request, id):
             title=request.POST['title']
         else:
             title= listing.title
-
+            
         if request.POST['price'] != "":
             price=float(request.POST['price'])
             #Round the price to two decimal places
@@ -186,7 +213,14 @@ def editListing(request, id):
 
 @login_required(login_url='/')
 def shop(request, pageNum):
-
+    """
+    Backend for the shop page
+    Args:
+        request (User): the user making the request to the page
+        pageNum (int): the page number which is being accessed
+    Returns:
+        render: the request
+    """
     #If form didn't return anything/method wasn't POST, return all available listings, and state no filters were given
     filter=""
     listings=list(Calculator.objects.all())
@@ -203,12 +237,14 @@ def shop(request, pageNum):
         r.save()
 
     if "favourite" in request.POST:
-        id=request.POST['listing']
+        
+        listing=Calculator.objects.get(id=request.POST['listing'])
         if request.POST['favorited']=="False":
-            a=Favourite(user=request.user, listing=Calculator.objects.get(id=id))
-            a.save()
+            a=Favourite(user=request.user, listing=listing)
+            if listing.user!=request.user:
+                a.save()
         else:
-            Favourite.objects.get(listing=Calculator.objects.get(id=id)).delete()
+            Favourite.objects.get(listing=listing).delete()
 
     #If the request was sent through the search bar...
     if "search-navbar" in request.POST:
@@ -342,12 +378,20 @@ def shop(request, pageNum):
                 messageRoom.save()
                 return HttpResponseRedirect("/chat/"+str(id))    
 
-
+    #If they didn't submit a sorting option, sort listings by datetime
     if notSorted:
         mergeSort(listings,"datetime")
         listings.reverse()
 
-    listings=listings[32*pageNum:32*(1+pageNum)]
+    nextListingsPresent=False
+    if len(listings[10*(pageNum+1):10*(pageNum+2)])>0:
+        nextListingsPresent=True
+
+    listings=listings[10*pageNum:10*(1+pageNum)]
+
+
+
+
     #In the listings, split the image list so it is accessible as a list
     for i in range(len(listings)):
         listings[i].image = listings[i].image.split(",")[:-1]
@@ -363,7 +407,7 @@ def shop(request, pageNum):
         favoritedListings.append(i.listing.id)
 
     #Return the template
-    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "sortMethod":sortMethod, "listingsPresent":listingsPresent, "pageNum": pageNum, "favourites": favoritedListings})
+    return render(request, "calcura/shop.html", {"listings":listings, "filter": filter,"tagList":tags, "allTags": Administration.objects.all()[0].tags.split(","), "min":min,"max":max, "sortMethod":sortMethod, "listingsPresent":listingsPresent, "pageNum": pageNum, "favourites": favoritedListings, "nextListingsPresent":nextListingsPresent, "shopPage": True})
 
 def checkValidImageEnding(imageLink):
     """
@@ -422,28 +466,6 @@ def generateId(model):
     #Return the id
     return id
 
-def showLatestChats(email, chatList):
-    """
-    Function get all chats a user is registered in, ordered by most recently a message was sent/chat created
-    Args:
-        email (str): the email of the user to get chats from
-        chatList (list): list to append indices to containing 1. the room 2. the other user in the room
-    Returns:
-        count (int): amount of rooms user is involved in
-    """
-
-    #Define count variable
-    count=0
-
-    #Start going through rooms user is in, going by most recent message room
-    for room in MessageRoom.objects.filter(users__contains = email).order_by('-latestDateTime'):
-
-        #Find the other user, append an indice to the list and increase count variable
-        otherUser = User.objects.get(email=room.users.replace(",","").replace(email, ""))
-        chatList.append([room, otherUser])
-        count+=1
-    return count
-
 def mergeSort(a, param):
     """
     Function which performs mergeSort based on a list which holds objects via recursion
@@ -499,11 +521,19 @@ def mergeSort(a, param):
 #Method to create a listing in the calculator model
 @login_required(login_url='/')
 def favourites(request):
-    
-    if request.method=="POST":
+    """
+    Backend for the favourites page
+    Args:
+        request (User): the user making the request
+    Returns:
+        render: the template
+    """
+    #Check if they are attempting to remove listing
+    if "listing" in request.POST:
         id=request.POST["listing"]
         Favourite.objects.get(listing=Calculator.objects.get(id=id)).delete()
-
+    
+    #Get all listings which are favourited
     listings=Favourite.objects.filter(user=request.user)
     
     #In the listings, split the image list so it is accessible as a list
@@ -516,14 +546,27 @@ def favourites(request):
     return render(request, "calcura/favourites.html", {"listings": listings})
 
 def contact(request):
+    """
+    Backend for the contact page
+    Args:
+        request (User): the user making the request
+    Returns:
+        render: the template
+    """
+
+    #If they submitted the form
     if request.method=="POST":
+
+        #Get all data from form 
         name=request.POST["name"]
         email=request.POST["email"]
         message=request.POST["message"]
-        res = send_mail("Message from: "+name, message+"\nEmail of sender: "+email, email, ["Calcura06@gmail.com"], fail_silently=False)
-        messages.success(request, "Your message was sent! We will get back to you as soon as possible.")
-    return render(request, "calcura/contact.html")
 
-def faq(request):
-    #Return template
-    return render(request, "calcura/faq.html")
+        #Use send_mail function to send email to Calcura06@gmail.com with form data
+        try:
+            res = send_mail("Message from: "+name, message+"\nEmail of sender: "+email, email, ["Calcura06@gmail.com"], fail_silently=False)
+            #Notify user that their message wassent
+            messages.success(request, "Your message was sent! We will get back to you as soon as possible.")
+        except:
+            messages.error(request, "Something went wrong. Please try again at a later time.")
+    return render(request, "calcura/contact.html")

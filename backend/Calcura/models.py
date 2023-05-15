@@ -63,8 +63,12 @@ class MessageRoom(models.Model):
     """
     Class to hold message rooms between a consumer and a vendor
     Attributes:
-        users (str): usernames of people which are in the chat
-        id (int): id of the group (created by defalt in django)
+        locked (bool): whether or not the room is locked
+        users (str): the emails of the users involved in the chat
+        user1 (User): the consumer
+        user2 (User): the vendor
+        id (int): integer representation of the id of the room, unique for every room
+        latestDateTime (DateTime): the datetime of creation or latest message sent
     """
     locked = models.BooleanField(default=False)
     users=models.TextField()
@@ -89,19 +93,20 @@ class Favourite(models.Model):
         listing (Calculator): the favourited listing
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    listing = models.OneToOneField(Calculator, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Calculator, on_delete=models.CASCADE, default="")
 
 class Report(models.Model):
     """
     Class to store all listing reports
     Attributes:
         listing (Calcuator): the reported listing
-        description (text): Additional reason
+        description (str): Additional reason
         user (User): the user that reported the listing
     """
     listing = models.ForeignKey(Calculator, on_delete=models.CASCADE)
     description =  models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
     def __str__(self):
         """
         Magic method to return a string representation of the object
