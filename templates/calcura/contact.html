@@ -48,7 +48,12 @@
         </button>
       </form>
       {% for message in messages %}
+      
+        {% if message.tags == "error" %}
+        <p class="text-red-400 py-4 md:text-sm mb-6 text-center">{{message}}</p>
+        {% else }
         <p class="text-green-400 py-4 md:text-sm mb-6 text-center">{{message}}</p>
+        {% endif %}
       {% endfor %}
     </div>
     {% endblock %}

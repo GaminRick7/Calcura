@@ -5,6 +5,7 @@ from django.views.generic import TemplateView
 from Calcura import views as vCalc
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from chatSystem import urls as chatUrls
+from django.views.generic import TemplateView
 
 #Urls within the website
 urlpatterns = [
@@ -18,6 +19,6 @@ urlpatterns = [
     path('chat/', include(chatUrls)),
     path('favourites/', vCalc.favourites, name="favourites"),
     path('contact/', vCalc.contact, name="contact"),
-    path('faq/', vCalc.faq, name="faq"),
+    path('faq/', TemplateView.as_view(template_name="calcura/faq.html"), name="faq"),
 ]
 urlpatterns += staticfiles_urlpatterns()
