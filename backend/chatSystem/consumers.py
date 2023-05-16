@@ -37,7 +37,7 @@ async def deleteItem(self,messageId):
     Args:
         message (int): the id of the message to be deleted
     """
-    Messages.objects.filter(id=messageId).delete()
+    Messages.objects.filter(id=messageId).update(deleted=True)
 
 class ChatConsumer(AsyncWebsocketConsumer):
     """
