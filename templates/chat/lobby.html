@@ -120,6 +120,7 @@
  
           <!-- Displaying messages for the chat -->
           {% for message in messages %}
+            {% if message.deleted == False %}
             <!-- If the message is from the user, the message is styled and displayed to the right -->
             {% if message.user.email == request.user.email %}
               <div class="grid justify-items-end mr-2" id="{{message.id}}">
@@ -147,6 +148,7 @@
                   <p class="text-[7px] text-gray-200 px-1.5 hidden group-hover:grid">{{message.datetime}}</p>
                 </div>
               </div>
+            {% endif %}
             {% endif %}
           {% endfor %}
  
