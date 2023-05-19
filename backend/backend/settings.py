@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'Calcura.apps.CalcuraConfig',
     'allauth',
     'chatSystem.apps.ChatsystemConfig',
+    'consumer.apps.ConsumerConfig',
+    'vendor.apps.VendorConfig',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',

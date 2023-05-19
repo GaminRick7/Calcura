@@ -59,6 +59,8 @@ class MessageInline(admin.TabularInline):
     model = Messages
     extra = 0
     can_delete = True
+    classes = ('collapse', )
+
 
 class MessageRoomAdmin(admin.ModelAdmin):
     """
