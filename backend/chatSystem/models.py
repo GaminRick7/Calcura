@@ -18,6 +18,7 @@ class Messages(models.Model):
     room = models.ForeignKey(MessageRoom, on_delete=models.CASCADE)
     datetime = models.DateTimeField(default=datetime.datetime.now())
     id = models.BigAutoField(primary_key=True)
+    deleted = models.BooleanField(default=False)
 
     def __str__(self):
         """
