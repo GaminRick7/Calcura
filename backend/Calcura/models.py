@@ -95,7 +95,7 @@ class Favourite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     listing = models.ForeignKey(Calculator, on_delete=models.CASCADE, default="")
 
-class Report(models.Model):
+class ListingReport(models.Model):
     """
     Class to store all listing reports
     Attributes:
@@ -117,9 +117,9 @@ class Report(models.Model):
         """
         return f"{self.listing} | Report by {self.user.get_full_name()}"
 
-class MessageReport(models.Model):
+class MessageRoomReport(models.Model):
     """
-    Class to store all message reports
+    Class to store all messageroom reports
     Attributes:
         room (MessageRoom): the reported message room
         description (text): Additional reason

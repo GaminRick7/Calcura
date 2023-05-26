@@ -219,8 +219,8 @@
         */
 
         if (e.keyCode == 13) {
-          //Only allow users to send messages every 3 seconds
-          if (new Date().getTime()-startTime.getTime()>3000){
+          //Only allow users to send messages every second, no less
+          if (new Date().getTime()-startTime.getTime()>1000){
             startTime=new Date();
             document.querySelector("#id_message_send_button").click();
           } else{

@@ -2,7 +2,7 @@ from datetime import datetime
 from django.utils import timezone
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from Calcura.models import Calculator, Favourite, MessageRoom, Administration, Report, User
+from Calcura.models import Calculator, Favourite, MessageRoom, Administration, ListingReport, User
 from django.http import HttpResponseRedirect
 from Calcura.views import generateId, mergeSort, checkIfChecked
 from django.db.models import Q  
@@ -250,7 +250,7 @@ def checkReport(request):
     if "report" in request.POST:
         listing = Calculator.objects.get(id=request.POST['listingid'])
         description = request.POST['description']
-        r = Report(listing=listing, description=description, user=request.user)
+        r = ListingReport(listing=listing, description=description, user=request.user)
         r.save()
 
 def checkFavourite(request):
