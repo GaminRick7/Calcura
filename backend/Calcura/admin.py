@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Calculator, Administration, MessageRoom, Favourite, Report, MessageReport
+from .models import Calculator, Administration, MessageRoom, Favourite, ListingReport, MessageRoomReport
 from chatSystem.models import Messages
 from datetime import datetime
 from django.core.management.base import BaseCommand, CommandError
@@ -12,8 +12,8 @@ admin.site.register(Administration)
 
 #Creating actions
 
-@admin.action(description='Close Message Room')
-def closeMessageRoom(modeladmin, request, queryset):
+@admin.action(description='Lock Message Room')
+def lockMessageRoom(modeladmin, request, queryset):
     """
     Close/Lock a message room in django
     Args:
@@ -66,12 +66,11 @@ class MessageRoomAdmin(admin.ModelAdmin):
     """
     Define the actions and any inlines within the MessageRoom view in admin page
     """
-    actions = [closeMessageRoom, openMessageRoom, deleteInactiveRooms]
+    actions = [lockMessageRoom, openMessageRoom, deleteInactiveRooms]
     inlines = [MessageInline]
 
 
 #Registering models to be viewed in admin page
 admin.site.register(MessageRoom, MessageRoomAdmin)
-admin.site.register(Favourite)
-admin.site.register(Report)
-admin.site.register(MessageReport)
+admin.site.register(ListingReport)
+admin.site.register(MessageRoomReport)

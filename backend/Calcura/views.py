@@ -2,15 +2,12 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-from .models import Calculator, TempImage, Administration, MessageRoom, Favourite, Report
 from chatSystem.models import Messages
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import random
 from django.urls import reverse
-from django.core.mail import send_mail,get_connection
-from datetime import datetime
-from django.utils import timezone
+from django.core.mail import send_mail
 
 # The view to handle the home page
 def Index(request):

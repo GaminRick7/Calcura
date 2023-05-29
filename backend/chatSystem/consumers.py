@@ -54,7 +54,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
     for i in range(len(badWordsList)):
         badWordsList[i]=badWordsList[i][:-1]
     outfile.close()
+
     channel_name="name"
+    
     async def connect(self):
         """
         Sets a group name and adds it to the channel layer when a user joins a message rom

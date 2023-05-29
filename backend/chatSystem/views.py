@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from Calcura.models import MessageRoom, Calculator, MessageReport
+from Calcura.models import MessageRoom, Calculator, MessageRoomReport
 from Calcura.views import generateId
 from django.http import HttpResponseRedirect
 from .models import Messages
@@ -44,7 +44,7 @@ def chatPage(request,roomId): #https://www.youtube.com/watch?v=F4nwRQPXD8w&ab_ch
             if "report" in request.POST:
                 room = MessageRoom.objects.get(id=request.POST['roomid'])
                 description = request.POST['description']
-                r = MessageReport(room=room, description=description, reporter=request.user, reported=otherUser)
+                r = MessageRoomReport(room=room, description=description, reporter=request.user, reported=otherUser)
                 r.save()
             else:
                 id=request.POST["message"]
