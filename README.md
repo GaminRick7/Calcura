@@ -17,11 +17,11 @@ An e-commerce platform where students can buy and sell graphing calculators onli
 
 ## Administrator Features
 - 👤 Manage All Users
-    - To keep Calcura a safe place, administrators have the ability to create/edit/delete all aspects of user's profile, listings, and chat room.
+    - To keep the Calcura community safe, administrators have the ability to create/edit/delete all aspects of user's profile, listings, and chat room.
 - ❗Report Listings
-    - To keep Calcura a safe place, users have the ability to report listings and message rooms which admins can view.
+    - To keep the Calcura community safe, users have the ability to report listings and message rooms which admins can view.
 - 🔒 Lock Chat Rooms
-    - To keep Calcura a safe place, administrators can lock all or individual message rooms.
+    - To keep the Calcura community safe, administrators can lock all or individual message rooms.
 
 ## Installation and Setup
 
