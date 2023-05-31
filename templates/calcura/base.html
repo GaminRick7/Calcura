@@ -12,7 +12,7 @@
     </head>
     <header class="sticky top-0 z-30">
  
-<nav class="bg-white border-gray-200 px-2 py-2.5 sm:rounded-[18px] sm:mx-1 md:mx-0 border-2 border-gray shadow-lg max-w-6xl mx-auto md:mt-1">
+<nav class="bg-white border-gray-200 px-2 py-2.5 sm:rounded-[18px] sm:mx-1 md:mx-0 border-2 border-gray shadow-lg max-w-screen-lg lg:max-w-screen-2xl mx-auto md:mt-1">
   <div class="container flex flex-wrap items-center justify-between mx-auto">
   <a href="{% url 'home' %}" class="flex items-center">
       <img src="{% static 'images/calculatorLogo.svg' %}" class="h-9 ml-2 sm:ml-0" alt="Calcura Logo" />
@@ -106,13 +106,13 @@
   <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="mobile-menu-2">
     <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
       <li>
-        <a href="{% url 'home' %}" class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-purple-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Home</a>
+        <a href="{% url 'home' %}" class="block py-2 pl-3 pr-4 text-gray-700 rounded md:hover:bg-transparent hover:text-purple-700 md:p-0 dark:text-gray-400">Home</a>
       </li>
       <li>
-        <a href="{% url 'faq' %}" class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-purple-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">FAQ</a>
+        <a href="{% url 'faq' %}" class="block py-2 pl-3 pr-4 text-gray-700 rounded md:hover:bg-transparent hover:text-purple-700 md:p-0 dark:text-gray-400">FAQ</a>
       </li>
       <li>
-        <a href="{% url 'contact' %}" class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-purple-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+        <a href="{% url 'contact' %}" class="block py-2 pl-3 pr-4 text-gray-700 rounded md:hover:bg-transparent hover:text-purple-700 md:p-0 dark:text-gray-400">Contact</a>
       </li>
       {% if user.is_authenticated == False %}
       <li class="sm:hidden">

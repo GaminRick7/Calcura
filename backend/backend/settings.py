@@ -206,4 +206,3 @@ EMAIL_USE_TLS = True
 #Attempted to save passwords in .env file but for some reason would not allow connection. Oh well.
 EMAIL_HOST_USER = 'Calcura06@gmail.com'
 EMAIL_HOST_PASSWORD = 'xtorisanbezorgyo'
-
