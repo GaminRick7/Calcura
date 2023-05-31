@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-from chatSystem.models import Messages
+from Calcura.models import Administration
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import random

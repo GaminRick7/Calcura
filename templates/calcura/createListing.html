@@ -9,7 +9,7 @@
   <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {% csrf_token %}
-    <div class="mx-auto mx-auto max-w-6xl">
+    <div class="mx-auto mx-auto max-w-6xl lg:max-w-screen-2xl">
     <div class="sm:grid sm:grid-cols-3">
     <div class="flex p-2 col-span-1 border-2 mx-1 sm:border-r-2 sm:mx-0 rounded-lg mb-2 sm:mb-0">
       <div class="relative mx-auto">
@@ -133,6 +133,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script>
   function toggleTextBox(radio) {
+    /*
+        Function to enable or disbale the textbox whether or not "Price" is selected instead of "Set As Negotiable"
+        Args: radio (input)
+        Returns: None
+    */
   var textbox = document.getElementById("priceproxy");
   var price = document.getElementById("price");
   textbox.addEventListener("input", function() {

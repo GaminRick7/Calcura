@@ -9,7 +9,7 @@
   <h1 class="text-2xl text-gray-900 text-center font-bold pt-5 pb-7">Edit Listing</h1>
   <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <div class="mx-auto mx-auto max-w-6xl">
+    <div class="mx-auto mx-auto max-w-6xl lg:max-w-screen-2xl">
     <div class="sm:grid sm:grid-cols-3">
     <div class="flex p-2 col-span-1 border-2 mx-1 sm:border-r-2 sm:mx-0 rounded-lg mb-2 sm:mb-0">
       <div class="relative">
@@ -148,6 +148,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script>
   window.addEventListener("DOMContentLoaded", function() {
+    fun
       if ("{{l.price}}" == -1){
         var price2 = document.getElementById("price2");
         price2.checked = true; // set the second radio button to checked
