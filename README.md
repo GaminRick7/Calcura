@@ -7,7 +7,7 @@ An e-commerce platform where students can buy and sell graphing calculators onli
 ## User Features
 
 - ✏️ Create and Edit Your Listings
-    - As a seller on Calcura, you can create your own listings to sell your calculator.
+    - As a seller on Calcura, you can create and edit your own listings to sell your calculator.
 - 👛 Browse Through Listings
     - As a buyer on Calcura, you can browse through various listings and filter your search to find the perfect calculator for you.
 - 💖 Favourite Listings
