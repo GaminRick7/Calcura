@@ -74,3 +74,4 @@ class MessageRoomAdmin(admin.ModelAdmin):
 admin.site.register(MessageRoom, MessageRoomAdmin)
 admin.site.register(ListingReport)
 admin.site.register(MessageRoomReport)
+admin.site.register(Favourite)

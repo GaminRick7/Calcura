@@ -101,7 +101,6 @@ def editListing(request, id):
         listing=Calculator.objects.all().get(id=id)
     except:
         return HttpResponseRedirect("/vendorPage")
-    print(listing)
 
     #If the listing doesn't belong to the user, then redirect back to index
     if listing.user.email!=request.user.email:

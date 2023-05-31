@@ -45,12 +45,11 @@ def shop(request, pageNum):
         for listing in Calculator.objects.exclude(user=request.user):
 
             #If the filter is in a listing title, append the listing to the filtered listings list
-            if filter.lower() in listing.title.lower():
+            if filter.lower() in listing.title.lower() or filter.lower() in listing.description.lower():
                 listings.append(listing)
 
     #If they submitted the advanced filter, or if the clicked the previous or next button (still want to check for filters on new page)
     if "advancedFilter" in request.POST or "prev" in request.POST or "next" in request.POST or "favourite" in request.POST:
-        print(listings)
         #Initialization of variables
         filter=request.POST["filter"]
         listings=[]
@@ -82,8 +81,9 @@ def shop(request, pageNum):
         #Sorting the listings
         sortMethod=request.POST["sorting"]
         sortList(sortMethod,listings)
-        notSorted=False
-
+        if sortMethod!="":
+            notSorted=False 
+            
     #If they made a request to talk to a vendor . . .
     if "chat" in request.POST:
 
@@ -94,17 +94,19 @@ def shop(request, pageNum):
         return messageRoomCreationOrRouting(request,email)
        
    
-
+    print(listings)
     #If they didn't submit a sorting option, sort listings by datetime
     if notSorted:
+        print("\n\nrgdgrd\n\n")
         mergeSort(listings,"datetime")
         listings.reverse()
 
+    print("AFTER SORITNG",listings)
     nextListingsPresent=False
-    if len(listings[10*(pageNum+1):10*(pageNum+2)])>0:
+    if len(listings[30*(pageNum+1):30*(pageNum+2)])>0:
         nextListingsPresent=True
 
-    listings=listings[10*pageNum:10*(1+pageNum)]
+    listings=listings[30*pageNum:30*(1+pageNum)]
 
 
 
@@ -118,7 +120,6 @@ def shop(request, pageNum):
 
     #Check if listings are present
     listingsPresent = len(listings)!=0
-    print(request.POST)
     favoritedListings=[]
     for i in Favourite.objects.filter(user=request.user):
         favoritedListings.append(i.listing.id)
@@ -135,10 +136,12 @@ def favourites(request):
         render: the template
     """
     #Check if they are attempting to remove listing
+    print(request.POST)
     if "listing" in request.POST:
         try:
             id=request.POST["listing"]
-            Favourite.objects.get(listing=Calculator.objects.get(id=id)).delete()
+            print(Calculator.objects.get(id=id))
+            Favourite.objects.filter(user=request.user).get(listing=Calculator.objects.get(id=id)).delete()
         except:
             pass
     
@@ -254,11 +257,14 @@ def checkReport(request):
         r.save()
 
 def checkFavourite(request):
-    print(request.POST)
     if "favourite" in request.POST:
         listing=Calculator.objects.get(id=request.POST['listing'])
-        if request.POST['favorited']=="False":
-            Favourite(user=request.user, listing=listing).save()
+        if Favourite.objects.filter(user=request.user).exists():
+            try: 
+                a=Favourite.objects.filter(user=request.user).get(listing=listing).delete()
+            except:
+                Favourite(listing=listing,user=request.user).save()
         else:
-            Favourite.objects.get(listing=listing).delete()
-            
+            Favourite(listing=listing,user=request.user).save()
+    print(request.POST)
+        
