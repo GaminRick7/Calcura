@@ -47,9 +47,9 @@ Install the dependencies
 
 To deploy this project, you will need to create a database.
 
-For this, you will need to download PostgreSQL [here](https://www.postgresql.org/download/). We recommend installing PGAdmin during the installation process.
+For this, you will need to download PostgreSQL [here](https://www.postgresql.org/download/). We recommend installing PGAdmin4 during the installation process.
 
-Create a database called `calcura` on port number `5432`. If you have a different post number, go to `backend/settings.py` and then change the 'PORT' in the following code to your port number.
+Create a database called `calcura` on port number `5432`. If you have a different port number, go to `backend/settings.py` and then change the 'PORT' in the following code to your port number.
 
 ```python
 DATABASES = {
