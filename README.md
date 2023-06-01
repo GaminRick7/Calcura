@@ -75,10 +75,10 @@ DATABASES = {
 
 ### Environment Variables
 
-To run this project, you will need to add the following environment variable to your `.env` file with your database password.
+To run this project, you will need to add the following environment variable to your `.env` file.
 
 ```
-databasepass=*****
+databasepass=[YOUR DATABASE PASSWORD]
 ```
 
 
@@ -97,7 +97,7 @@ python manage.py migrate
 ```
 ## Running The Program
 
-The first time you run the program, you need to create admin account. To do this, first ensure you are in `backend/` then run and follow the prompts
+The first time you run the program, you need to create admin account. To do this, first ensure you are in `backend/` then follow the instructions after running the command below
 
 ```
 python manage.py createsuperuser
