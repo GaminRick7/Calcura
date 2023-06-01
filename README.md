@@ -78,10 +78,10 @@ DATABASES = {
 To run this project, you will need to add the following environment variable to your `.env` file.
 
 ```
-databasepass=[YOUR DATABASE PASSWORD]
+databasepass=["YOUR DATABASE PASSWORD"]
 ```
 
-
+You must have quotes around your database password.
 
 ### Migrations
 
