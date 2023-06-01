@@ -142,7 +142,8 @@ The website is now fully setup! Every time you want to run the server, in `Calcu
 - [@GaminRick7](https://www.github.com/GaminRick7)
 - [@Iwillgetmy](https://www.github.com/Iwillgetmy)
 
-##Known Bugs
+## Known Bugs
+
 - When clicking to the outside of a sidebar, the screen appears grey and nothing is clickable. To fix this issue on mobile, reload your page. On a laptop, click the "ESC" button. 
 
 ## Support
