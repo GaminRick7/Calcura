@@ -137,13 +137,13 @@ Double click `example.com` such that it moves to Chosen Sites. Then, click the p
 The website is now fully setup! Every time you want to run the server, in `Calcura/backend` use `python manage.py runserver`.
 
 
-
-
-## Authors
+## Developers
 
 - [@GaminRick7](https://www.github.com/GaminRick7)
 - [@Iwillgetmy](https://www.github.com/Iwillgetmy)
 
+##Known Bugs
+- When clicking to the outside of a sidebar, the screen appears grey and nothing is clickable. To fix this issue on mobile, reload your page. On a laptop, click the "ESC" button. 
 
 ## Support
 
