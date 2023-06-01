@@ -28,7 +28,7 @@ An e-commerce platform where students can buy and sell graphing calculators onli
 Clone the project using Git
 
 ```bash
-  git clone https://github.com/GaminRick7/Calcura 
+ git clone https://github.com/GaminRick7/Calcura 
 ```
 Create a virtual environment and activate it.
 ```bash
@@ -37,7 +37,7 @@ env/Scripts/Activate
 ```
 Install the dependencies 
 ```bash
-  pip install -r requirements.txt 
+ pip install -r requirements.txt 
 ```
 
     
