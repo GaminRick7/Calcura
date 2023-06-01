@@ -21,7 +21,7 @@ An e-commerce platform where students can buy and sell graphing calculators onli
 - ❗Report Listings
     - To keep the Calcura community safe, users have the ability to report listings and message rooms which admins can view.
 - 🔒 Lock Chat Rooms
-    - To keep the Calcura community safe, administrators can lock all or individual message rooms.
+    - To keep the Calcura community safe, administrators can lock and delete message rooms.
 
 ## Installation and Setup
 
