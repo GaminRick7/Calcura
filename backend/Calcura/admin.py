@@ -1,3 +1,12 @@
+"""
+File: admin.py
+Authors: Raihaan Sandhu and Darun Kanesalingam
+Last Modified: May 30, 2023
+Version: 1.0.0
+
+This file contains the code to register models and their respective functions on the admin page.
+"""
+
 from django.contrib import admin
 from .models import Calculator, Administration, MessageRoom, Favourite, ListingReport, MessageRoomReport
 from chatSystem.models import Messages

@@ -1,3 +1,12 @@
+"""
+File: consumers.py
+Authors: Raihaan Sandhu and Darun Kanesalingam
+Last Modified: May 26, 2023
+Version: 1.0.0
+
+This file contains the logic for sending, receiving, and deleting messages in the chat system.
+"""
+
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Messages
@@ -39,6 +48,7 @@ async def deleteItem(self,messageId):
     """
     Messages.objects.filter(id=messageId).update(deleted=True)
 
+#Code adapted from [5], used to create the consumer
 class ChatConsumer(AsyncWebsocketConsumer):
     """
     Class to create destroy and modify Websockets. Groups are the area which many users can store. The channel is how data is sent. 

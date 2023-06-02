@@ -151,11 +151,58 @@ The website is now fully setup! Every time you want to run the server, in `Calcu
 For support, email calcura06@gmail.com.
 
 ## Citations
+[1] “Free SVG vectors and icons,” SVG Repo, https://www.svgrepo.com/ (accessed Jun. 1, 2023). 
+* Used for the Calcura Logo, "No Chats" image, "Open a Chat" image, and Chat icon
 
+
+[2] Heroicons, https://heroicons.com/ (accessed Jun. 1, 2023). 
+* Used for all icons on the website (i.e. dashboard icons) with the exception of the ones retrieved from SVG Repo above.
+
+[3] “Bad Words List,” Google, https://code.google.com/archive/p/badwordslist/downloads (accessed March, 2023).
+* Used as a list to check of bad words sent when chatting
+
+[4] “Django - sending e-mails,” Online Courses and eBooks Library, https://www.tutorialspoint.com/django/django_sending_emails.htm (accessed Ju. 1, 2023).
+* Code used for the contact page form to send emails using Django’s SMTP library 
+
+[5] “Realtime chat app using Django,” GeeksforGeeks, https://www.geeksforgeeks.org/realtime-chat-app-using-django/ (accessed March. 1, 2023).
+* Code used to create the ChatConsumer class, create routing for websockets, and create javascript to send messages to websockets & receive messages from websockets.
+
+
+[6] “Merge sort - data structure and algorithms tutorials,” GeeksforGeeks, https://www.geeksforgeeks.org/merge-sort/ (accessed April, 2023). 
+* 
+
+[7] “Tailwind CSS animation on scroll library,” TAOS, https://versoly.com/taos (accessed Jun. 1, 2023). 
+* Code used for fade in and slide in animations seen on the home page.
+
+[8] “Typwriter JS V2,” Typewriter JS - A simple yet powerful native javascript plugin for a cool typewriter effect., https://safi.me.uk/typewriterjs/ (accessed Jun. 1, 2023).
+* Code used for typrewriter effect seen on home page.
+
+[9] “Flowbite Components,” Flowbite.com, https://flowbite.com/ (accessed Jun. 1, 2023). 
+* Components used for:
+    * Delete listing, view listing, report listing, and report message room popups
+    * Input fields for the search bar and the message bar
+    * Popup sidebar to apply filters on the shop page and see the list of chats in the mobile view.
+    * Radio button to select between setting a price or setting the listing as negotiable
+ 
+
+[10] “Tailwind UI - official tailwind CSS components &amp; templates,” Tailwind UI - Official Tailwind CSS Components &amp; Templates, https://tailwindui.com/ (accessed Jun. 1, 2023). 
+* Components used for hero section for home page and grid of listings for shop page/vendor page
+
+
+[11] “Tailwind CSS Docs,” Tailwind CSS, https://tailwindcss.com/docs/ (accessed Jun. 1, 2023).
+* Used for general Tailwind CSS reference.
+
+[12] “Uploading images to cloudinary from a django application,” Section, https://www.section.io/engineering-education/uploading-images-to-cloudinary-from-django-application/ (accessed Jun. 1, 2023).
+* Code used to upload images to online database (Cloudinary) using Cloudinary API. 
+
+[13] “Django,” Django Project, https://docs.djangoproject.com/en/4.1/ (accessed May 31, 2023). 
+* Used for general Django reference
+
+[14] “Select2,” Atom, https://select2.org/ (accessed May 31, 2023). 
+* Code used for multiple select dropdown for the taks system when creating or editing a listing.
 
 
 
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-

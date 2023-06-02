@@ -10,6 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+"""
+File: settings.py
+Authors: Raihaan Sandhu and Darun Kanesalingam
+Last Modified: May 30, 2023
+Version: 1.0.0
+
+This file contains the settings for the Django Project.
+"""
+
 import os
 import cloudinary
 import cloudinary.uploader
@@ -125,7 +134,7 @@ DATABASES = {
 
         'HOST': '127.0.0.1',
 
-        'PORT': '5432',
+        'PORT': '5433',
 
     }
 }
@@ -197,7 +206,7 @@ cloudinary.config(
   api_secret = "QAtfbDDzizMzO0sGaa9kqMi8gDc" 
 )
 
-#SMTP configuration
+#Code adapted from [4], used for SMTP configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587

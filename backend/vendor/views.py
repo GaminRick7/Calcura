@@ -1,3 +1,12 @@
+"""
+File: views.py
+Authors: Raihaan Sandhu and Darun Kanesalingam
+Last Modified: May 26, 2023
+Version: 1.0.0
+
+This file contains logic for the vendor pages.
+"""
+
 from django.shortcuts import render
 from Calcura.models import Calculator, TempImage
 from Calcura.views import mergeSort, generateId
@@ -60,7 +69,7 @@ def createListing(request):
 
         #Looping through the images they pasted, and storing them in TempImage database model. Storing them to upload to cloudinary and to get image link url. Email is needed to link a temporary image to the user
         for image in images:
-            if not checkValidImageEnding(str(image)):
+            if not checkValidImageEnding(str(image)): #Although there is limiting in the frontend, it may not work on older browsers so nice to keep
                 return render(request, "calcura/createListing.html", {"invalidEnding": True})
             listing = TempImage(image= image, email=request.user.email)
             listing.save()

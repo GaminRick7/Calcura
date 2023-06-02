@@ -1,3 +1,12 @@
+<!-- 
+File: shop.html
+Authors: Raihaan Sandhu and Darun Kanesalingam
+Last Modified: May 31, 2023
+Version: 1.0.0
+
+This file contains the frontend for the Shop page. 
+-->
+
 {% extends './base.html' %}
 
 <html lang="en">
@@ -11,7 +20,7 @@
       </svg>      
     </button>
   </div>
-    <div class="mx-auto max-w-7xl my-4 px-4 sm:py-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-6xl lg:max-w-screen-2xl my-4 px-4 sm:py-4 sm:px-6 lg:px-8">
       
       {% if listingsPresent == False %}
         <h2 class="content-center text-2xl font-bold tracking-tight text-gray-900">No results found. Try expanding your search.</h2>
@@ -23,7 +32,7 @@
       <div class="text-center">
      </div>
      
-     <!-- Expandable sidebar for more filters -->
+     <!-- Code adapted from [9], under the sidebar component section -->
      <div id="drawer-navigation" class="fixed top-0 left-0 z-40 w-64 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white" tabindex="-1" aria-labelledby="drawer-navigation-label">
          <h5 id="drawer-navigation-label" class="text-base font-semibold text-gray-500 uppercase dark:text-gray-400">Filters</h5>
          <button type="button" data-drawer-hide="drawer-navigation" aria-controls="drawer-navigation" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" >
@@ -88,6 +97,7 @@
       <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
         {%for calc in listings  %}
           <div class="group relative z-0"> 
+            <!-- Code adapted from [10], used for listings grid -->
             <div class="h-72 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200"  data-modal-target="defaultModal{{calc.id}}" data-modal-toggle="defaultModal{{calc.id}}" >
               <img src="{{calc.image.0}}"  class="h-full w-full object-cover object-center lg:h-full lg:w-full group-hover:opacity-50">
               <div class="flex flex-row absolute text-xl text-grey-600 opacity-0 w-full justify-center group-hover:opacity-100 font-bold top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto items-center">
@@ -147,6 +157,7 @@
               </div>
             </div>
           </div>
+          <!-- Code adapted from [9], under the Modal component section -->
           <div id="report-modal{{calc.id}}" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
             <div class="relative w-full max-w-md max-h-full">
                 <!-- Modal content -->
@@ -181,6 +192,7 @@
         {% endfor %}
 
         {% for calc in listings%}
+        <!-- Code adapted from [9], under the Modal component section -->
         <div id="defaultModal{{calc.id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
           <div class="bg-white rounded-lg shadow relative w-full max-w-7xl">
               <!-- Modal content -->
@@ -274,12 +286,12 @@
         </div>
         
         {% endfor %}
-        <!-- More products... -->
       </div>
     </div>
     <form action="" method="POST" id="pageForm">
       {% csrf_token %}
       <div class="inline-flex text-center flex items-center flow-root">
+        <!-- Code adapted from [9], under the buttons component section -->
         {% if pageNum > 0 %}
         <button onclick="setAction('/shop/{{pageNum|add:-1}}')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" name="prev" id="prev">
           Prev

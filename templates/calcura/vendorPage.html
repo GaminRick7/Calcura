@@ -1,3 +1,12 @@
+<!-- 
+File: venderPage.html
+Authors: Raihaan Sandhu and Darun Kanesalingam
+Last Modified: May 31, 2023
+Version: 1.0.0
+
+This file contains the frontend for the Vendor page. 
+-->
+
 {% extends './base.html' %}
 <html lang="en">
   <body>
@@ -5,11 +14,12 @@
   {% block content %}
   <title>Vendor Page | Calcura</title>
   <h1 class="text-4xl text-gray-900 text-center font-bold pt-5">Vendor Page</h1>
-    <div class="mx-auto max-w-7xl mt-4 mb-8 px-4 sm:py-4 lg:px-8">
+    <div class="mx-auto max-w-6xl lg:max-w-screen-2xl mt-4 mb-8 px-4 sm:py-4 lg:px-8">
       <h2 class="text-2xl font-bold tracking-tight text-gray-900">Your Listings</h2>
       {% if length %}
       <p class="text-lg tracking-tight text-gray-900 text-center pt-5">You don't have any Listings yet. Click below to create one</p>
       {% endif %}
+      <!-- Code adapted from [10], used for listings grid -->
       <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
         {%for calc in listing%}
         <div class="group relative">
@@ -53,7 +63,8 @@
         <!-- More products... -->
       </div>
     </div>
-  
+
+  <!-- Code adapted from [10], under the buttons component section -->
     <button class="mx-auto w-1/2 text-center bg-purple-600 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded">
       <a href="{% url 'createListing' %}">Create Listing</a>
     </button>

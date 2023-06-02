@@ -1,3 +1,12 @@
+"""
+File: views.py
+Authors: Raihaan Sandhu and Darun Kanesalingam
+Last Modified: May 30, 2023
+Version: 1.0.0
+
+This file contains logic for rendering the home page and the contact page, and general functions.
+"""
+
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
@@ -9,7 +18,7 @@ import random
 from django.urls import reverse
 from django.core.mail import send_mail
 
-# The view to handle the home page
+
 def Index(request):
     """
     Contains the backend for the index page
@@ -75,6 +84,7 @@ def generateId(model):
     #Return the id
     return id
 
+#Code adapted from [6]. Used to help implement merge sort. 
 def mergeSort(a, param):
     """
     Function which performs mergeSort based on a list which holds objects via recursion
@@ -148,6 +158,7 @@ def contact(request):
 
         #Use send_mail function to send email to Calcura06@gmail.com with form data
         try:
+            #Code adapted from[4]. Used to send emails with django's SMTP library
             res = send_mail("Message from: "+name, message+"\nEmail of sender: "+email, email, ["Calcura06@gmail.com"], fail_silently=False)
             #Notify user that their message wassent
             messages.success(request, "Your message was sent! We will get back to you as soon as possible.")

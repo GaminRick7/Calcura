@@ -1,3 +1,12 @@
+"""
+File: views.py
+Authors: Raihaan Sandhu and Darun Kanesalingam
+Last Modified: May 26, 2023
+Version: 1.0.0
+
+This file contains logic for rendering the chat page.
+"""
+
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User

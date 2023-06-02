@@ -1,3 +1,12 @@
+"""
+File: models.py
+Authors: Raihaan Sandhu and Darun Kanesalingam
+Last Modified: May 26, 2023
+Version: 1.0.0
+
+This file contains the alls the models (classes) used by the Calcura app.
+"""
+
 from django.db import models
 from django.contrib.auth.models import User
 import datetime
