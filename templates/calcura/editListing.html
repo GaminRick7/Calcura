@@ -32,7 +32,7 @@
           </div>
         </div>
         <input name="docfile" type="file" id="id_docfile" class="form-control-file mt-5" onchange="showPreview(event);"
-          multiple>
+          multiple accept="image/jpg, image/webp, image/png, image/jpeg, image/svg">
       </div>
     </div>
     <div class="col-span-2 py-2 px-5 border-2 mx-1 sm:border-r-2 sm:mx-0 rounded-lg">
@@ -57,6 +57,7 @@
               </svg>              
             <label for="price" class="leading-7 text-sm text-gray-600">Price</label>
             </div> 
+            <!-- Code adapted from [9], used for radio button to select between setting a price or setting the listing as negotiable -->
             <ul class="grid w-full gap-3 grid-cols-2">
               <li>
                   <input type="radio" id="price1" name="pricepick" value="price1" class="hidden peer" onclick="toggleTextBox(this)" required>
@@ -148,11 +149,17 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script>
   window.addEventListener("DOMContentLoaded", function() {
-    fun
+    /*
+        Function that chacks if "Price" or "Set as Negotiable" should be selected by default
+        Args: radio (input)
+        Returns: None
+    */
+   // If price is -1, "Set as Negotiable" should be selected
       if ("{{l.price}}" == -1){
         var price2 = document.getElementById("price2");
         price2.checked = true; // set the second radio button to checked
       } else{
+        // Otherwise, "Price" should be selected and the value of the price is loaded from database
         var price1 = document.getElementById("price1");
         price1.checked = true;
         var textbox = document.getElementById("priceproxy");
@@ -163,7 +170,14 @@
 </script>
 <script>
   function toggleTextBox(radio) {
+    /*
+        Function to enable or disbale the textbox whether or not "Price" is selected instead of "Set As Negotiable"
+        Args: radio (input)
+        Returns: None
+    */
+   //input for price on screen
   var textbox = document.getElementById("priceproxy");
+  //hidden input for backend
   var price = document.getElementById("price");
   textbox.addEventListener("input", function() {
     price.value = textbox.value; // update the hidden input value dynamically
@@ -187,6 +201,7 @@
       option.selected= "selected";
     }
   };
+  // Customization for the dropwdown
   $(document).ready(function(){
     $("#tagsSelect").select2({
       placeholder: 'Select Tags...',

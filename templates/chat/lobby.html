@@ -1,3 +1,12 @@
+<!-- 
+File: lobby.html
+Authors: Raihaan Sandhu and Darun Kanesalingam
+Last Modified: May 31, 2023
+Version: 1.0.0
+
+This file contains the frontend for the Chat page. 
+-->
+
 <!DOCTYPE html>
 {% extends '../calcura/base.html' %}
 {% load static %}
@@ -20,6 +29,7 @@
     </div>
     <br>
     <!-- Chat list is shown in the sidebar in mobile view/smaller screens -->
+      <!-- Code adapted from [9], under the sidebar component section -->
     <div id="drawer-navigation" class="fixed top-0 left-0 z-40 w-64 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white" tabindex="-1" aria-labelledby="drawer-navigation-label">
       <h5 id="drawer-navigation-label" class="text-base font-semibold text-gray-500 uppercase dark:text-gray-400">Your Chats</h5>
       <button type="button" data-drawer-hide="drawer-navigation" aria-controls="drawer-navigation" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" >
@@ -72,6 +82,7 @@
       </div>
 
       {% else %}
+      <!-- Code adapted from [9], under the modal component section -->
       <div id="report-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative w-full max-w-md max-h-full">
             <!-- Modal content -->
@@ -203,6 +214,7 @@
         scrollDown();
       });
       
+      //Code adapted from [5], used to create the websocket in javascript
       //Setting the websocket route to the domain + websocket/chat and the roomname provided by backend
       const chatSocket = new WebSocket(`ws://` + window.location.host + `/ws/chat/`+"{{room}}" + '/');
       // Sts focus on the input field which allows it to receive keyboard and similar events by default

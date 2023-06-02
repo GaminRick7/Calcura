@@ -1,3 +1,12 @@
+"""
+File: views.py
+Authors: Raihaan Sandhu and Darun Kanesalingam
+Last Modified: May 30, 2023
+Version: 1.0.0
+
+This file contains logic for the consumer pages.
+"""
+
 from datetime import datetime
 from django.utils import timezone
 from django.shortcuts import render

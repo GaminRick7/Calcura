@@ -1,12 +1,11 @@
 """
-WSGI config for backend project.
+File: wsgi.py
+Authors: Raihaan Sandhu and Darun Kanesalingam
+Last Modified: May 19, 2023
+Version: 1.0.0
 
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/4.1/howto/deployment/wsgi/
+This file contains the WSGI (Web Server Gateway Interface) configurations.
 """
-
 import os
 
 from django.core.wsgi import get_wsgi_application

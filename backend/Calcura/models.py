@@ -1,3 +1,12 @@
+"""
+File: models.py
+Authors: Raihaan Sandhu and Darun Kanesalingam
+Last Modified: May 26, 2023
+Version: 1.0.0
+
+This file contains the alls the models (classes) used by the Calcura app.
+"""
+
 from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
@@ -48,7 +57,9 @@ class TempImage(models.Model):
         image (CloudinaryField): the image being uploaded to cloudinary
         email (str): email address of person who is uploading image for a listing. Email addresses need to differentiate listings in case multiple people upload a listing at same time.  
     """
-    image=CloudinaryField('image')
+    
+    #Code adapted from [12], used to store images to cloudinay
+    image=CloudinaryField('image') 
     email=models.TextField()
 
 class Administration(models.Model):

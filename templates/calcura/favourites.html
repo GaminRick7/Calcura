@@ -1,3 +1,12 @@
+<!-- 
+File: favourites.html
+Authors: Raihaan Sandhu and Darun Kanesalingam
+Last Modified: May 31, 2023
+Version: 1.0.0
+
+This file contains the frontend for the favourites page. 
+-->
+
 {% extends './base.html' %}
 <html lang="en">
   <body>
@@ -5,8 +14,9 @@
   {% block content %}
   <title>Favourites | Calcura</title>
   <h1 class="text-4xl text-gray-900 text-center font-bold pt-5">Favourites</h1>
-    <div class="mx-auto max-w-7xl mt-4 mb-8 px-4 sm:py-4 lg:px-8">
+    <div class="mx-auto max-w-6xl lg:max-w-screen-2xl mt-4 mb-8 px-4 sm:py-4 lg:px-8">
       <h2 class="text-2xl font-bold tracking-tight text-gray-900">Your Listings</h2>
+      <!-- Code adapted from [10], used for listings grid -->
       <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
         {%for calc in listings %}
           <div class="group relative z-0"> 
@@ -48,6 +58,8 @@
           </div>
         {% endfor %}
         {% for calc in listings%}
+
+        <!-- Code adapted from [9], under the Modal component section -->
         <div id="defaultModal{{calc.listing.id}}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
           <div class="bg-white rounded-lg shadow relative w-full max-w-7xl">
               <!-- Modal content -->

@@ -1,3 +1,12 @@
+<!-- 
+File: createListing.html
+Authors: Raihaan Sandhu and Darun Kanesalingam
+Last Modified: May 31, 2023
+Version: 1.0.0
+
+This file contains the frontend for the Create Listing page. 
+-->
+
 {% extends './base.html' %}
 <html lang="en">
 
@@ -24,7 +33,7 @@
           </div>
         </div>
         <input required name="docfile" type="file" id="id_docfile" class="form-control-file mt-5" onchange="showPreview(event);"
-          multiple>
+          multiple accept="image/jpg, image/webp, image/png, image/jpeg, image/svg">
       </div>
     </div>
     <div class="col-span-2 py-2 px-5 border-2 mx-1 sm:border-r-2 sm:mx-0 rounded-lg">
@@ -107,6 +116,8 @@
         </div>
       </div>
       <div class="p-2 w-full flex flex-row">
+
+        <!-- Code adapted from [10], under the buttons component section -->
         <button
           class="grow block text-white bg-indigo-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex items-center justify-center">
           <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -138,7 +149,9 @@
         Args: radio (input)
         Returns: None
     */
+  //input for price on screen
   var textbox = document.getElementById("priceproxy");
+  //hidden input for backend
   var price = document.getElementById("price");
   textbox.addEventListener("input", function() {
     price.value = textbox.value; // update the hidden input value dynamically
@@ -155,13 +168,27 @@
 }
 </script>
 <script>
+  //Code adapted from [14], used to for Jquery's Select2 Multi-select Dropdown
   $(document).ready(function(){
+    /*
+        Function to select multiple tags through a dropdown
+        Args: none
+        Returns: None
+    */
+
+    // Customization for the dropwdown
     $("#tagsSelect").select2({
       placeholder: 'Select Tags...',
       maximumSelectionLength: 5,
       allowClear: true,
     });
+
     $("#tagsSelect").on("change",function(){
+    /*
+    Function used to updated the value of "tags" (hidden input) to match selected tags so that it can be sent to the backend
+    Args: none
+    Returns: none
+    */
       var tagsdisplay = $("#tagsSelect option:selected").text();
       $("#tags").val(tagsdisplay);
     });
@@ -169,8 +196,16 @@
 </script>
 <script>
   function showPreview(event) {
+    /*
+        Function to preview images uploaded by the user
+        Args: event
+        Returns: None
+    */
+
     var wrapper = document.getElementById("imageswrapper");
     var myHTML = '';
+
+    // a for loop iterates through the number of uploaded  images and appends them to the html div with a unique id for each image
     for (let i = 0; i < event.target.files.length; i++) {
       myHTML += `<div class="flex flex-wrap w-1/3">
               <div class="w-full p-1 md:p-2 my-1">
@@ -179,6 +214,8 @@
             </div>`;
     }
     wrapper.innerHTML = myHTML
+
+    // a for loop iterates through all the uploaded images in the div above and  replaced them with the images that the user uploaded 
     if (event.target.files.length > 0) {
       for (let i = 0; i < event.target.files.length + 1; i++) {
         var src = URL.createObjectURL(event.target.files[i]);
