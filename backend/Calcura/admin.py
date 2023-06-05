@@ -52,8 +52,6 @@ def deleteInactiveRooms(modeladmin, request, queryset):
         request: user making the request
         queryset: the queryset to deal with sent by user making the request
     """
-    for message in Messages.objects.all():
-        print(message)
     for room in MessageRoom.objects.all():
 
         #If the messageroom is over 30 days old, delete it and its messages
