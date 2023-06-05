@@ -103,14 +103,11 @@ def shop(request, pageNum):
         return messageRoomCreationOrRouting(request,email)
        
    
-    print(listings)
     #If they didn't submit a sorting option, sort listings by datetime
     if notSorted:
-        print("\n\nrgdgrd\n\n")
         mergeSort(listings,"datetime")
         listings.reverse()
 
-    print("AFTER SORITNG",listings)
     nextListingsPresent=False
     if len(listings[30*(pageNum+1):30*(pageNum+2)])>0:
         nextListingsPresent=True
@@ -145,11 +142,9 @@ def favourites(request):
         render: the template
     """
     #Check if they are attempting to remove listing
-    print(request.POST)
     if "listing" in request.POST:
         try:
             id=request.POST["listing"]
-            print(Calculator.objects.get(id=id))
             Favourite.objects.filter(user=request.user).get(listing=Calculator.objects.get(id=id)).delete()
         except:
             pass
@@ -275,5 +270,4 @@ def checkFavourite(request):
                 Favourite(listing=listing,user=request.user).save()
         else:
             Favourite(listing=listing,user=request.user).save()
-    print(request.POST)
         

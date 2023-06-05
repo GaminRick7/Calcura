@@ -35,7 +35,7 @@ class Calculator(models.Model):
     numImages = 0
     price = models.DecimalField(decimal_places=2,max_digits=1000)
     tags = models.TextField()
-    datetime = models.DateTimeField(default=datetime.datetime.now())
+    datetime = models.DateTimeField()
     id = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)  
 
