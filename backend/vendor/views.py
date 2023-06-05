@@ -12,6 +12,7 @@ from Calcura.models import Calculator, TempImage
 from Calcura.views import mergeSort, generateId
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
 
 def vendorPage(request):
     """
@@ -86,7 +87,7 @@ def createListing(request):
                 image.delete()
 
         #Creating a new calculator listing, with the images stored as a string.
-        a=Calculator(title=title, description=description,image=imageUrls, price=price,tags=tags,id=generateId(Calculator), user=request.user)
+        a=Calculator(title=title, description=description,image=imageUrls, price=price,tags=tags,id=generateId(Calculator), user=request.user, datetime=datetime.now())
         a.save()
         return HttpResponseRedirect("/vendorPage")
     return render(request, "calcura/createListing.html", {})
