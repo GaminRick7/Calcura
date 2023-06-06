@@ -145,7 +145,7 @@ The website is now fully setup! Every time you want to run the server, in `Calcu
 ## Known Bugs
 
 - When clicking to the outside of a sidebar, the screen appears grey and nothing is clickable. To fix this issue on mobile, reload your page. On a laptop, click the "ESC" button. 
-- Sometimes, the image carousel of listings temporarily breaks and appears as a white screen without warning. It then fixes itself. It may be a problem associated with flowbite scripts; however, the current nature of the issue isn't known
+- Sometimes, the image carousel of listings temporarily breaks and appears as a white screen without warning. It then fixes itself. It may be a problem associated with flowbite scripts; however, the current nature of the issue isn't known.
 
 ## Support
 

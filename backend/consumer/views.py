@@ -149,6 +149,14 @@ def favourites(request):
         except:
             pass
     
+    if "chat" in request.POST:
+
+        #Get the email of the vendor from the request
+        email = request.POST["email"]
+
+        #dealing with message rooms
+        return messageRoomCreationOrRouting(request,email)
+        
     #Get all listings which are favourited
     listings=Favourite.objects.filter(user=request.user)
     
