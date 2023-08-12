@@ -140,7 +140,7 @@ The website is now fully setup! Every time you want to run the server, in `Calcu
 ## Developers
 
 - [@GaminRick7](https://www.github.com/GaminRick7)
-- [@Iwillgetmy](https://www.github.com/Iwillgetmy)
+- [@dhesrune](https://www.github.com/dhesrune)
 
 ## Known Bugs
 
